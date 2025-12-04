@@ -1,0 +1,553 @@
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroHolder - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .left-panel {
+            flex: 1.8;
+            background:
+                linear-gradient(90deg, rgba(0, 60, 138, 1) 100%, rgba(0, 60, 138, 1) 100%);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 60px;
+            color: white;
+        }
+
+        .left-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('@Url.Content("~/Assets/leftBg.png")') center/cover;
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+        .calendar-icon {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 20px;
+        }
+
+        .calendar-icon img {
+            width: 100%;
+            height: 100%;
+            filter: brightness(0) invert(1);
+        }
+
+        .description {
+            position: absolute;
+            left: 60px;
+            right: 60px;
+            bottom: 40px;
+            margin-top: 0;
+            z-index: 2;
+        }
+
+        .description h2 {
+            font-size: 22px;
+            line-height: 1.4;
+            max-width: 600px;
+            color: #fff;
+            font-weight:600;
+        }
+
+        .right-panel {
+            flex: 0.5;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .login-container {
+            background: white;
+            padding: 60px 70px;
+            width: 500px;
+            max-width: 90%;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-section {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .plane-trail {
+            position: absolute;
+            top: -140px;
+            right: -140px;
+            width: 320px;
+            height: 220px;
+        }
+
+        .plane-trail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .logo {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .logo .aero {
+            color: #1e3a5f;
+        }
+
+        .logo .holder {
+            color: #a0a0a0;
+        }
+
+        .welcome {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 650;
+            color: #1e3a5f;
+            margin-bottom: 40px;
+            position: relative;
+            padding: 0 40px;
+        }
+
+        .welcome::before,
+        .welcome::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 100px;
+            height: 2px;
+            background: #1e3a5f;
+        }
+
+        .welcome::before {
+            left: -20px;
+        }
+
+        .welcome::after {
+            right: -20px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            color: #1e3a5f;
+            margin-bottom: 10px;
+            font-weight: 500;
+            position: absolute;
+            top: -8px;
+            left: 15px;
+            background: white;
+            padding: 0 8px;
+            z-index: 1;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-top: 8px;
+            margin-left: -10%;
+        }
+
+        .input-wrapper input {
+            width: 110%;
+            padding: 18px 15px 18px 50px;
+            border: 2px solid #d0d0d0;
+            border-radius: 5px;
+            font-size: 15px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #1e3a5f;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: #333;
+            z-index: 1;
+        }
+
+        .input-icon img {
+            width: 20px;
+            height: 20px;
+        }
+
+        .login-button {
+            width: 120%;
+            padding: 18px;
+            background: #1e3a5f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 30px;
+            margin-left: -10%;
+        }
+
+        .login-button:hover {
+            background: #2c5f9e;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
+        }
+
+        .error-message {
+            color: #d32f2f;
+            text-align: center;
+            margin-top: 15px;
+            font-size: 14px;
+            padding: 10px;
+            background: #ffebee;
+            border-radius: 5px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .srilankan-logo {
+            margin-bottom: -10px;
+        }
+
+        .srilankan-logo img {
+            height: 60px;
+        }
+
+        .copyright {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .version {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .silhouettes {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            display: flex;
+            justify-content: space-around;
+            align-items: flex-end;
+            padding: 0 80px;
+            z-index: 1;
+        }
+
+        .silhouettes img {
+            height: 140px;
+            opacity: 0.3;
+        }
+
+        .footer-img {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -25px;
+            text-align: center;
+            background: white;
+            z-index: 10;
+        }
+
+        .footer-img img {
+            height: 70px;
+            margin-top: -5px;
+        }
+
+        @@media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                flex: 1;
+                padding: 20px;
+            }
+
+            .login-container {
+                padding: 40px 30px;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .plane-trail {
+                top: -100px;
+                right: -100px;
+                width: 250px;
+                height: 180px;
+            }
+
+            .logo {
+                font-size: 36px;
+            }
+
+            .welcome {
+                font-size: 24px;
+                padding: 0 20px;
+                margin-bottom: 30px;
+            }
+
+            .welcome::before,
+            .welcome::after {
+                width: 60px;
+            }
+
+            .welcome::before {
+                left: -10px;
+            }
+
+            .welcome::after {
+                right: -10px;
+            }
+
+            .input-wrapper {
+                margin-left: 0;
+            }
+
+            .input-wrapper input {
+                width: 100%;
+                padding: 16px 15px 16px 45px;
+                font-size: 14px;
+            }
+
+            .input-icon {
+                left: 15px;
+            }
+
+            .input-icon img {
+                width: 18px;
+                height: 18px;
+            }
+
+            .form-group label {
+                font-size: 12px;
+                left: 12px;
+            }
+
+            .login-button {
+                width: 100%;
+                margin-left: 0;
+                padding: 16px;
+                font-size: 15px;
+                margin-top: 25px;
+            }
+
+            .footer {
+                margin-top: 25px;
+            }
+
+            .srilankan-logo img {
+                height: 50px;
+            }
+
+            .footer-img img {
+                height: 60px;
+            }
+
+            .silhouettes {
+                display: none;
+            }
+        }
+
+        @@media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+
+            .plane-trail {
+                top: -80px;
+                right: -80px;
+                width: 200px;
+                height: 150px;
+            }
+
+            .logo {
+                font-size: 32px;
+            }
+
+            .logo-section {
+                margin-bottom: 35px;
+            }
+
+            .welcome {
+                font-size: 22px;
+                padding: 0 15px;
+                margin-bottom: 25px;
+            }
+
+            .welcome::before,
+            .welcome::after {
+                width: 40px;
+            }
+
+            .input-wrapper input {
+                padding: 14px 12px 14px 40px;
+                font-size: 13px;
+            }
+
+            .input-icon {
+                left: 12px;
+            }
+
+            .input-icon img {
+                width: 16px;
+                height: 16px;
+            }
+
+            .form-group label {
+                font-size: 11px;
+            }
+
+            .login-button {
+                padding: 14px;
+                font-size: 14px;
+            }
+
+            .error-message {
+                font-size: 13px;
+                padding: 8px;
+            }
+
+            .srilankan-logo img {
+                height: 45px;
+            }
+
+            .copyright {
+                font-size: 10px;
+            }
+
+            .version {
+                font-size: 10px;
+            }
+
+            .footer-img img {
+                height: 50px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-panel">
+            <div class="description">
+                <div class="calendar-icon">
+                    <img src="~/Assets/side logo.png" alt="Calendar" />
+                </div>
+                <h2>An optimized, user-friendly system for efficiently managing itineraries tailored to Sri Lankan Airlines stakeholders.</h2>
+            </div>
+        </div>
+
+        <div class="right-panel">
+            <div class="login-container">
+                <div class="logo-section">
+                    <div class="plane-trail">
+                        <img src="~/Assets/air plane.png" alt="Airplane" />
+                    </div>
+                    <div class="logo">
+                        <span class="aero">Aero</span><span class="holder">Holder</span>
+                    </div>
+                </div>
+
+                <h1 class="welcome">Welcome!</h1>
+
+                @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    
+                    <div class="form-group">
+                        <label for="userId">User ID</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <img src="~/Assets/userLogo.png" alt="User" />
+                            </span>
+                            <input type="text" id="userId" name="userId" required />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-wrapper">
+                            <span class="input-icon">
+                                <img src="~/Assets/passwordLogo.png" alt="Password" />
+                            </span>
+                            <input type="password" id="password" name="password" required />
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-button">Login Now</button>
+                }
+
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="error-message">
+                        @ViewBag.ErrorMessage
+                    </div>
+                }
+
+                <div class="footer">
+                    <div class="srilankan-logo">
+                        <img src="~/Assets/sla logo.png" alt="SriLankan IT Systems" />
+                    </div>
+                    <div class="copyright">© 2025 SriLankan IT Systems. All rights reserved</div>
+                    <div class="version">Version 1.0</div>
+                    <div class="footer-img">
+                        <img src="~/Assets/footer img.png" alt="Footer" />
+                    </div>
+                </div>
+            </div>
+
+            
+        </div>
+    </div>
+</body>
+</html>
