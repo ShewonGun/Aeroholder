@@ -1,0 +1,231 @@
+﻿@model string
+
+@{
+    var searchPlaceholder = Model ?? "Search by folio id, passport number...";
+}
+
+<style>
+    .search-section {
+        margin-bottom: 20px;
+        padding: 0 40px;
+    }
+
+    .search-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .search-tabs {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .search-tab {
+        width: 60px;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #111827;
+        text-align: center;
+        margin-bottom: 0;
+        background: none;
+        border: none;
+        position: relative;
+        letter-spacing: 0.2px;
+        padding: 0;
+        left: 0;
+        transform: none;
+        z-index: 2;
+        display: block;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .search-tab.active {
+        color: #111827;
+        font-weight: 600;
+    }
+
+    .search-tab-line {
+        width: 60px;
+        height: 2px;
+        background: #1e3a8a;
+        border-radius: 1px;
+        margin: 4px 0 8px 0;
+        position: relative;
+        left: 0;
+        z-index: 1;
+    }
+
+    .search-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .search-input-wrapper {
+        position: relative;
+        flex: 1;
+        max-width: 400px;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 15px;
+        height: 15px;
+        color: #9ca3af;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 8px 12px 8px 38px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        font-size: 0.85rem;
+        transition: all 0.3s ease;
+        background: white;
+    }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+    .search-input::placeholder {
+        font-size: 0.8rem;
+        color: #b6bac2;
+        font-weight: 400;
+        opacity: 1;
+    }
+
+    .add-button {
+        padding: 8px 16px;
+        background: #1e3a8a;
+        color: white;
+        border: none;
+        border-radius: 2px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        white-space: nowrap;
+        margin-left: 0;
+    }
+
+        .add-button:hover {
+            background: #1e40af;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(30, 58, 138, 0.2);
+        }
+
+        .add-button svg {
+            width: 15px;
+            height: 15px;
+        }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .search-section {
+            padding: 0 20px;
+        }
+
+        .search-header {
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .search-tabs {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .search-controls {
+            width: 100%;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .search-input-wrapper {
+            max-width: 100%;
+        }
+
+        .add-button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+</style>
+
+<div class="search-section">
+    <div class="search-header">
+        <div class="search-tabs">
+            <button class="search-tab active" onclick="filterTab('all')">All</button>
+            <div class="search-tab-line"></div>
+            <!-- Add more tabs as needed -->
+        </div>
+    </div>
+
+    <div class="search-controls">
+        <div class="search-input-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.35-4.35"></path>
+            </svg>
+            <input type="text"
+                   class="search-input"
+                   placeholder="@searchPlaceholder"
+                   id="searchInput"
+                   onkeyup="filterTable()" />
+        </div>
+
+        <button class="add-button" onclick="openAddModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Add
+        </button>
+    </div>
+</div>
+
+<script>function filterTab(tab) {
+        console.log('Filter by tab:', tab);
+        // Implement tab filtering logic
+    }
+
+    function filterTable() {
+        const input = document.getElementById('searchInput');
+        const filter = input.value.toLowerCase();
+        const table = document.querySelector('.shareholder-table');
+
+        if (!table) return;
+
+        const rows = table.querySelectorAll('.shareholder-row');
+
+        rows.forEach(row => {
+            const folioId = row.querySelector('.folio-id')?.textContent.toLowerCase() || '';
+            const name = row.querySelector('.shareholder-name')?.textContent.toLowerCase() || '';
+
+            if (folioId.includes(filter) || name.includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function openAddModal() {
+        // Implement modal opening logic
+        alert('Add new shareholder - Implement modal');
+    }</script>

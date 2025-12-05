@@ -1,0 +1,60 @@
+﻿<style>
+    .footer {
+        background: #1e3a8a;
+        color: white;
+        padding: 10px 0;
+        margin-top: auto;
+    }
+
+    .footer-container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 0 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .footer-logo {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-left: -10px;
+    }
+
+        .footer-logo img {
+            height: 20px;
+            width: auto;
+        }
+
+    .footer-text {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .footer-container {
+            flex-direction: column;
+            gap: 10px;
+            text-align: center;
+            padding: 0 20px;
+        }
+        
+        .footer-logo img {
+            height: 25px;
+        }
+    }
+</style>
+
+<footer class="footer">
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="@Url.Content("~/Assets/footer airlines logo.png")" alt="SriLankan Airlines Logo" />
+        </div>
+
+        <div class="footer-text">
+            &copy; @DateTime.Now.Year SriLankan IT Systems. All Rights Reserved.
+        </div>
+    </div>
+</footer>

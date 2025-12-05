@@ -89,6 +89,7 @@
     <Content Include="Assets\AeroHolder.png" />
     <Content Include="Assets\air plane.png" />
     <Content Include="Assets\background.png" />
+    <Content Include="Assets\footer airlines logo.png" />
     <Content Include="Assets\footer img.png" />
     <Content Include="Assets\leftBg.png" />
     <Content Include="Assets\passwordLogo.png" />
@@ -103,9 +104,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ShareholderController.cs" />
+    <Compile Include="Controllers\ShareholderListPageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ShareholderModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -113,6 +117,14 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <None Include="packages.config" />
+    <Content Include="Views\Shared\layout.cshtml" />
+    <Content Include="Views\Shared\navbar.cshtml" />
+    <Content Include="Views\Shared\footer.cshtml" />
+    <Content Include="Views\ShareholderListPage\Components\pageHeader.cshtml" />
+    <Content Include="Views\ShareholderListPage\Components\searchBar.cshtml" />
+    <Content Include="Views\ShareholderListPage\Components\pagination.cshtml" />
+    <Content Include="Views\ShareholderListPage\Components\shareHolderRow.cshtml" />
+    <Content Include="Views\ShareholderListPage\shareholderPage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -123,7 +135,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\" />
-    <Folder Include="Models\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

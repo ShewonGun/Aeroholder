@@ -1,0 +1,102 @@
+﻿@using AeroHolder_new.Models
+@{
+    Layout = null;
+    var userName = "Pramodh Lihinikaduwa";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AeroHolder - Shareholder List</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 40px;
+        }
+
+        .content-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            flex: 1;
+            width: 100%;
+            background: #f3f4f6;
+            border-radius: 12px;
+            padding: 30px 0 15px 0;
+        }
+
+        .shareholder-table {
+            margin-bottom: 20px;
+        }
+
+        @@media (max-width: 768px) {
+            .content-container {
+                padding: 0 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    @Html.Partial("~/Views/Shared/navbar.cshtml")
+
+    <!-- Page Header with Tabs -->
+    @Html.Partial("~/Views/ShareholderListPage/Components/pageHeader.cshtml", "ShareholderList")
+
+    <div class="page-wrapper">
+        <div class="content-container">
+            <!-- Search Bar -->
+            @Html.Partial("~/Views/ShareholderListPage/Components/searchBar.cshtml", "Search by folio id, passport number...")
+
+            <!-- Shareholder Table -->
+            <div class="shareholder-table">
+                @{
+                    var shareholders = new[] {
+                        new ShareholderRowModel { RowNumber = 1, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 2, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 3, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 4, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 5, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 6, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
+                        new ShareholderRowModel { RowNumber = 7, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 }
+                    };
+
+                    foreach (var shareholder in shareholders)
+                    {
+                        @Html.Partial("~/Views/ShareholderListPage/Components/shareHolderRow.cshtml", shareholder)
+                    }
+                }
+            </div>
+
+            <!-- Pagination -->
+            @Html.Partial("~/Views/ShareholderListPage/Components/pagination.cshtml", new PaginationModel
+            {
+                CurrentPage = 1,
+                TotalPages = 20,
+                PageSize = 7,
+                TotalItems = 140
+            })
+        </div>
+    </div>
+
+    <!-- Footer -->
+    @Html.Partial("~/Views/Shared/footer.cshtml")
+</body>
+</html>
