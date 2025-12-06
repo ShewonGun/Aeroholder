@@ -226,6 +226,11 @@
     }
 
     function openAddModal() {
-        // Implement modal opening logic
-        alert('Add new shareholder - Implement modal');
+        const modal = document.getElementById('addShareholderModal');
+        if (modal) {
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        } else {
+            console.error('Modal not found');
+        }
     }</script>

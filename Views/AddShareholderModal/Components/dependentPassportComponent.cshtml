@@ -1,0 +1,104 @@
+﻿@* Dependent Passport Component *@
+@{
+    var index = ViewData["index"] ?? "0";
+}
+
+<div class="passport-item border rounded p-3 mb-3 position-relative">
+    <button type="button" class="btn-close position-absolute top-0 end-0 m-2" onclick="removePassport(this)" aria-label="Remove"></button>
+
+    <div class="row g-3">
+        <div class="col-md-3">
+            <label for="passportNumber_@index" class="form-label">Passport number</label>
+            <input type="text" class="form-control" id="passportNumber_@index" placeholder="600 S465758">
+        </div>
+        <div class="col-md-3">
+            <label for="issuedCountry_@index" class="form-label">Issued country</label>
+            <input type="text" class="form-control" id="issuedCountry_@index" placeholder="Sri lanka">
+        </div>
+        <div class="col-md-3">
+            <label for="expireDate_@index" class="form-label">Expire Date</label>
+            <div class="input-group">
+                <input type="text" class="form-control datepicker" id="expireDate_@index" placeholder="DD/MM/YYYY">
+                <span class="input-group-text">
+                    <i class="bi bi-calendar3"></i>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <label for="issuedDate_@index" class="form-label">Issued date</label>
+            <div class="input-group">
+                <input type="text" class="form-control datepicker" id="issuedDate_@index" placeholder="DD/MM/YYYY">
+                <span class="input-group-text">
+                    <i class="bi bi-calendar3"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .passport-item {
+        background: #ffffff;
+        border: 1px solid #e0e0e0 !important;
+        position: relative;
+    }
+
+        .passport-item .btn-close {
+            color: #dc3545;
+            opacity: 1;
+            font-size: 20px;
+            padding: 8px;
+        }
+
+            .passport-item .btn-close:hover {
+                opacity: 0.7;
+            }
+
+        .passport-item .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .passport-item .form-control {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+        }
+
+            .passport-item .form-control:focus {
+                border-color: #1e3a5f;
+                box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.15);
+            }
+
+        .passport-item .input-group-text {
+            background: white;
+            border: 1px solid #d0d0d0;
+            border-left: none;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .passport-item .input-group .form-control {
+            border-right: none;
+        }
+
+            .passport-item .input-group .form-control:focus {
+                border-color: #d0d0d0;
+                box-shadow: none;
+            }
+
+                .passport-item .input-group .form-control:focus + .input-group-text {
+                    border-color: #1e3a5f;
+                }
+</style>
+
+<script>// Initialize datepicker for this passport item
+    document.addEventListener('DOMContentLoaded', function() {
+        const datepickers = document.querySelectorAll('.datepicker');
+        datepickers.forEach(function(datepicker) {
+            // You can initialize your preferred datepicker library here
+            // Example with flatpickr: flatpickr(datepicker, { dateFormat: "d/m/Y" });
+        });
+    });</script>

@@ -1,0 +1,171 @@
+﻿@* Shareholder Information Component *@
+<div class="shareholder-info-section">
+    <div class="accordion-header d-flex justify-content-between align-items-center" data-bs-toggle="collapse" data-bs-target="#shareholderInfo">
+        <h6 class="mb-0 fw-bold">Shareholder Information</h6>
+        <i class="bi bi-chevron-down"></i>
+    </div>
+    <div id="shareholderInfo" class="collapse show">
+        <div class="row g-3 mt-2">
+            <div class="col-md-3">
+                <label for="firstName" class="form-label">First Name</label>
+                <input type="text" class="form-control" id="firstName" placeholder="Primera">
+            </div>
+            <div class="col-md-3">
+                <label for="lastName" class="form-label">Last name</label>
+                <input type="text" class="form-control" id="lastName" placeholder="Weerakon">
+            </div>
+            <div class="col-md-3">
+                <label for="country" class="form-label">Country</label>
+                <select class="form-select" id="country">
+                    <option selected>SriLanka</option>
+                    <option>India</option>
+                    <option>USA</option>
+                    <option>UK</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <label for="folionId" class="form-label">folion ID</label>
+                <input type="text" class="form-control" id="folionId" placeholder="FLN565">
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-12">
+                <label for="fullName" class="form-label">Full name(Passport Name)</label>
+                <input type="text" class="form-control" id="fullName" placeholder="Chamalie Primera  Weerakoon">
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-3">
+                <label for="address1" class="form-label">Address 1</label>
+                <input type="text" class="form-control" id="address1" placeholder="Malabe">
+            </div>
+            <div class="col-md-3">
+                <label for="address2" class="form-label">Address 2</label>
+                <input type="text" class="form-control" id="address2" placeholder="SriLanka">
+            </div>
+            <div class="col-md-3">
+                <label for="city" class="form-label">City</label>
+                <input type="text" class="form-control" id="city" placeholder="Malabe">
+            </div>
+            <div class="col-md-3">
+                <label for="companyIndividual" class="form-label">company/individual</label>
+                <select class="form-select" id="companyIndividual">
+                    <option selected>Srilankan Airlines</option>
+                    <option>Individual</option>
+                    <option>Company</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row g-3 mt-2">
+            <div class="col-md-4">
+                <label for="noOfShares" class="form-label">No. of shares</label>
+                <div class="input-group number-input">
+                    <button class="btn btn-outline-secondary" type="button" onclick="decrementValue('noOfShares')">-</button>
+                    <input type="text" class="form-control text-center" id="noOfShares" value="00" readonly>
+                    <button class="btn btn-outline-secondary" type="button" onclick="incrementValue('noOfShares')">+</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="noOfTickets" class="form-label">No. of Tickets Issued</label>
+                <div class="input-group number-input">
+                    <button class="btn btn-outline-secondary" type="button" onclick="decrementValue('noOfTickets')">-</button>
+                    <input type="text" class="form-control text-center" id="noOfTickets" value="00" readonly>
+                    <button class="btn btn-outline-secondary" type="button" onclick="incrementValue('noOfTickets')">+</button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <label for="entitlement" class="form-label">Entitlement</label>
+                <div class="input-group">
+                    <select class="form-select" style="max-width: 60px;">
+                        <option></option>
+                    </select>
+                    <input type="text" class="form-control text-center" value="00" readonly>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .shareholder-info-section {
+        background: white;
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+        .shareholder-info-section .accordion-header {
+            cursor: pointer;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 15px;
+        }
+
+            .shareholder-info-section .accordion-header h6 {
+                font-size: 15px;
+            }
+
+            .shareholder-info-section .accordion-header i {
+                transition: transform 0.3s;
+            }
+
+            .shareholder-info-section .accordion-header[aria-expanded="false"] i {
+                transform: rotate(-90deg);
+            }
+
+        .shareholder-info-section .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .shareholder-info-section .form-control,
+        .shareholder-info-section .form-select {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+        }
+
+            .shareholder-info-section .form-control:focus,
+            .shareholder-info-section .form-select:focus {
+                border-color: #1e3a5f;
+                box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.15);
+            }
+
+        .shareholder-info-section .number-input .btn {
+            border: 1px solid #d0d0d0;
+            background: white;
+            color: #333;
+            padding: 8px 15px;
+        }
+
+            .shareholder-info-section .number-input .btn:hover {
+                background: #f0f0f0;
+            }
+
+        .shareholder-info-section .number-input .form-control {
+            border-left: none;
+            border-right: none;
+        }
+</style>
+
+<script>function incrementValue(id) {
+        const input = document.getElementById(id);
+        let value = parseInt(input.value) || 0;
+        value++;
+        input.value = value.toString().padStart(2, '0');
+    }
+
+    function decrementValue(id) {
+        const input = document.getElementById(id);
+        let value = parseInt(input.value) || 0;
+        if (value > 0) {
+            value--;
+            input.value = value.toString().padStart(2, '0');
+        }
+    }</script>

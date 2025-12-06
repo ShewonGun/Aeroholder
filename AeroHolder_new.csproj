@@ -125,6 +125,10 @@
     <Content Include="Views\ShareholderListPage\Components\pagination.cshtml" />
     <Content Include="Views\ShareholderListPage\Components\shareHolderRow.cshtml" />
     <Content Include="Views\ShareholderListPage\shareholderPage.cshtml" />
+    <Content Include="Views\AddShareholderModal\Components\informationComponent.cshtml" />
+    <Content Include="Views\AddShareholderModal\Components\dependantComponent.cshtml" />
+    <Content Include="Views\AddShareholderModal\Components\dependentPassportComponent.cshtml" />
+    <Content Include="Views\AddShareholderModal\addShareholderModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

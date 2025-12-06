@@ -1,0 +1,61 @@
+﻿@* Dependant Component *@
+@{
+    var index = ViewData["index"] ?? "0";
+}
+
+<div class="dependent-item border rounded p-3 mb-3 position-relative">
+    <button type="button" class="btn-close position-absolute top-0 end-0 m-2" onclick="removeDependent(this)" aria-label="Remove"></button>
+
+    <div class="row g-3">
+        <div class="col-md-4">
+            <label for="fullNameDependent_@index" class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="fullNameDependent_@index" placeholder="Buddhini Nanayakkara">
+        </div>
+        <div class="col-md-4">
+            <label for="relationship_@index" class="form-label">Relationship</label>
+            <input type="text" class="form-control" id="relationship_@index" placeholder="Daughter">
+        </div>
+        <div class="col-md-4">
+            <label for="passportNumberDependent_@index" class="form-label">Passport number</label>
+            <input type="text" class="form-control" id="passportNumberDependent_@index" placeholder="600 S465758">
+        </div>
+    </div>
+</div>
+
+<style>
+    .dependent-item {
+        background: #ffffff;
+        border: 1px solid #e0e0e0 !important;
+        position: relative;
+    }
+
+        .dependent-item .btn-close {
+            color: #dc3545;
+            opacity: 1;
+            font-size: 20px;
+            padding: 8px;
+        }
+
+            .dependent-item .btn-close:hover {
+                opacity: 0.7;
+            }
+
+        .dependent-item .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .dependent-item .form-control {
+            font-size: 14px;
+            padding: 8px 12px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+        }
+
+            .dependent-item .form-control:focus {
+                border-color: #1e3a5f;
+                box-shadow: 0 0 0 0.2rem rgba(30, 58, 95, 0.15);
+            }
+</style>
