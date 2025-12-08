@@ -1,4 +1,4 @@
-﻿@using AeroHolder_new.Models
+﻿@model List<AeroHolder_new.Models.ShareholderModel>
 @{
     Layout = null;
     var userName = "Pramodh Lihinikaduwa";
@@ -46,6 +46,22 @@
             margin-bottom: 20px;
         }
 
+        .error-message {
+            background: #fee2e2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+            padding: 15px;
+            margin: 20px 40px;
+            border-radius: 8px;
+        }
+
+        .no-data-message {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+            font-size: 16px;
+        }
+
         @@media (max-width: 768px) {
             .content-container {
                 padding: 0 20px;
@@ -54,52 +70,70 @@
     </style>
 </head>
 <body>
-    <!-- Navbar -->
+    @* Navbar *@
     @Html.Partial("~/Views/Shared/navbar.cshtml")
 
-    <!-- Page Header with Tabs -->
+    @* Page Header with Tabs *@
     @Html.Partial("~/Views/ShareholderListPage/Components/pageHeader.cshtml", "ShareholderList")
 
     <div class="page-wrapper">
         <div class="content-container">
-            <!-- Search Bar -->
+            @* Search Bar *@
             @Html.Partial("~/Views/ShareholderListPage/Components/searchBar.cshtml", "Search by folio id, passport number...")
 
-            <!-- Shareholder Table -->
-            <div class="shareholder-table">
-                @{
-                    var shareholders = new[] {
-                        new ShareholderRowModel { RowNumber = 1, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 2, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 3, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 4, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 5, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 6, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 },
-                        new ShareholderRowModel { RowNumber = 7, FolioID = "FLN565", Name = "Primera Weerakoon", TicketsIssued = 20, Passports = 2 }
-                    };
+            @if (ViewBag.Error != null)
+            {
+                <div class="error-message">
+                    <strong>Error:</strong> @ViewBag.Error
+                </div>
+            }
 
-                    foreach (var shareholder in shareholders)
+            @* Shareholder Table *@
+            <div class="shareholder-table">
+                @if (Model != null && Model.Any())
+                {
+                    int rowNumber = 1;
+                    foreach (var shareholder in Model)
                     {
-                        @Html.Partial("~/Views/ShareholderListPage/Components/shareHolderRow.cshtml", shareholder)
+                        var shareholderRow = new AeroHolder_new.Models.ShareholderRowModel
+                        {
+                            RowNumber = rowNumber++,
+                            FolioID = shareholder.FolioID,
+                            Name = shareholder.FullName,
+                            TicketsIssued = shareholder.NoOfTicketsIssued,
+                            Passports = shareholder.NoOfPassports
+                        };
+                        @Html.Partial("~/Views/ShareholderListPage/Components/shareHolderRow.cshtml", shareholderRow)
                     }
+                }
+                else
+                {
+                    <div class="no-data-message">
+                        <p>No shareholders found. Click "Add Shareholder" to create a new record.</p>
+                    </div>
                 }
             </div>
 
-            <!-- Pagination -->
-            @Html.Partial("~/Views/ShareholderListPage/Components/pagination.cshtml", new PaginationModel
+            @* Pagination *@
+            @{
+                var totalItems = Model != null ? Model.Count : 0;
+                var pageSize = 10;
+                var totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+            }
+            @Html.Partial("~/Views/ShareholderListPage/Components/pagination.cshtml", new AeroHolder_new.Models.PaginationModel
             {
                 CurrentPage = 1,
-                TotalPages = 20,
-                PageSize = 7,
-                TotalItems = 140
+                TotalPages = totalPages > 0 ? totalPages : 1,
+                PageSize = pageSize,
+                TotalItems = totalItems
             })
         </div>
     </div>
 
-    <!-- Footer -->
+    @* Footer *@
     @Html.Partial("~/Views/Shared/footer.cshtml")
 
-    <!-- Add Shareholder Modal -->
+    @* Add Shareholder Modal *@
     @Html.Partial("~/Views/AddShareholderModal/addShareholderModal.cshtml")
 </body>
 </html>

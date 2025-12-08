@@ -33,7 +33,7 @@
             background: #f8f9fa;
             border-radius: 5px;
         }
-        .logout-btn {
+        .btn {
             background: #1e3a5f;
             color: white;
             padding: 10px 20px;
@@ -43,9 +43,16 @@
             font-size: 14px;
             text-decoration: none;
             display: inline-block;
+            margin-right: 10px;
         }
-        .logout-btn:hover {
+        .btn:hover {
             background: #2c5f9e;
+        }
+        .btn-test {
+            background: #28a745;
+        }
+        .btn-test:hover {
+            background: #218838;
         }
     </style>
 </head>
@@ -59,7 +66,10 @@
             <p><strong>Login Time:</strong> @ViewBag.LoginTime</p>
         </div>
 
-        @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "logout-btn" })
+        <div style="margin-top: 30px;">
+            <a href="@Url.Action("Index", "DatabaseTest")" class="btn btn-test">🔌 Test Database Connection</a>
+            @Html.ActionLink("Logout", "Logout", "Account", null, new { @class = "btn" })
+        </div>
     </div>
 </body>
 </html>

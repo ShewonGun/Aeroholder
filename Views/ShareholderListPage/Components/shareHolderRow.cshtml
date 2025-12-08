@@ -226,15 +226,24 @@
 
     function deleteShareholder(folioId) {
         if (confirm(`Are you sure you want to delete shareholder ${folioId}?`)) {
-            fetch(`/api/shareholders/${folioId}`, {
-                method: 'DELETE'
+            fetch('@Url.Action("DeleteShareholder", "ShareholderListPage")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ folioId: folioId })
             })
-            .then(response => {
-                if (response.ok) {
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Shareholder deleted successfully');
                     location.reload();
                 } else {
-                    alert('Failed to delete shareholder');
+                    alert('Failed to delete shareholder: ' + data.message);
                 }
+            })
+            .catch(error => {
+                alert('Error: ' + error.message);
             });
         }
     }

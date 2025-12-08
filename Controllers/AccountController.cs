@@ -1,9 +1,26 @@
+using System;
 using System.Web.Mvc;
+using AeroHolder_new.Data;
+using AeroHolder_new.Repositories;
+using AeroHolder_new.Services;
 
 namespace AeroHolder_new.Controllers
 {
+    /// <summary>
+    /// Controller for user authentication
+    /// </summary>
     public class AccountController : Controller
     {
+        private readonly IAuthenticationService _authService;
+
+        public AccountController()
+        {
+            // Initialize dependencies
+            var context = new AppDbContext();
+            var userRepository = new UserRepository(context);
+            _authService = new AuthenticationService(userRepository);
+        }
+
         // GET: Account/Login
         public ActionResult Login()
         {
@@ -21,19 +38,35 @@ namespace AeroHolder_new.Controllers
                 return View();
             }
 
-            // TODO: Replace with actual authentication logic
-            // For demo purposes, accept any non-empty credentials
-            if (!string.IsNullOrEmpty(userId) && !string.IsNullOrEmpty(password))
+            try
             {
-                Session["UserId"] = userId;
-                Session["LoginTime"] = System.DateTime.Now;
-                
-                // Redirect to home page or dashboard
-                return RedirectToAction("Index", "Home");
-            }
+                bool isValid = _authService.AuthenticateUser(userId, password);
 
-            ViewBag.ErrorMessage = "Invalid User ID or Password";
-            return View();
+                if (isValid)
+                {
+                    if (!_authService.IsUserActive(userId))
+                    {
+                        ViewBag.ErrorMessage = "Your account has been deactivated. Please contact administrator.";
+                        return View();
+                    }
+
+                    Session["UserId"] = userId;
+                    Session["UserName"] = userId;
+                    Session["LoginTime"] = DateTime.Now;
+                    
+                    return RedirectToAction("Index", "ShareholderListPage");
+                }
+                else
+                {
+                    ViewBag.ErrorMessage = "Invalid User ID or Password";
+                    return View();
+                }
+            }
+            catch (Exception ex)
+            {
+                ViewBag.ErrorMessage = $"Login failed: {ex.Message}";
+                return View();
+            }
         }
 
         // GET: Account/Logout
@@ -42,6 +75,24 @@ namespace AeroHolder_new.Controllers
             Session.Clear();
             Session.Abandon();
             return RedirectToAction("Login");
+        }
+
+        // GET: Account/TestDB
+        public ActionResult TestDB()
+        {
+            try
+            {
+                var context = new AppDbContext();
+                using (var connection = context.GetConnection())
+                {
+                    connection.Open();
+                    return Content($"? SUCCESS! Connected to database: {connection.Database} on server: {connection.DataSource}");
+                }
+            }
+            catch (Exception ex)
+            {
+                return Content($"? CONNECTION FAILED: {ex.Message}");
+            }
         }
     }
 }
