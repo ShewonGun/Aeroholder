@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using AeroHolder_new.Data;
 using AeroHolder_new.Models;
 using AeroHolder_new.Services;
+using AeroHolder_new.Helpers;
 
 namespace AeroHolder_new.Controllers
 {
@@ -38,7 +39,7 @@ namespace AeroHolder_new.Controllers
             }
             catch (Exception ex)
             {
-                ViewBag.Error = $"Failed to load shareholders: {ex.Message}";
+                NotificationHelper.Error(TempData, $"Failed to load shareholders: {ex.Message}");
                 return View("~/Views/ShareholderListPage/shareholderPage.cshtml", new List<ShareholderModel>());
             }
         }
@@ -62,11 +63,21 @@ namespace AeroHolder_new.Controllers
             try
             {
                 var shareholders = _shareholderService.SearchShareholders(searchTerm);
+                
+                if (shareholders == null || shareholders.Count == 0)
+                {
+                    NotificationHelper.Info(TempData, $"No shareholders found matching '{searchTerm}'");
+                }
+                else
+                {
+                    NotificationHelper.Success(TempData, $"Found {shareholders.Count} shareholder(s) matching '{searchTerm}'");
+                }
+                
                 return View("~/Views/ShareholderListPage/shareholderPage.cshtml", shareholders);
             }
             catch (Exception ex)
             {
-                ViewBag.Error = $"Search failed: {ex.Message}";
+                NotificationHelper.Error(TempData, $"Search failed: {ex.Message}");
                 return View("~/Views/ShareholderListPage/shareholderPage.cshtml", new List<ShareholderModel>());
             }
         }
@@ -77,6 +88,11 @@ namespace AeroHolder_new.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(folioId))
+                {
+                    return Json(new { success = false, message = "Folio ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+
                 var shareholder = _shareholderService.GetShareholderByFolioId(folioId);
                 
                 if (shareholder != null)
@@ -87,7 +103,7 @@ namespace AeroHolder_new.Controllers
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = ex.Message }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = false, message = $"Error loading shareholder: {ex.Message}" }, JsonRequestBehavior.AllowGet);
             }
         }
 
@@ -97,56 +113,208 @@ namespace AeroHolder_new.Controllers
         {
             try
             {
+                if (string.IsNullOrWhiteSpace(folioId))
+                {
+                    return Json(new { success = false, message = "Folio ID is required" });
+                }
+
                 bool success = _shareholderService.DeleteShareholder(folioId);
                 
                 if (success)
                 {
+                    NotificationHelper.Success(TempData, $"Shareholder {folioId} deleted successfully!");
                     return Json(new { success = true, message = "Shareholder deleted successfully" });
                 }
+                
+                NotificationHelper.Error(TempData, $"Failed to delete shareholder {folioId}");
                 return Json(new { success = false, message = "Failed to delete shareholder" });
             }
             catch (Exception ex)
             {
+                NotificationHelper.Error(TempData, $"Delete failed: {ex.Message}");
                 return Json(new { success = false, message = ex.Message });
             }
         }
 
-        // Add new shareholder (for future implementation)
+        // Add new shareholder
         [HttpPost]
         public ActionResult AddShareholder(ShareholderModel model)
         {
             try
             {
+                // Validation
+                if (model == null)
+                {
+                    NotificationHelper.Warning(TempData, "Invalid shareholder data");
+                    return Json(new { success = false, message = "Invalid shareholder data", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FirstName))
+                {
+                    NotificationHelper.Warning(TempData, "First Name is required");
+                    return Json(new { success = false, message = "First Name is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.LastName))
+                {
+                    NotificationHelper.Warning(TempData, "Last Name is required");
+                    return Json(new { success = false, message = "Last Name is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FolioID))
+                {
+                    NotificationHelper.Warning(TempData, "Folio ID is required");
+                    return Json(new { success = false, message = "Folio ID is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FullName))
+                {
+                    NotificationHelper.Warning(TempData, "Full Name (Passport Name) is required");
+                    return Json(new { success = false, message = "Full Name is required", reload = true });
+                }
+
+                // Validate FolioID format
+                if (!model.FolioID.StartsWith("FLN") || model.FolioID.Length < 4)
+                {
+                    NotificationHelper.Warning(TempData, "Invalid Folio ID format. Must start with 'FLN' followed by numbers");
+                    return Json(new { success = false, message = "Invalid Folio ID format", reload = true });
+                }
+
+                // Validate numbers are non-negative
+                if (model.NoOfShares < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Number of shares cannot be negative");
+                    return Json(new { success = false, message = "Number of shares cannot be negative", reload = true });
+                }
+
+                if (model.NoOfTicketsIssued < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Number of tickets issued cannot be negative");
+                    return Json(new { success = false, message = "Number of tickets cannot be negative", reload = true });
+                }
+
+                if (model.Entitlement < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Entitlement cannot be negative");
+                    return Json(new { success = false, message = "Entitlement cannot be negative", reload = true });
+                }
+
+                // Attempt to create shareholder
                 bool success = _shareholderService.CreateShareholder(model);
                 
                 if (success)
                 {
+                    NotificationHelper.Success(TempData, $"Shareholder {model.FolioID} ({model.FullName}) added successfully!");
                     return Json(new { success = true, message = "Shareholder added successfully" });
                 }
+                
+                NotificationHelper.Error(TempData, $"Failed to add shareholder {model.FolioID}");
                 return Json(new { success = false, message = "Failed to add shareholder" });
+            }
+            catch (ArgumentException argEx)
+            {
+                // Validation errors from service layer
+                NotificationHelper.Warning(TempData, argEx.Message);
+                return Json(new { success = false, message = argEx.Message, reload = true });
             }
             catch (Exception ex)
             {
+                // Check for duplicate folio ID
+                if (ex.Message.Contains("already exists"))
+                {
+                    NotificationHelper.Error(TempData, $"Shareholder with Folio ID '{model.FolioID}' already exists!");
+                    return Json(new { success = false, message = ex.Message });
+                }
+                
+                NotificationHelper.Error(TempData, $"Failed to add shareholder: {ex.Message}");
                 return Json(new { success = false, message = ex.Message });
             }
         }
 
-        // Update shareholder (for future implementation)
+        // Update shareholder
         [HttpPost]
         public ActionResult UpdateShareholder(ShareholderModel model)
         {
             try
             {
+                // Validation
+                if (model == null)
+                {
+                    NotificationHelper.Warning(TempData, "Invalid shareholder data");
+                    return Json(new { success = false, message = "Invalid shareholder data", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FirstName))
+                {
+                    NotificationHelper.Warning(TempData, "First Name is required");
+                    return Json(new { success = false, message = "First Name is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.LastName))
+                {
+                    NotificationHelper.Warning(TempData, "Last Name is required");
+                    return Json(new { success = false, message = "Last Name is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FolioID))
+                {
+                    NotificationHelper.Warning(TempData, "Folio ID is required");
+                    return Json(new { success = false, message = "Folio ID is required", reload = true });
+                }
+
+                if (string.IsNullOrWhiteSpace(model.FullName))
+                {
+                    NotificationHelper.Warning(TempData, "Full Name (Passport Name) is required");
+                    return Json(new { success = false, message = "Full Name is required", reload = true });
+                }
+
+                // Validate numbers are non-negative
+                if (model.NoOfShares < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Number of shares cannot be negative");
+                    return Json(new { success = false, message = "Number of shares cannot be negative", reload = true });
+                }
+
+                if (model.NoOfTicketsIssued < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Number of tickets issued cannot be negative");
+                    return Json(new { success = false, message = "Number of tickets cannot be negative", reload = true });
+                }
+
+                if (model.Entitlement < 0)
+                {
+                    NotificationHelper.Warning(TempData, "Entitlement cannot be negative");
+                    return Json(new { success = false, message = "Entitlement cannot be negative", reload = true });
+                }
+
+                // Attempt to update shareholder
                 bool success = _shareholderService.UpdateShareholder(model);
                 
                 if (success)
                 {
+                    NotificationHelper.Success(TempData, $"Shareholder {model.FolioID} ({model.FullName}) updated successfully!");
                     return Json(new { success = true, message = "Shareholder updated successfully" });
                 }
+                
+                NotificationHelper.Error(TempData, $"Failed to update shareholder {model.FolioID}");
                 return Json(new { success = false, message = "Failed to update shareholder" });
+            }
+            catch (ArgumentException argEx)
+            {
+                // Validation errors from service layer
+                NotificationHelper.Warning(TempData, argEx.Message);
+                return Json(new { success = false, message = argEx.Message, reload = true });
             }
             catch (Exception ex)
             {
+                // Check for not found error
+                if (ex.Message.Contains("does not exist"))
+                {
+                    NotificationHelper.Error(TempData, $"Shareholder with Folio ID '{model.FolioID}' not found!");
+                    return Json(new { success = false, message = ex.Message });
+                }
+                
+                NotificationHelper.Error(TempData, $"Failed to update shareholder: {ex.Message}");
                 return Json(new { success = false, message = ex.Message });
             }
         }

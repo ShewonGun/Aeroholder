@@ -627,17 +627,11 @@
             Entitlement: parseInt(document.getElementById('entitlementValue')?.value) || 0
         };
 
-        // Basic validation
-        if (!formData.FirstName || !formData.LastName || !formData.FolioID || !formData.FullName) {
-            alert('Please fill in all required fields: First Name, Last Name, Folio ID, and Full Name');
-            return;
-        }
-
-        // Validate FolioID format (should start with FLN followed by numbers)
-        if (!formData.FolioID.match(/^FLN\d+$/)) {
-            alert('Invalid Folio ID format. Must start with "FLN" followed by numbers (e.g., FLN565)');
-            return;
-        }
+        // Show loading state
+        const saveBtn = document.querySelector('.btn-save');
+        const originalText = saveBtn.textContent;
+        saveBtn.textContent = 'Saving...';
+        saveBtn.disabled = true;
 
         console.log('Saving shareholder:', formData);
 
@@ -652,22 +646,43 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Shareholder saved successfully!');
+                // Success - close modal and reload to show notification
                 closeAddModal();
-                // Reload the page to show the new shareholder
                 window.location.reload();
             } else {
-                alert('Error: ' + (data.message || 'Failed to save shareholder'));
+                // Error - keep modal open, add URL parameter to show modal after reload
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('showAddModal', 'true');
+                currentUrl.searchParams.set('formError', 'true');
+                window.location.href = currentUrl.toString();
             }
         })
         .catch(error => {
             console.error('Error saving shareholder:', error);
-            alert('Error: Failed to save shareholder. Please check your connection and try again.');
+            // Network error - reload with modal parameter
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('showAddModal', 'true');
+            currentUrl.searchParams.set('formError', 'true');
+            window.location.href = currentUrl.toString();
         });
     }
 
-    // Initialize with 2 passport items and 1 dependent item when modal opens
+    // Check URL parameters to reopen modal after error
     document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('showAddModal') === 'true') {
+            // Reopen the Add modal
+            document.getElementById('addShareholderModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            // Clean up URL
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete('showAddModal');
+            newUrl.searchParams.delete('formError');
+            window.history.replaceState({}, '', newUrl.toString());
+        }
+
+        // Initialize passport and dependent items if needed
         setTimeout(function() {
             if (document.getElementById('passportList') && document.getElementById('passportList').children.length === 0) {
                 addPassportItem();

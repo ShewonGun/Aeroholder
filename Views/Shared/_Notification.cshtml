@@ -1,0 +1,341 @@
+@* Modern Notification Component *@
+@if (TempData["SuccessMessage"] != null || TempData["ErrorMessage"] != null || TempData["WarningMessage"] != null || TempData["InfoMessage"] != null)
+{
+    <style>
+        .notification-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 99999; /* Higher than modals (9999) */
+            max-width: 400px;
+            animation: slideInRight 0.4s ease-out;
+        }
+
+        @@keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOutRight {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(120%);
+                opacity: 0;
+            }
+        }
+
+        .notification {
+            background: white;
+            border-radius: 4px;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            border-left: 4px solid;
+            min-width: 320px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .notification:hover {
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .notification.hiding {
+            animation: slideOutRight 0.4s ease-out forwards;
+        }
+
+        .notification-success {
+            border-left-color: #10b981;
+        }
+
+        .notification-error {
+            border-left-color: #dc2626;
+            background: #fef2f2;
+            box-shadow: 0 8px 24px rgba(220, 38, 38, 0.25);
+        }
+
+        .notification-warning {
+            border-left-color: #f59e0b;
+        }
+
+        .notification-info {
+            border-left-color: #3b82f6;
+        }
+
+        .notification-icon {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            margin-top: 2px;
+        }
+
+        .notification-success .notification-icon {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .notification-error .notification-icon {
+            background: #dc2626;
+            color: white;
+            font-weight: bold;
+        }
+
+        .notification-warning .notification-icon {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .notification-info .notification-icon {
+            background: #dbeafe;
+            color: #3b82f6;
+        }
+
+        .notification-content {
+            flex: 1;
+            padding-right: 8px;
+        }
+
+        .notification-title {
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #111827;
+        }
+
+        .notification-error .notification-title {
+            color: #991b1b;
+        }
+
+        .notification-message {
+            font-size: 13px;
+            color: #6b7280;
+            line-height: 1.5;
+        }
+
+        .notification-error .notification-message {
+            color: #991b1b;
+            font-weight: 500;
+        }
+
+        .notification-close {
+            flex-shrink: 0;
+            width: 24px;
+            height: 24px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            color: #9ca3af;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            transition: all 0.2s;
+            margin-top: 2px;
+        }
+
+        .notification-close:hover {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        .notification-error .notification-close {
+            color: #dc2626;
+        }
+
+        .notification-error .notification-close:hover {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .notification-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: currentColor;
+            opacity: 0.3;
+            animation: progressBar 5s linear forwards;
+        }
+
+        .notification-success .notification-progress {
+            background: #10b981;
+            opacity: 0.4;
+        }
+
+        .notification-error .notification-progress {
+            background: #dc2626;
+            opacity: 0.4;
+        }
+
+        .notification-warning .notification-progress {
+            background: #f59e0b;
+            opacity: 0.4;
+        }
+
+        .notification-info .notification-progress {
+            background: #3b82f6;
+            opacity: 0.4;
+        }
+
+        @@keyframes progressBar {
+            from {
+                width: 100%;
+            }
+            to {
+                width: 0%;
+            }
+        }
+
+        @@media (max-width: 640px) {
+            .notification-container {
+                right: 10px;
+                left: 10px;
+                max-width: none;
+            }
+
+            .notification {
+                min-width: auto;
+            }
+        }
+    </style>
+
+    <div class="notification-container" id="notificationContainer">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="notification notification-success" data-auto-close="true">
+                <div class="notification-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Success</div>
+                    <div class="notification-message">@TempData["SuccessMessage"]</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="notification-progress"></div>
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="notification notification-error" data-auto-close="false">
+                <div class="notification-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Error</div>
+                    <div class="notification-message">@TempData["ErrorMessage"]</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+        }
+
+        @if (TempData["WarningMessage"] != null)
+        {
+            <div class="notification notification-warning" data-auto-close="true">
+                <div class="notification-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                        <line x1="12" y1="9" x2="12" y2="13"></line>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Warning</div>
+                    <div class="notification-message">@TempData["WarningMessage"]</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="notification-progress"></div>
+            </div>
+        }
+
+        @if (TempData["InfoMessage"] != null)
+        {
+            <div class="notification notification-info" data-auto-close="true">
+                <div class="notification-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </div>
+                <div class="notification-content">
+                    <div class="notification-title">Information</div>
+                    <div class="notification-message">@TempData["InfoMessage"]</div>
+                </div>
+                <button class="notification-close" onclick="closeNotification(this)">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="notification-progress"></div>
+            </div>
+        }
+    </div>
+
+    <script>
+        function closeNotification(button) {
+            const notification = button.closest('.notification');
+            notification.classList.add('hiding');
+            setTimeout(() => {
+                notification.remove();
+                // Remove container if no notifications left
+                const container = document.getElementById('notificationContainer');
+                if (container && container.querySelectorAll('.notification').length === 0) {
+                    container.remove();
+                }
+            }, 400);
+        }
+
+        // Auto-close notifications after 5 seconds
+        document.addEventListener('DOMContentLoaded', function() {
+            const notifications = document.querySelectorAll('.notification[data-auto-close="true"]');
+            notifications.forEach(notification => {
+                setTimeout(() => {
+                    const closeButton = notification.querySelector('.notification-close');
+                    if (closeButton) {
+                        closeButton.click();
+                    }
+                }, 5000);
+            });
+        });
+    </script>
+}

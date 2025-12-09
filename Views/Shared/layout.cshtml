@@ -130,14 +130,17 @@
     </style>
 </head>
 <body>
-    <partial name="_Navbar" />
+    @Html.Partial("_Navbar")
 
     <main class="main-content">
         @RenderBody()
     </main>
 
-    <partial name="_Footer" />
+    @Html.Partial("_Footer")
 
-    @await RenderSectionAsync("Scripts", required: false)
+    @* Include Notification Component *@
+    @Html.Partial("_Notification")
+
+    @RenderSection("Scripts", required: false)
 </body>
 </html>

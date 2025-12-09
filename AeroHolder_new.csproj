@@ -104,12 +104,14 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DatabaseTestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NotificationTestController.cs" />
     <Compile Include="Controllers\ShareholderController.cs" />
     <Compile Include="Controllers\ShareholderListPageController.cs" />
     <Compile Include="Data\AppDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\NotificationHelper.cs" />
     <Compile Include="Models\ShareholderModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\IShareholderRepository.cs" />
@@ -137,10 +139,13 @@
     <Content Include="Views\AddShareholderModal\Components\dependantComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\Components\dependentPassportComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\addShareholderModal.cshtml" />
+    <Content Include="LOGIN_INLINE_ERRORS.md" />
     <None Include="packages.config" />
     <Content Include="Views\DatabaseTest\Index.cshtml" />
-    <Content Include="UPLOAD_BUTTON_IMPLEMENTATION.md" />
     <Content Include="Views\EditShareholderModal\editShareholderModal.cshtml" />
+    <Content Include="Views\Shared\_Notification.cshtml" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\NotificationTest\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

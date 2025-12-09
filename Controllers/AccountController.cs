@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using AeroHolder_new.Data;
 using AeroHolder_new.Repositories;
 using AeroHolder_new.Services;
+using AeroHolder_new.Helpers;
 
 namespace AeroHolder_new.Controllers
 {
@@ -34,7 +35,8 @@ namespace AeroHolder_new.Controllers
         {
             if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(password))
             {
-                ViewBag.ErrorMessage = "Please enter both User ID and Password";
+                // Use TempData for inline error display (no Keep needed with View)
+                TempData["ErrorMessage"] = "Please enter both User ID and Password";
                 return View();
             }
 
@@ -46,7 +48,7 @@ namespace AeroHolder_new.Controllers
                 {
                     if (!_authService.IsUserActive(userId))
                     {
-                        ViewBag.ErrorMessage = "Your account has been deactivated. Please contact administrator.";
+                        TempData["WarningMessage"] = "Your account has been deactivated. Please contact administrator.";
                         return View();
                     }
 
@@ -54,26 +56,30 @@ namespace AeroHolder_new.Controllers
                     Session["UserName"] = userId;
                     Session["LoginTime"] = DateTime.Now;
                     
+                    NotificationHelper.Success(TempData, "Login successful! Welcome to AeroHolder.");
                     return RedirectToAction("Index", "ShareholderListPage");
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Invalid User ID or Password";
+                    TempData["ErrorMessage"] = "Invalid User ID or Password. Please try again.";
                     return View();
                 }
             }
             catch (Exception ex)
             {
-                ViewBag.ErrorMessage = $"Login failed: {ex.Message}";
+                TempData["ErrorMessage"] = $"Login failed: {ex.Message}";
                 return View();
             }
         }
 
-        // GET: Account/Logout
+        // POST: Account/Logout
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Logout()
         {
             Session.Clear();
             Session.Abandon();
+            NotificationHelper.Info(TempData, "You have been logged out successfully.");
             return RedirectToAction("Login");
         }
 

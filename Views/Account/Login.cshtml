@@ -233,14 +233,17 @@
             box-shadow: 0 4px 12px rgba(30, 58, 95, 0.3);
         }
 
-        .error-message {
-            color: #d32f2f;
-            text-align: center;
+        .login-error-message {
+            width: 120%;
+            margin-left: -10%;
             margin-top: 15px;
-            font-size: 14px;
-            padding: 10px;
-            background: #ffebee;
-            border-radius: 5px;
+            padding: 10px 15px;
+            background-color: #ffebee;
+            border: 1px solid #ef5350;
+            border-radius: 4px;
+            color: #c62828;
+            font-size: 13px;
+            text-align: center;
         }
 
         .footer {
@@ -524,14 +527,15 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="login-button">Login Now</button>
-                }
+                    @* Simple Classic Error Message *@
+                    if (TempData["ErrorMessage"] != null || TempData["WarningMessage"] != null)
+                    {
+                        <div class="login-error-message">
+                            @(TempData["ErrorMessage"] ?? TempData["WarningMessage"])
+                        </div>
+                    }
 
-                @if (ViewBag.ErrorMessage != null)
-                {
-                    <div class="error-message">
-                        @ViewBag.ErrorMessage
-                    </div>
+                    <button type="submit" class="login-button">Login Now</button>
                 }
 
                 <div class="footer">
@@ -549,5 +553,7 @@
             
         </div>
     </div>
+
+    @* Don't show top-right notifications on login page - errors appear below form *@
 </body>
 </html>

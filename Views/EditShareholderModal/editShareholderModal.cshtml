@@ -651,14 +651,16 @@
                     updateEditPassportCount();
                     updateEditDependentCount();
                 } else {
-                    alert('Error: ' + (result.message || 'Failed to load shareholder data'));
+                    // Error loading data - close modal and reload to show notification
                     closeEditModal();
+                    window.location.reload();
                 }
             })
             .catch(error => {
                 console.error('Error loading shareholder data:', error);
-                alert('Error: Failed to load shareholder data. Please try again.');
+                // Network error - close modal and reload to show notification
                 closeEditModal();
+                window.location.reload();
             });
     }
 
@@ -680,11 +682,11 @@
             Entitlement: parseInt(document.getElementById('edit_entitlementValue')?.value) || 0
         };
 
-        // Basic validation
-        if (!formData.FirstName || !formData.LastName || !formData.FolioID || !formData.FullName) {
-            alert('Please fill in all required fields: First Name, Last Name, Folio ID, and Full Name');
-            return;
-        }
+        // Show loading state
+        const updateBtn = document.querySelector('#editShareholderModal .btn-save');
+        const originalText = updateBtn.textContent;
+        updateBtn.textContent = 'Updating...';
+        updateBtn.disabled = true;
 
         console.log('Updating shareholder:', formData);
 
@@ -699,17 +701,45 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Shareholder updated successfully!');
+                // Success - close modal and reload to show notification
                 closeEditModal();
-                // Reload the page to show the updated shareholder
                 window.location.reload();
             } else {
-                alert('Error: ' + (data.message || 'Failed to update shareholder'));
+                // Error - keep modal open, add URL parameter to show modal after reload
+                const currentUrl = new URL(window.location.href);
+                currentUrl.searchParams.set('showEditModal', 'true');
+                currentUrl.searchParams.set('editFolioId', formData.FolioID);
+                currentUrl.searchParams.set('formError', 'true');
+                window.location.href = currentUrl.toString();
             }
         })
         .catch(error => {
             console.error('Error updating shareholder:', error);
-            alert('Error: Failed to update shareholder. Please check your connection and try again.');
+            // Network error - reload with modal parameter
+            const currentUrl = new URL(window.location.href);
+            currentUrl.searchParams.set('showEditModal', 'true');
+            currentUrl.searchParams.set('editFolioId', formData.FolioID);
+            currentUrl.searchParams.set('formError', 'true');
+            window.location.href = currentUrl.toString();
         });
     }
+
+    // Check URL parameters to reopen modal after error
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('showEditModal') === 'true') {
+            const folioId = urlParams.get('editFolioId');
+            if (folioId) {
+                // Reopen the Edit modal with the shareholder data
+                loadShareholderData(folioId);
+            }
+            
+            // Clean up URL
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.delete('showEditModal');
+            newUrl.searchParams.delete('editFolioId');
+            newUrl.searchParams.delete('formError');
+            window.history.replaceState({}, '', newUrl.toString());
+        }
+    });
 </script>
