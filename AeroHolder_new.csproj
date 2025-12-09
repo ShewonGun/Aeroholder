@@ -139,6 +139,8 @@
     <Content Include="Views\AddShareholderModal\addShareholderModal.cshtml" />
     <None Include="packages.config" />
     <Content Include="Views\DatabaseTest\Index.cshtml" />
+    <Content Include="UPLOAD_BUTTON_IMPLEMENTATION.md" />
+    <Content Include="Views\EditShareholderModal\editShareholderModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

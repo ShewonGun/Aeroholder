@@ -1,64 +1,66 @@
-﻿@* Add Shareholder Modal *@
-<div class="modal-overlay" id="addShareholderModal" style="display: none;">
+@* Edit Shareholder Modal *@
+<div class="modal-overlay" id="editShareholderModal" style="display: none;">
     <div class="modal-dialog-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
-                <span class="modal-title-custom">Add Shareholder</span>
-                <button type="button" class="btn-close-custom" onclick="closeAddModal()">✕</button>
+                <span class="modal-title-custom">Edit Shareholder</span>
+                <button type="button" class="btn-close-custom" onclick="closeEditModal()">?</button>
             </div>
             <div class="modal-body-custom">
-                <form id="addShareholderForm">
+                <form id="editShareholderForm">
+                    <input type="hidden" id="edit_shareholderId" />
+                    
                     @* Shareholder Information Section *@
                     <div class="form-section">
                         <div class="section-header">
                             <span class="section-title">Shareholder Information</span>
-                            <span class="section-chevron">▼</span>
+                            <span class="section-chevron">?</span>
                         </div>
                         <div class="section-content">
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>First Name</label>
-                                    <input type="text" id="firstName" placeholder="Primera">
+                                    <input type="text" id="edit_firstName" placeholder="Primera">
                                 </div>
                                 <div class="form-group">
                                     <label>Last name</label>
-                                    <input type="text" id="lastName" placeholder="Weerakon">
+                                    <input type="text" id="edit_lastName" placeholder="Weerakon">
                                 </div>
                                 <div class="form-group">
                                     <label>Country</label>
-                                    <select id="country">
+                                    <select id="edit_country">
                                         <option>SriLanka</option>
                                         <option>India</option>
                                         <option>USA</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
-                                    <label>folion ID</label>
-                                    <input type="text" id="folionId" placeholder="FLN565">
+                                    <label>Folio ID</label>
+                                    <input type="text" id="edit_folionId" placeholder="FLN565" readonly>
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group full-width">
                                     <label>Full name(Passport Name)</label>
-                                    <input type="text" id="fullName" placeholder="Chamalie Primera  Weerakoon">
+                                    <input type="text" id="edit_fullName" placeholder="Chamalie Primera  Weerakoon">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label>Address 1</label>
-                                    <input type="text" id="address1" placeholder="Malabe">
+                                    <input type="text" id="edit_address1" placeholder="Malabe">
                                 </div>
                                 <div class="form-group">
                                     <label>Address 2</label>
-                                    <input type="text" id="address2" placeholder="SriLanka">
+                                    <input type="text" id="edit_address2" placeholder="SriLanka">
                                 </div>
                                 <div class="form-group">
                                     <label>City</label>
-                                    <input type="text" id="city" placeholder="Malabe">
+                                    <input type="text" id="edit_city" placeholder="Malabe">
                                 </div>
                                 <div class="form-group">
                                     <label>company/individual</label>
-                                    <select id="companyIndividual">
+                                    <select id="edit_companyIndividual">
                                         <option>Srilankan Airlines</option>
                                         <option>Individual</option>
                                     </select>
@@ -68,31 +70,31 @@
                                 <div class="form-group">
                                     <label>No. of shares</label>
                                     <div class="number-input">
-                                        <button type="button" onclick="decrementValue('noOfShares')">+</button>
-                                        <input type="text" id="noOfShares" value="00" readonly>
-                                        <button type="button" onclick="incrementValue('noOfShares')">-</button>
+                                        <button type="button" onclick="decrementEditValue('edit_noOfShares')">-</button>
+                                        <input type="text" id="edit_noOfShares" value="00" readonly>
+                                        <button type="button" onclick="incrementEditValue('edit_noOfShares')">+</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>No. of Tickets Issued</label>
                                     <div class="number-input">
-                                        <button type="button" onclick="decrementValue('noOfTickets')">+</button>
-                                        <input type="text" id="noOfTickets" value="00" readonly>
-                                        <button type="button" onclick="incrementValue('noOfTickets')">-</button>
+                                        <button type="button" onclick="decrementEditValue('edit_noOfTickets')">-</button>
+                                        <input type="text" id="edit_noOfTickets" value="00" readonly>
+                                        <button type="button" onclick="incrementEditValue('edit_noOfTickets')">+</button>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label>Entitlement</label>
                                     <div class="entitlement-input">
-                                        <select id="entitlementSelect">
+                                        <select id="edit_entitlementSelect">
                                             <option></option>
                                         </select>
-                                        <input type="text" id="entitlementValue" value="00" readonly>
+                                        <input type="text" id="edit_entitlementValue" value="00" readonly>
                                     </div>
                                 </div>
                             </div>
                             <div class="add-btn-row">
-                                <button type="button" class="btn-add" onclick="addPassportItem()">
+                                <button type="button" class="btn-add" onclick="addEditPassportItem()">
                                     <span>+</span> Add Passport
                                 </button>
                             </div>
@@ -103,17 +105,17 @@
                     <div class="form-section">
                         <div class="section-header">
                             <span class="section-title">Add Passport Information</span>
-                            <span class="section-chevron">▼</span>
+                            <span class="section-chevron">?</span>
                         </div>
                         <div class="section-content">
-                            <div class="items-list" id="passportList">
+                            <div class="items-list" id="edit_passportList">
                                 @* Passport items will be added here dynamically *@
                             </div>
                             <div class="counter-row">
-                                <span class="counter-text">No. of Passports : <span id="passportCount">02</span></span>
+                                <span class="counter-text">No. of Passports : <span id="edit_passportCount">00</span></span>
                             </div>
                             <div class="add-btn-row">
-                                <button type="button" class="btn-add" onclick="addDependentItem()">
+                                <button type="button" class="btn-add" onclick="addEditDependentItem()">
                                     <span>+</span> Add Dependant
                                 </button>
                             </div>
@@ -124,21 +126,21 @@
                     <div class="form-section">
                         <div class="section-header">
                             <span class="section-title">Dependent Passport Information</span>
-                            <span class="section-chevron">▼</span>
+                            <span class="section-chevron">?</span>
                         </div>
                         <div class="section-content">
-                            <div class="items-list" id="dependentList">
+                            <div class="items-list" id="edit_dependentList">
                                 @* Dependent items will be added here dynamically *@
                             </div>
                             <div class="counter-row">
-                                <span class="counter-text">No. of Dependants : <span id="dependentCount">02</span></span>
+                                <span class="counter-text">No. of Dependants : <span id="edit_dependentCount">00</span></span>
                             </div>
                         </div>
                     </div>
                 </form>
             </div>
             <div class="modal-footer-custom">
-                <button type="button" class="btn-save" onclick="saveShareholder()">Save</button>
+                <button type="button" class="btn-save" onclick="updateShareholder()">Update</button>
             </div>
         </div>
     </div>
@@ -164,12 +166,12 @@
         width: 100%;
         max-height: 92vh;
         overflow-y: auto;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     .modal-dialog-custom::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        display: none;
     }
 
     .modal-content-custom {
@@ -212,12 +214,12 @@
         background: white;
         max-height: calc(92vh - 120px);
         overflow-y: auto;
-        scrollbar-width: none; /* Firefox */
-        -ms-overflow-style: none; /* IE and Edge */
+        scrollbar-width: none;
+        -ms-overflow-style: none;
     }
 
     .modal-body-custom::-webkit-scrollbar {
-        display: none; /* Chrome, Safari, Opera */
+        display: none;
     }
 
     .form-section {
@@ -290,6 +292,11 @@
 
     .form-group input::placeholder {
         color: #9ca3af;
+    }
+
+    .form-group input[readonly] {
+        background: #f9fafb;
+        color: #6b7280;
     }
 
     .number-input {
@@ -506,17 +513,17 @@
 </style>
 
 <script>
-    let passportCounter = 0;
-    let dependentCounter = 0;
+    let editPassportCounter = 0;
+    let editDependentCounter = 0;
 
-    function incrementValue(id) {
+    function incrementEditValue(id) {
         const input = document.getElementById(id);
         let value = parseInt(input.value) || 0;
         value++;
         input.value = value.toString().padStart(2, '0');
     }
 
-    function decrementValue(id) {
+    function decrementEditValue(id) {
         const input = document.getElementById(id);
         let value = parseInt(input.value) || 0;
         if (value > 0) {
@@ -525,11 +532,11 @@
         }
     }
 
-    function addPassportItem() {
-        passportCounter++;
+    function addEditPassportItem() {
+        editPassportCounter++;
         const passportHtml = `
             <div class="item-box passport-item">
-                <button type="button" class="btn-remove" onclick="removePassport(this)">✕</button>
+                <button type="button" class="btn-remove" onclick="removeEditPassport(this)">?</button>
                 <div class="item-row">
                     <div class="item-group">
                         <label>Passport number</label>
@@ -543,28 +550,28 @@
                         <label>Expire Date</label>
                         <div class="date-input">
                             <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">📅</span>
+                            <span class="calendar-icon">??</span>
                         </div>
                     </div>
                     <div class="item-group">
                         <label>Issued date</label>
                         <div class="date-input">
                             <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">📅</span>
+                            <span class="calendar-icon">??</span>
                         </div>
                     </div>
                 </div>
             </div>
         `;
-        document.getElementById('passportList').insertAdjacentHTML('beforeend', passportHtml);
-        updatePassportCount();
+        document.getElementById('edit_passportList').insertAdjacentHTML('beforeend', passportHtml);
+        updateEditPassportCount();
     }
 
-    function addDependentItem() {
-        dependentCounter++;
+    function addEditDependentItem() {
+        editDependentCounter++;
         const dependentHtml = `
             <div class="item-box dependent-item">
-                <button type="button" class="btn-remove" onclick="removeDependent(this)">✕</button>
+                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">?</button>
                 <div class="item-row-3">
                     <div class="item-group">
                         <label>Full Name</label>
@@ -581,50 +588,96 @@
                 </div>
             </div>
         `;
-        document.getElementById('dependentList').insertAdjacentHTML('beforeend', dependentHtml);
-        updateDependentCount();
+        document.getElementById('edit_dependentList').insertAdjacentHTML('beforeend', dependentHtml);
+        updateEditDependentCount();
     }
 
-    function updatePassportCount() {
-        const count = document.querySelectorAll('#passportList .passport-item').length;
-        document.getElementById('passportCount').textContent = count.toString().padStart(2, '0');
+    function updateEditPassportCount() {
+        const count = document.querySelectorAll('#edit_passportList .passport-item').length;
+        document.getElementById('edit_passportCount').textContent = count.toString().padStart(2, '0');
     }
 
-    function updateDependentCount() {
-        const count = document.querySelectorAll('#dependentList .dependent-item').length;
-        document.getElementById('dependentCount').textContent = count.toString().padStart(2, '0');
+    function updateEditDependentCount() {
+        const count = document.querySelectorAll('#edit_dependentList .dependent-item').length;
+        document.getElementById('edit_dependentCount').textContent = count.toString().padStart(2, '0');
     }
 
-    function removePassport(element) {
+    function removeEditPassport(element) {
         element.closest('.passport-item').remove();
-        updatePassportCount();
+        updateEditPassportCount();
     }
 
-    function removeDependent(element) {
+    function removeEditDependent(element) {
         element.closest('.dependent-item').remove();
-        updateDependentCount();
+        updateEditDependentCount();
     }
 
-    function closeAddModal() {
-        document.getElementById('addShareholderModal').style.display = 'none';
+    function closeEditModal() {
+        document.getElementById('editShareholderModal').style.display = 'none';
         document.body.style.overflow = 'auto';
     }
 
-    function saveShareholder() {
+    function loadShareholderData(folioId) {
+        // Show loading state
+        const modal = document.getElementById('editShareholderModal');
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+
+        // Fetch shareholder data from server
+        fetch('@Url.Action("GetShareholder", "ShareholderListPage")?folioId=' + encodeURIComponent(folioId))
+            .then(response => response.json())
+            .then(result => {
+                if (result.success && result.data) {
+                    const data = result.data;
+                    
+                    // Populate form fields
+                    document.getElementById('edit_shareholderId').value = data.ShareholderID || '';
+                    document.getElementById('edit_firstName').value = data.FirstName || '';
+                    document.getElementById('edit_lastName').value = data.LastName || '';
+                    document.getElementById('edit_fullName').value = data.FullName || '';
+                    document.getElementById('edit_folionId').value = data.FolioID || '';
+                    document.getElementById('edit_country').value = data.Country || 'SriLanka';
+                    document.getElementById('edit_address1').value = data.Address1 || '';
+                    document.getElementById('edit_address2').value = data.Address2 || '';
+                    document.getElementById('edit_city').value = data.City || '';
+                    document.getElementById('edit_companyIndividual').value = data.CompanyIndividual || 'Individual';
+                    document.getElementById('edit_noOfShares').value = (data.NoOfShares || 0).toString().padStart(2, '0');
+                    document.getElementById('edit_noOfTickets').value = (data.NoOfTicketsIssued || 0).toString().padStart(2, '0');
+                    document.getElementById('edit_entitlementValue').value = (data.Entitlement || 0).toString().padStart(2, '0');
+                    
+                    // Clear passport and dependent lists
+                    document.getElementById('edit_passportList').innerHTML = '';
+                    document.getElementById('edit_dependentList').innerHTML = '';
+                    updateEditPassportCount();
+                    updateEditDependentCount();
+                } else {
+                    alert('Error: ' + (result.message || 'Failed to load shareholder data'));
+                    closeEditModal();
+                }
+            })
+            .catch(error => {
+                console.error('Error loading shareholder data:', error);
+                alert('Error: Failed to load shareholder data. Please try again.');
+                closeEditModal();
+            });
+    }
+
+    function updateShareholder() {
         // Collect form data
         const formData = {
-            FirstName: document.getElementById('firstName')?.value?.trim(),
-            LastName: document.getElementById('lastName')?.value?.trim(),
-            Country: document.getElementById('country')?.value,
-            FolioID: document.getElementById('folionId')?.value?.trim(),
-            FullName: document.getElementById('fullName')?.value?.trim(),
-            Address1: document.getElementById('address1')?.value?.trim(),
-            Address2: document.getElementById('address2')?.value?.trim(),
-            City: document.getElementById('city')?.value?.trim(),
-            CompanyIndividual: document.getElementById('companyIndividual')?.value,
-            NoOfShares: parseInt(document.getElementById('noOfShares')?.value) || 0,
-            NoOfTicketsIssued: parseInt(document.getElementById('noOfTickets')?.value) || 0,
-            Entitlement: parseInt(document.getElementById('entitlementValue')?.value) || 0
+            ShareholderID: parseInt(document.getElementById('edit_shareholderId')?.value) || 0,
+            FirstName: document.getElementById('edit_firstName')?.value?.trim(),
+            LastName: document.getElementById('edit_lastName')?.value?.trim(),
+            Country: document.getElementById('edit_country')?.value,
+            FolioID: document.getElementById('edit_folionId')?.value?.trim(),
+            FullName: document.getElementById('edit_fullName')?.value?.trim(),
+            Address1: document.getElementById('edit_address1')?.value?.trim(),
+            Address2: document.getElementById('edit_address2')?.value?.trim(),
+            City: document.getElementById('edit_city')?.value?.trim(),
+            CompanyIndividual: document.getElementById('edit_companyIndividual')?.value,
+            NoOfShares: parseInt(document.getElementById('edit_noOfShares')?.value) || 0,
+            NoOfTicketsIssued: parseInt(document.getElementById('edit_noOfTickets')?.value) || 0,
+            Entitlement: parseInt(document.getElementById('edit_entitlementValue')?.value) || 0
         };
 
         // Basic validation
@@ -633,16 +686,10 @@
             return;
         }
 
-        // Validate FolioID format (should start with FLN followed by numbers)
-        if (!formData.FolioID.match(/^FLN\d+$/)) {
-            alert('Invalid Folio ID format. Must start with "FLN" followed by numbers (e.g., FLN565)');
-            return;
-        }
-
-        console.log('Saving shareholder:', formData);
+        console.log('Updating shareholder:', formData);
 
         // Send data to server
-        fetch('@Url.Action("AddShareholder", "ShareholderListPage")', {
+        fetch('@Url.Action("UpdateShareholder", "ShareholderListPage")', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -652,30 +699,17 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert('Shareholder saved successfully!');
-                closeAddModal();
-                // Reload the page to show the new shareholder
+                alert('Shareholder updated successfully!');
+                closeEditModal();
+                // Reload the page to show the updated shareholder
                 window.location.reload();
             } else {
-                alert('Error: ' + (data.message || 'Failed to save shareholder'));
+                alert('Error: ' + (data.message || 'Failed to update shareholder'));
             }
         })
         .catch(error => {
-            console.error('Error saving shareholder:', error);
-            alert('Error: Failed to save shareholder. Please check your connection and try again.');
+            console.error('Error updating shareholder:', error);
+            alert('Error: Failed to update shareholder. Please check your connection and try again.');
         });
     }
-
-    // Initialize with 2 passport items and 1 dependent item when modal opens
-    document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(function() {
-            if (document.getElementById('passportList') && document.getElementById('passportList').children.length === 0) {
-                addPassportItem();
-                addPassportItem();
-            }
-            if (document.getElementById('dependentList') && document.getElementById('dependentList').children.length === 0) {
-                addDependentItem();
-            }
-        }, 100);
-    });
 </script>

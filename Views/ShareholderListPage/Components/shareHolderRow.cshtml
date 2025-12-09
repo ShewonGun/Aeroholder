@@ -217,7 +217,13 @@
     }
 
     function viewMoreInfo(folioId) {
-        window.location.href = `/ShareholderDetails?folioId=${folioId}`;
+        // Open edit modal with shareholder data
+        if (typeof loadShareholderData === 'function') {
+            loadShareholderData(folioId);
+        } else {
+            console.error('Edit modal not loaded');
+            alert('Edit modal is not available. Please refresh the page.');
+        }
     }
 
     function viewReport(folioId) {
