@@ -139,7 +139,7 @@
     <Content Include="Views\AddShareholderModal\Components\dependantComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\Components\dependentPassportComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\addShareholderModal.cshtml" />
-    <Content Include="LOGIN_INLINE_ERRORS.md" />
+    <Content Include="ENTITLEMENT_ALPHABET_NUMBER.md" />
     <None Include="packages.config" />
     <Content Include="Views\DatabaseTest\Index.cshtml" />
     <Content Include="Views\EditShareholderModal\editShareholderModal.cshtml" />

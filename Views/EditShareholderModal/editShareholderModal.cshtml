@@ -86,10 +86,36 @@
                                 <div class="form-group">
                                     <label>Entitlement</label>
                                     <div class="entitlement-input">
-                                        <select id="edit_entitlementSelect">
-                                            <option></option>
+                                        <select id="edit_entitlementLetter">
+                                            <option value="">-</option>
+                                            <option value="A">A</option>
+                                            <option value="B">B</option>
+                                            <option value="C">C</option>
+                                            <option value="D">D</option>
+                                            <option value="E">E</option>
+                                            <option value="F">F</option>
+                                            <option value="G">G</option>
+                                            <option value="H">H</option>
+                                            <option value="I">I</option>
+                                            <option value="J">J</option>
+                                            <option value="K">K</option>
+                                            <option value="L">L</option>
+                                            <option value="M">M</option>
+                                            <option value="N">N</option>
+                                            <option value="O">O</option>
+                                            <option value="P">P</option>
+                                            <option value="Q">Q</option>
+                                            <option value="R">R</option>
+                                            <option value="S">S</option>
+                                            <option value="T">T</option>
+                                            <option value="U">U</option>
+                                            <option value="V">V</option>
+                                            <option value="W">W</option>
+                                            <option value="X">X</option>
+                                            <option value="Y">Y</option>
+                                            <option value="Z">Z</option>
                                         </select>
-                                        <input type="text" id="edit_entitlementValue" value="00" readonly>
+                                        <input type="number" id="edit_entitlementNumber" min="0" max="99" placeholder="00">
                                     </div>
                                 </div>
                             </div>
@@ -341,6 +367,8 @@
         border: 1px solid #e5e7eb;
         border-radius: 4px;
         font-size: 12px;
+        text-align: center;
+        font-weight: 600;
     }
 
     .entitlement-input input {
@@ -351,6 +379,22 @@
         text-align: center;
         font-size: 12px;
         color: #6b7280;
+    }
+
+    .entitlement-input input:focus {
+        outline: none;
+        border-color: #1e3a8a;
+    }
+
+    /* Remove spinner arrows from number input */
+    .entitlement-input input[type="number"]::-webkit-inner-spin-button,
+    .entitlement-input input[type="number"]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+
+    .entitlement-input input[type="number"] {
+        -moz-appearance: textfield;
     }
 
     .add-btn-row {
@@ -643,7 +687,18 @@
                     document.getElementById('edit_companyIndividual').value = data.CompanyIndividual || 'Individual';
                     document.getElementById('edit_noOfShares').value = (data.NoOfShares || 0).toString().padStart(2, '0');
                     document.getElementById('edit_noOfTickets').value = (data.NoOfTicketsIssued || 0).toString().padStart(2, '0');
-                    document.getElementById('edit_entitlementValue').value = (data.Entitlement || 0).toString().padStart(2, '0');
+                    
+                    // Parse entitlement value (e.g., "A05" -> letter="A", number="05")
+                    const entitlement = data.Entitlement || '';
+                    if (entitlement.length > 0) {
+                        const letter = entitlement.charAt(0); // First character
+                        const number = entitlement.substring(1); // Rest of the string
+                        document.getElementById('edit_entitlementLetter').value = letter;
+                        document.getElementById('edit_entitlementNumber').value = number;
+                    } else {
+                        document.getElementById('edit_entitlementLetter').value = '';
+                        document.getElementById('edit_entitlementNumber').value = '';
+                    }
                     
                     // Clear passport and dependent lists
                     document.getElementById('edit_passportList').innerHTML = '';
@@ -666,6 +721,11 @@
 
     function updateShareholder() {
         // Collect form data
+        const entitlementLetter = document.getElementById('edit_entitlementLetter')?.value || '';
+        const entitlementNumber = document.getElementById('edit_entitlementNumber')?.value || '0';
+        const formattedNumber = parseInt(entitlementNumber).toString().padStart(2, '0');
+        const entitlementValue = entitlementLetter + formattedNumber; // e.g., "A05" or "B12"
+
         const formData = {
             ShareholderID: parseInt(document.getElementById('edit_shareholderId')?.value) || 0,
             FirstName: document.getElementById('edit_firstName')?.value?.trim(),
@@ -679,7 +739,7 @@
             CompanyIndividual: document.getElementById('edit_companyIndividual')?.value,
             NoOfShares: parseInt(document.getElementById('edit_noOfShares')?.value) || 0,
             NoOfTicketsIssued: parseInt(document.getElementById('edit_noOfTickets')?.value) || 0,
-            Entitlement: parseInt(document.getElementById('edit_entitlementValue')?.value) || 0
+            Entitlement: entitlementValue
         };
 
         // Show loading state
@@ -726,6 +786,22 @@
 
     // Check URL parameters to reopen modal after error
     document.addEventListener('DOMContentLoaded', function() {
+        // Format entitlement number input to 2 digits
+        const editEntitlementNumberInput = document.getElementById('edit_entitlementNumber');
+        if (editEntitlementNumberInput) {
+            editEntitlementNumberInput.addEventListener('blur', function() {
+                if (this.value) {
+                    const num = parseInt(this.value) || 0;
+                    if (num > 99) {
+                        this.value = 99;
+                    } else if (num < 0) {
+                        this.value = 0;
+                    }
+                    this.value = num.toString().padStart(2, '0');
+                }
+            });
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         if (urlParams.get('showEditModal') === 'true') {
             const folioId = urlParams.get('editFolioId');
