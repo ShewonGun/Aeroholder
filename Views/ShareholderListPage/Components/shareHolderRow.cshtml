@@ -175,7 +175,7 @@
     }
 </style>
 
-<div class="shareholder-row">
+<div class="shareholder-row" data-shareholder-name="@Model.Name">
     <div class="row-number">@Model.RowNumber.</div>
 
     <div class="info-grid">
@@ -186,7 +186,7 @@
 
         <div class="info-section">
             <span class="info-label">Name</span>
-            <span class="info-value">@Model.Name</span>
+            <span class="info-value shareholder-name">@Model.Name</span>
         </div>
 
         <div class="info-section">
@@ -201,7 +201,7 @@
     </div>
 
     <div class="action-buttons">
-        <button class="action-btn btn-itinerary" onclick="viewItinerary('@Model.FolioID')">
+        <button class="action-btn btn-itinerary" onclick="viewItinerary('@Model.FolioID', '@Model.Name')">
             Itinerary
         </button>
         <button class="action-btn btn-info" onclick="viewMoreInfo('@Model.FolioID')">
@@ -222,8 +222,14 @@
 </div>
 
 <script>
-    function viewItinerary(folioId) {
-        window.location.href = `/Itinerary?folioId=${folioId}`;
+    function viewItinerary(folioId, shareholderName) {
+        // Open itinerary modal
+        if (typeof openItineraryModal === 'function') {
+            openItineraryModal(folioId, shareholderName);
+        } else {
+            console.error('Itinerary modal not loaded');
+            alert('Itinerary modal is not available. Please refresh the page.');
+        }
     }
 
     function viewMoreInfo(folioId) {
