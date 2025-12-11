@@ -386,53 +386,6 @@
         border-color: #1e3a8a;
     }
 
-    /* Remove spinner arrows from number input */
-    .entitlement-input input[type="number"]::-webkit-inner-spin-button,
-    .entitlement-input input[type="number"]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-        margin: 0;
-    }
-
-    .entitlement-input input[type="number"] {
-        -moz-appearance: textfield;
-    }
-
-    .add-btn-row {
-        display: flex;
-        justify-content: flex-end;
-        margin-top: 12px;
-        margin-bottom: 8px;
-    }
-
-    .btn-add {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 8px 16px;
-        border: 1px solid #1e3a8a;
-        background: white;
-        color: #1e3a8a;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-    }
-
-    .btn-add:hover {
-        background: #1e3a8a;
-        color: white;
-    }
-
-    .btn-add span {
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .items-list {
-        margin-bottom: 8px;
-    }
-
     .item-box {
         border: 1px solid #1e3a8a;
         border-radius: 6px;
@@ -467,69 +420,40 @@
         margin-bottom: 4px;
     }
 
-    .item-group input {
-        padding: 8px 10px;
-        border: 1px solid #e5e7eb;
-        border-radius: 4px;
-        font-size: 12px;
-        color: #6b7280;
-        background: white;
-    }
-
-    .item-group input:focus {
-        outline: none;
-        border-color: #1e3a8a;
-    }
-
-    .item-group input::placeholder {
-        color: #9ca3af;
-    }
-
-    .date-input {
-        position: relative;
-    }
-
-    .date-input input {
-        width: 100%;
-        padding-right: 30px;
-    }
-
-    .date-input .calendar-icon {
-        position: absolute;
-        right: 8px;
-        top: 50%;
-        transform: translateY(-50%);
-        color: #9ca3af;
-        font-size: 12px;
-        pointer-events: none;
-    }
-
-    .btn-remove {
-        position: absolute;
-        top: 14px;
-        right: 12px;
-        background: none;
-        border: none;
-        color: #ef4444;
-        font-size: 18px;
-        cursor: pointer;
-        line-height: 1;
-        padding: 0;
-    }
-
-    .btn-remove:hover {
-        opacity: 0.7;
-    }
-
-    .counter-row {
-        display: flex;
-        justify-content: flex-end;
+    .items-list {
         margin-bottom: 8px;
     }
 
-    .counter-text {
-        font-size: 11px;
-        color: #6b7280;
+    .add-btn-row {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 12px;
+        margin-bottom: 8px;
+    }
+
+    .btn-add {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border: 1px solid #1e3a8a;
+        background: white;
+        color: #1e3a8a;
+        border-radius: 4px;
+        font-size: 12px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .btn-add:hover {
+        background: #1e3a8a;
+        color: white;
+    }
+
+    .btn-add span {
+        font-size: 14px;
+        font-weight: 600;
     }
 
     .modal-footer-custom {
@@ -592,17 +516,11 @@
                     </div>
                     <div class="item-group">
                         <label>Expire Date</label>
-                        <div class="date-input">
-                            <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">??</span>
-                        </div>
+                        <input type="date" class="date-picker">
                     </div>
                     <div class="item-group">
                         <label>Issued date</label>
-                        <div class="date-input">
-                            <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">??</span>
-                        </div>
+                        <input type="date" class="date-picker">
                     </div>
                 </div>
             </div>
@@ -667,29 +585,33 @@
         modal.style.display = 'flex';
         document.body.style.overflow = 'hidden';
 
-        // Fetch shareholder data from server
-        fetch('@Url.Action("GetShareholder", "ShareholderListPage")?folioId=' + encodeURIComponent(folioId))
+        // Fetch shareholder data with passports and dependents from server
+        fetch('@Url.Action("GetShareholderWithDetails", "ShareholderListPage")?folioId=' + encodeURIComponent(folioId))
             .then(response => response.json())
             .then(result => {
                 if (result.success && result.data) {
-                    const data = result.data;
+                    const shareholderData = result.data.shareholder;
+                    const passports = result.data.passports || [];
+                    const dependents = result.data.dependents || [];
                     
-                    // Populate form fields
-                    document.getElementById('edit_shareholderId').value = data.ShareholderID || '';
-                    document.getElementById('edit_firstName').value = data.FirstName || '';
-                    document.getElementById('edit_lastName').value = data.LastName || '';
-                    document.getElementById('edit_fullName').value = data.FullName || '';
-                    document.getElementById('edit_folionId').value = data.FolioID || '';
-                    document.getElementById('edit_country').value = data.Country || 'SriLanka';
-                    document.getElementById('edit_address1').value = data.Address1 || '';
-                    document.getElementById('edit_address2').value = data.Address2 || '';
-                    document.getElementById('edit_city').value = data.City || '';
-                    document.getElementById('edit_companyIndividual').value = data.CompanyIndividual || 'Individual';
-                    document.getElementById('edit_noOfShares').value = (data.NoOfShares || 0).toString().padStart(2, '0');
-                    document.getElementById('edit_noOfTickets').value = (data.NoOfTicketsIssued || 0).toString().padStart(2, '0');
+                    console.log('Loaded passports:', passports); // Debug log
+                    
+                    // Populate shareholder form fields
+                    document.getElementById('edit_shareholderId').value = shareholderData.ShareholderID || '';
+                    document.getElementById('edit_firstName').value = shareholderData.FirstName || '';
+                    document.getElementById('edit_lastName').value = shareholderData.LastName || '';
+                    document.getElementById('edit_fullName').value = shareholderData.FullName || '';
+                    document.getElementById('edit_folionId').value = shareholderData.FolioID || '';
+                    document.getElementById('edit_country').value = shareholderData.Country || 'SriLanka';
+                    document.getElementById('edit_address1').value = shareholderData.Address1 || '';
+                    document.getElementById('edit_address2').value = shareholderData.Address2 || '';
+                    document.getElementById('edit_city').value = shareholderData.City || '';
+                    document.getElementById('edit_companyIndividual').value = shareholderData.CompanyIndividual || 'Individual';
+                    document.getElementById('edit_noOfShares').value = (shareholderData.NoOfShares || 0).toString().padStart(2, '0');
+                    document.getElementById('edit_noOfTickets').value = (shareholderData.NoOfTicketsIssued || 0).toString().padStart(2, '0');
                     
                     // Parse entitlement value (e.g., "A05" -> letter="A", number="05")
-                    const entitlement = data.Entitlement || '';
+                    const entitlement = shareholderData.Entitlement || '';
                     if (entitlement.length > 0) {
                         const letter = entitlement.charAt(0); // First character
                         const number = entitlement.substring(1); // Rest of the string
@@ -700,10 +622,69 @@
                         document.getElementById('edit_entitlementNumber').value = '';
                     }
                     
-                    // Clear passport and dependent lists
+                    // Clear and load passports
                     document.getElementById('edit_passportList').innerHTML = '';
-                    document.getElementById('edit_dependentList').innerHTML = '';
+                    passports.forEach(passport => {
+                        editPassportCounter++;
+                        
+                        // Handle both IssueDate and IssuedDate property names
+                        const issueDate = passport.IssuedDate || passport.IssueDate;
+                        const expiryDate = passport.ExpiryDate;
+                        
+                        console.log('Passport dates - Issue:', issueDate, 'Expiry:', expiryDate); // Debug log
+                        
+                        const passportHtml = `
+                            <div class="item-box passport-item" data-passport-id="${passport.PassportID || ''}">
+                                <button type="button" class="btn-remove" onclick="removeEditPassport(this)">?</button>
+                                <div class="item-row">
+                                    <div class="item-group">
+                                        <label>Passport number</label>
+                                        <input type="text" value="${escapeHtml(passport.PassportNumber || '')}" placeholder="600 5465758">
+                                    </div>
+                                    <div class="item-group">
+                                        <label>Issued country</label>
+                                        <input type="text" value="${escapeHtml(passport.IssuedCountry || '')}" placeholder="Sri lanka">
+                                    </div>
+                                    <div class="item-group">
+                                        <label>Expire Date</label>
+                                        <input type="date" class="date-picker" value="${formatDateForInput(expiryDate)}">
+                                    </div>
+                                    <div class="item-group">
+                                        <label>Issued date</label>
+                                        <input type="date" class="date-picker" value="${formatDateForInput(issueDate)}">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('edit_passportList').insertAdjacentHTML('beforeend', passportHtml);
+                    });
                     updateEditPassportCount();
+                    
+                    // Clear and load dependents
+                    document.getElementById('edit_dependentList').innerHTML = '';
+                    dependents.forEach(dependent => {
+                        editDependentCounter++;
+                        const dependentHtml = `
+                            <div class="item-box dependent-item" data-dependent-id="${dependent.DependentID || ''}">
+                                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">?</button>
+                                <div class="item-row-3">
+                                    <div class="item-group">
+                                        <label>Full Name</label>
+                                        <input type="text" value="${escapeHtml(dependent.FullName || '')}" placeholder="Buddhini Nanayakkara">
+                                    </div>
+                                    <div class="item-group">
+                                        <label>Relationship</label>
+                                        <input type="text" value="${escapeHtml(dependent.Relationship || '')}" placeholder="Daughter">
+                                    </div>
+                                    <div class="item-group">
+                                        <label>Passport number</label>
+                                        <input type="text" value="${escapeHtml(dependent.PassportNumber || '')}" placeholder="600 5465758">
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('edit_dependentList').insertAdjacentHTML('beforeend', dependentHtml);
+                    });
                     updateEditDependentCount();
                 } else {
                     // Error loading data - close modal and reload to show notification
@@ -719,6 +700,56 @@
             });
     }
 
+    // Helper function to escape HTML to prevent XSS
+    function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Helper function to format date for input field (YYYY-MM-DD)
+    function formatDateForInput(dateString) {
+        if (!dateString) {
+            console.log('Date is empty or null'); // Debug
+            return '';
+        }
+        
+        console.log('Formatting date:', dateString); // Debug
+        
+        try {
+            // Handle various date formats
+            let date;
+            
+            // If it's already in YYYY-MM-DD format
+            if (typeof dateString === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+                console.log('Date is already in correct format');
+                return dateString;
+            }
+            
+            // Parse the date
+            date = new Date(dateString);
+            
+            // Check if date is valid
+            if (isNaN(date.getTime())) {
+                console.log('Invalid date:', dateString);
+                return '';
+            }
+            
+            // Format to YYYY-MM-DD
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            const formatted = `${year}-${month}-${day}`;
+            
+            console.log('Formatted date:', formatted); // Debug
+            return formatted;
+        } catch (error) {
+            console.error('Error formatting date:', error, dateString);
+            return '';
+        }
+    }
+
     function updateShareholder() {
         // Collect form data
         const entitlementLetter = document.getElementById('edit_entitlementLetter')?.value || '';
@@ -726,20 +757,51 @@
         const formattedNumber = parseInt(entitlementNumber).toString().padStart(2, '0');
         const entitlementValue = entitlementLetter + formattedNumber; // e.g., "A05" or "B12"
 
+        // Collect passports
+        const passports = [];
+        document.querySelectorAll('#edit_passportList .passport-item').forEach(item => {
+            const inputs = item.querySelectorAll('input');
+            const passportId = item.getAttribute('data-passport-id');
+            passports.push({
+                PassportID: passportId ? parseInt(passportId) : 0,
+                PassportNumber: inputs[0]?.value || '',
+                IssuedCountry: inputs[1]?.value || '',
+                ExpiryDate: inputs[2]?.value || null,
+                IssuedDate: inputs[3]?.value || null
+            });
+        });
+
+        // Collect dependents
+        const dependents = [];
+        document.querySelectorAll('#edit_dependentList .dependent-item').forEach(item => {
+            const inputs = item.querySelectorAll('input');
+            const dependentId = item.getAttribute('data-dependent-id');
+            dependents.push({
+                DependentID: dependentId ? parseInt(dependentId) : 0,
+                FullName: inputs[0]?.value || '',
+                Relationship: inputs[1]?.value || '',
+                PassportNumber: inputs[2]?.value || ''
+            });
+        });
+
         const formData = {
-            ShareholderID: parseInt(document.getElementById('edit_shareholderId')?.value) || 0,
-            FirstName: document.getElementById('edit_firstName')?.value?.trim(),
-            LastName: document.getElementById('edit_lastName')?.value?.trim(),
-            Country: document.getElementById('edit_country')?.value,
-            FolioID: document.getElementById('edit_folionId')?.value?.trim(),
-            FullName: document.getElementById('edit_fullName')?.value?.trim(),
-            Address1: document.getElementById('edit_address1')?.value?.trim(),
-            Address2: document.getElementById('edit_address2')?.value?.trim(),
-            City: document.getElementById('edit_city')?.value?.trim(),
-            CompanyIndividual: document.getElementById('edit_companyIndividual')?.value,
-            NoOfShares: parseInt(document.getElementById('edit_noOfShares')?.value) || 0,
-            NoOfTicketsIssued: parseInt(document.getElementById('edit_noOfTickets')?.value) || 0,
-            Entitlement: entitlementValue
+            Shareholder: {
+                ShareholderID: parseInt(document.getElementById('edit_shareholderId')?.value) || 0,
+                FirstName: document.getElementById('edit_firstName')?.value?.trim(),
+                LastName: document.getElementById('edit_lastName')?.value?.trim(),
+                Country: document.getElementById('edit_country')?.value,
+                FolioID: document.getElementById('edit_folionId')?.value?.trim(),
+                FullName: document.getElementById('edit_fullName')?.value?.trim(),
+                Address1: document.getElementById('edit_address1')?.value?.trim(),
+                Address2: document.getElementById('edit_address2')?.value?.trim(),
+                City: document.getElementById('edit_city')?.value?.trim(),
+                CompanyIndividual: document.getElementById('edit_companyIndividual')?.value,
+                NoOfShares: parseInt(document.getElementById('edit_noOfShares')?.value) || 0,
+                NoOfTicketsIssued: parseInt(document.getElementById('edit_noOfTickets')?.value) || 0,
+                Entitlement: entitlementValue
+            },
+            Passports: passports,
+            Dependents: dependents
         };
 
         // Show loading state
@@ -748,10 +810,10 @@
         updateBtn.textContent = 'Updating...';
         updateBtn.disabled = true;
 
-        console.log('Updating shareholder:', formData);
+        console.log('Updating shareholder with passports and dependents:', formData);
 
         // Send data to server
-        fetch('@Url.Action("UpdateShareholder", "ShareholderListPage")', {
+        fetch('@Url.Action("UpdateShareholderWithDetails", "ShareholderListPage")', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -768,7 +830,7 @@
                 // Error - keep modal open, add URL parameter to show modal after reload
                 const currentUrl = new URL(window.location.href);
                 currentUrl.searchParams.set('showEditModal', 'true');
-                currentUrl.searchParams.set('editFolioId', formData.FolioID);
+                currentUrl.searchParams.set('editFolioId', formData.Shareholder.FolioID);
                 currentUrl.searchParams.set('formError', 'true');
                 window.location.href = currentUrl.toString();
             }
@@ -778,7 +840,7 @@
             // Network error - reload with modal parameter
             const currentUrl = new URL(window.location.href);
             currentUrl.searchParams.set('showEditModal', 'true');
-            currentUrl.searchParams.set('editFolioId', formData.FolioID);
+            currentUrl.searchParams.set('editFolioId', formData.Shareholder.FolioID);
             currentUrl.searchParams.set('formError', 'true');
             window.location.href = currentUrl.toString();
         });

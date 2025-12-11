@@ -53,121 +53,121 @@
                                     <input type="text" id="address2" placeholder="SriLanka">
                                 </div>
                                 <div class="form-group">
-                                    <label>City</label>
-                                    <input type="text" id="city" placeholder="Malabe">
-                                </div>
-                                <div class="form-group">
-                                    <label>company/individual</label>
-                                    <select id="companyIndividual">
-                                        <option>Srilankan Airlines</option>
-                                        <option>Individual</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group">
-                                    <label>No. of shares</label>
-                                    <div class="number-input">
-                                        <button type="button" onclick="decrementValue('noOfShares')">-</button>
-                                        <input type="text" id="noOfShares" value="00" readonly>
-                                        <button type="button" onclick="incrementValue('noOfShares')">+</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>No. of Tickets Issued</label>
-                                    <div class="number-input">
-                                        <button type="button" onclick="decrementValue('noOfTickets')">-</button>
-                                        <input type="text" id="noOfTickets" value="00" readonly>
-                                        <button type="button" onclick="incrementValue('noOfTickets')">+</button>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label>Entitlement</label>
-                                    <div class="entitlement-input">
-                                        <select id="entitlementLetter">
-                                            <option value="">-</option>
-                                            <option value="A">A</option>
-                                            <option value="B">B</option>
-                                            <option value="C">C</option>
-                                            <option value="D">D</option>
-                                            <option value="E">E</option>
-                                            <option value="F">F</option>
-                                            <option value="G">G</option>
-                                            <option value="H">H</option>
-                                            <option value="I">I</option>
-                                            <option value="J">J</option>
-                                            <option value="K">K</option>
-                                            <option value="L">L</option>
-                                            <option value="M">M</option>
-                                            <option value="N">N</option>
-                                            <option value="O">O</option>
-                                            <option value="P">P</option>
-                                            <option value="Q">Q</option>
-                                            <option value="R">R</option>
-                                            <option value="S">S</option>
-                                            <option value="T">T</option>
-                                            <option value="U">U</option>
-                                            <option value="V">V</option>
-                                            <option value="W">W</option>
-                                            <option value="X">X</option>
-                                            <option value="Y">Y</option>
-                                            <option value="Z">Z</option>
-                                        </select>
-                                        <input type="number" id="entitlementNumber" min="0" max="99" placeholder="00">
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="add-btn-row">
-                                <button type="button" class="btn-add" onclick="addPassportItem()">
-                                    <span>+</span> Add Passport
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+									<label>City</label>
+									<input type="text" id="city" placeholder="Malabe">
+								</div>
+								<div class="form-group">
+									<label>company/individual</label>
+									<select id="companyIndividual">
+										<option>Srilankan Airlines</option>
+										<option>Individual</option>
+									</select>
+								</div>
+							</div>
+							<div class="form-row">
+								<div class="form-group">
+									<label>No. of shares</label>
+									<div class="number-input">
+										<button type="button" onclick="decrementValue('noOfShares')">-</button>
+										<input type="text" id="noOfShares" value="00" readonly>
+										<button type="button" onclick="incrementValue('noOfShares')">+</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>No. of Tickets Issued</label>
+									<div class="number-input">
+										<button type="button" onclick="decrementValue('noOfTickets')">-</button>
+										<input type="text" id="noOfTickets" value="00" readonly>
+										<button type="button" onclick="incrementValue('noOfTickets')">+</button>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>Entitlement</label>
+									<div class="entitlement-input">
+										<select id="entitlementLetter">
+											<option value="">-</option>
+											<option value="A">A</option>
+											<option value="B">B</option>
+											<option value="C">C</option>
+											<option value="D">D</option>
+											<option value="E">E</option>
+											<option value="F">F</option>
+											<option value="G">G</option>
+											<option value="H">H</option>
+											<option value="I">I</option>
+											<option value="J">J</option>
+											<option value="K">K</option>
+											<option value="L">L</option>
+											<option value="M">M</option>
+											<option value="N">N</option>
+											<option value="O">O</option>
+											<option value="P">P</option>
+											<option value="Q">Q</option>
+											<option value="R">R</option>
+											<option value="S">S</option>
+											<option value="T">T</option>
+											<option value="U">U</option>
+											<option value="V">V</option>
+											<option value="W">W</option>
+											<option value="X">X</option>
+											<option value="Y">Y</option>
+											<option value="Z">Z</option>
+										</select>
+										<input type="number" id="entitlementNumber" min="0" max="99" placeholder="00">
+									</div>
+								</div>
+							</div>
+							<div class="add-btn-row">
+								<button type="button" class="btn-add" onclick="addPassportItem()">
+									<span>+</span> Add Passport
+								</button>
+							</div>
+						</div>
+					</div>
 
-                    @* Add Passport Information Section *@
-                    <div class="form-section">
-                        <div class="section-header">
-                            <span class="section-title">Add Passport Information</span>
-                            <span class="section-chevron">▼</span>
-                        </div>
-                        <div class="section-content">
-                            <div class="items-list" id="passportList">
-                                @* Passport items will be added here dynamically *@
-                            </div>
-                            <div class="counter-row">
-                                <span class="counter-text">No. of Passports : <span id="passportCount">02</span></span>
-                            </div>
-                            <div class="add-btn-row">
-                                <button type="button" class="btn-add" onclick="addDependentItem()">
-                                    <span>+</span> Add Dependant
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+					@* Add Passport Information Section *@
+					<div class="form-section">
+						<div class="section-header">
+							<span class="section-title">Add Passport Information</span>
+							<span class="section-chevron">▼</span>
+						</div>
+						<div class="section-content">
+							<div class="items-list" id="passportList">
+								@* Passport items will be added here dynamically *@
+							</div>
+							<div class="counter-row">
+								<span class="counter-text">No. of Passports : <span id="passportCount">00</span></span>
+							</div>
+							<div class="add-btn-row">
+								<button type="button" class="btn-add" onclick="addDependentItem()">
+									<span>+</span> Add Dependant
+								</button>
+							</div>
+						</div>
+					</div>
 
-                    @* Dependent Passport Information Section *@
-                    <div class="form-section">
-                        <div class="section-header">
-                            <span class="section-title">Dependent Passport Information</span>
-                            <span class="section-chevron">▼</span>
-                        </div>
-                        <div class="section-content">
-                            <div class="items-list" id="dependentList">
-                                @* Dependent items will be added here dynamically *@
-                            </div>
-                            <div class="counter-row">
-                                <span class="counter-text">No. of Dependants : <span id="dependentCount">02</span></span>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer-custom">
-                <button type="button" class="btn-save" onclick="saveShareholder()">Save</button>
-            </div>
-        </div>
-    </div>
+					@* Dependent Passport Information Section *@
+					<div class="form-section">
+						<div class="section-header">
+							<span class="section-title">Dependent Passport Information</span>
+							<span class="section-chevron">▼</span>
+						</div>
+						<div class="section-content">
+							<div class="items-list" id="dependentList">
+								@* Dependent items will be added here dynamically *@
+							</div>
+							<div class="counter-row">
+								<span class="counter-text">No. of Dependants : <span id="dependentCount">00</span></span>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer-custom">
+				<button type="button" class="btn-save" onclick="saveShareholder()">Save</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <style>
@@ -478,6 +478,20 @@
         color: #9ca3af;
     }
 
+    .item-group input[type="date"] {
+        position: relative;
+        cursor: pointer;
+    }
+
+    .item-group input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .item-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
+
     .date-input {
         position: relative;
     }
@@ -585,17 +599,11 @@
                     </div>
                     <div class="item-group">
                         <label>Expire Date</label>
-                        <div class="date-input">
-                            <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">📅</span>
-                        </div>
+                        <input type="date" class="date-picker">
                     </div>
                     <div class="item-group">
                         <label>Issued date</label>
-                        <div class="date-input">
-                            <input type="text" placeholder="DD/MM/YYYY">
-                            <span class="calendar-icon">📅</span>
-                        </div>
+                        <input type="date" class="date-picker">
                     </div>
                 </div>
             </div>
@@ -661,19 +669,46 @@
         const formattedNumber = parseInt(entitlementNumber).toString().padStart(2, '0');
         const entitlementValue = entitlementLetter + formattedNumber; // e.g., "A05" or "B12"
 
+        // Collect passports
+        const passports = [];
+        document.querySelectorAll('#passportList .passport-item').forEach(item => {
+            const inputs = item.querySelectorAll('input');
+            passports.push({
+                PassportNumber: inputs[0]?.value || '',
+                IssuedCountry: inputs[1]?.value || '',
+                ExpiryDate: inputs[2]?.value || null,
+                IssuedDate: inputs[3]?.value || null
+            });
+        });
+
+        // Collect dependents
+        const dependents = [];
+        document.querySelectorAll('#dependentList .dependent-item').forEach(item => {
+            const inputs = item.querySelectorAll('input');
+            dependents.push({
+                FullName: inputs[0]?.value || '',
+                Relationship: inputs[1]?.value || '',
+                PassportNumber: inputs[2]?.value || ''
+            });
+        });
+
         const formData = {
-            FirstName: document.getElementById('firstName')?.value?.trim(),
-            LastName: document.getElementById('lastName')?.value?.trim(),
-            Country: document.getElementById('country')?.value,
-            FolioID: document.getElementById('folionId')?.value?.trim(),
-            FullName: document.getElementById('fullName')?.value?.trim(),
-            Address1: document.getElementById('address1')?.value?.trim(),
-            Address2: document.getElementById('address2')?.value?.trim(),
-            City: document.getElementById('city')?.value?.trim(),
-            CompanyIndividual: document.getElementById('companyIndividual')?.value,
-            NoOfShares: parseInt(document.getElementById('noOfShares')?.value) || 0,
-            NoOfTicketsIssued: parseInt(document.getElementById('noOfTickets')?.value) || 0,
-            Entitlement: entitlementValue
+            Shareholder: {
+                FirstName: document.getElementById('firstName')?.value?.trim(),
+                LastName: document.getElementById('lastName')?.value?.trim(),
+                Country: document.getElementById('country')?.value,
+                FolioID: document.getElementById('folionId')?.value?.trim(),
+                FullName: document.getElementById('fullName')?.value?.trim(),
+                Address1: document.getElementById('address1')?.value?.trim(),
+                Address2: document.getElementById('address2')?.value?.trim(),
+                City: document.getElementById('city')?.value?.trim(),
+                CompanyIndividual: document.getElementById('companyIndividual')?.value,
+                NoOfShares: parseInt(document.getElementById('noOfShares')?.value) || 0,
+                NoOfTicketsIssued: parseInt(document.getElementById('noOfTickets')?.value) || 0,
+                Entitlement: entitlementValue
+            },
+            Passports: passports,
+            Dependents: dependents
         };
 
         // Show loading state
@@ -682,7 +717,7 @@
         saveBtn.textContent = 'Saving...';
         saveBtn.disabled = true;
 
-        console.log('Saving shareholder:', formData);
+        console.log('Saving shareholder with passports and dependents:', formData);
 
         // Send data to server
         fetch('@Url.Action("AddShareholder", "ShareholderListPage")', {
@@ -748,13 +783,10 @@
 
         // Initialize passport and dependent items if needed
         setTimeout(function() {
-            if (document.getElementById('passportList') && document.getElementById('passportList').children.length === 0) {
-                addPassportItem();
-                addPassportItem();
-            }
-            if (document.getElementById('dependentList') && document.getElementById('dependentList').children.length === 0) {
-                addDependentItem();
-            }
+            // Start with 0 passports and 0 dependents
+            // User can add them by clicking the "Add Passport" or "Add Dependant" buttons
+            updatePassportCount();
+            updateDependentCount();
         }, 100);
     });
 </script>

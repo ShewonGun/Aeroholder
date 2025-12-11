@@ -100,27 +100,37 @@
             border-color: #9ca3af;
         }
 
-    .btn-delete {
-        background: none;
-        border: none;
-        padding: 6px;
-        cursor: pointer;
-        color: #ef4444;
-        transition: all 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .shareholder-row .btn-delete {
+        background: transparent !important;
+        border: none !important;
+        padding: 6px !important;
+        cursor: pointer !important;
+        color: #1e3a8a !important;
+        transition: all 0.3s ease !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: none !important;
     }
 
-        .btn-delete:hover {
-            background: #fee2e2;
-            border-radius: 6px;
-            transform: scale(1.1);
+        .shareholder-row .btn-delete:hover {
+            background: transparent !important;
+            color: #1e40af !important;
+            transform: scale(1.15) !important;
+            box-shadow: none !important;
         }
 
-        .btn-delete svg {
-            width: 18px;
-            height: 18px;
+        .shareholder-row .btn-delete:focus,
+        .shareholder-row .btn-delete:active {
+            outline: none !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .shareholder-row .btn-delete svg {
+            width: 20px !important;
+            height: 20px !important;
+            stroke-width: 2.5 !important;
         }
 
     /* Responsive */
@@ -231,26 +241,33 @@
     }
 
     function deleteShareholder(folioId) {
-        if (confirm(`Are you sure you want to delete shareholder ${folioId}?`)) {
-            fetch('@Url.Action("DeleteShareholder", "ShareholderListPage")', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ folioId: folioId })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Shareholder deleted successfully');
-                    location.reload();
-                } else {
-                    alert('Failed to delete shareholder: ' + data.message);
-                }
-            })
-            .catch(error => {
-                alert('Error: ' + error.message);
-            });
+        // Show delete confirmation modal
+        if (typeof showDeleteConfirmation === 'function') {
+            showDeleteConfirmation(folioId);
+        } else {
+            console.error('Delete confirmation modal not loaded');
+            // Fallback to browser confirm
+            if (confirm(`Are you sure you want to delete shareholder ${folioId}?`)) {
+                fetch('@Url.Action("DeleteShareholder", "ShareholderListPage")', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ folioId: folioId })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Shareholder deleted successfully');
+                        location.reload();
+                    } else {
+                        alert('Failed to delete shareholder: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error: ' + error.message);
+                });
+            }
         }
     }
 </script>

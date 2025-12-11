@@ -112,15 +112,20 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Models\PassportDependentModels.cs" />
     <Compile Include="Models\ShareholderModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\DependentRepository.cs" />
     <Compile Include="Repositories\IShareholderRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
+    <Compile Include="Repositories\PassportRepository.cs" />
     <Compile Include="Repositories\ShareholderRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\DependentService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IShareholderService.cs" />
+    <Compile Include="Services\PassportService.cs" />
     <Compile Include="Services\ShareholderService.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -139,13 +144,13 @@
     <Content Include="Views\AddShareholderModal\Components\dependantComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\Components\dependentPassportComponent.cshtml" />
     <Content Include="Views\AddShareholderModal\addShareholderModal.cshtml" />
-    <Content Include="ENTITLEMENT_ALPHABET_NUMBER.md" />
     <None Include="packages.config" />
     <Content Include="Views\DatabaseTest\Index.cshtml" />
     <Content Include="Views\EditShareholderModal\editShareholderModal.cshtml" />
     <Content Include="Views\Shared\_Notification.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\NotificationTest\Index.cshtml" />
+    <Content Include="Views\DeleteConfirmModal\deleteConfirmModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
