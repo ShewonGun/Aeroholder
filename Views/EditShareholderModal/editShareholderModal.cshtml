@@ -1,10 +1,10 @@
-@* Edit Shareholder Modal *@
+﻿@* Edit Shareholder Modal *@
 <div class="modal-overlay" id="editShareholderModal" style="display: none;">
     <div class="modal-dialog-custom">
         <div class="modal-content-custom">
             <div class="modal-header-custom">
                 <span class="modal-title-custom">Edit Shareholder</span>
-                <button type="button" class="btn-close-custom" onclick="closeEditModal()">x</button>
+                <button type="button" class="btn-close-custom" onclick="closeEditModal()">✕</button>
             </div>
             <div class="modal-body-custom">
                 <form id="editShareholderForm">
@@ -533,7 +533,7 @@
         editDependentCounter++;
         const dependentHtml = `
             <div class="item-box dependent-item">
-                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">x</button>
+                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">✕</button>
                 <div class="item-row-3">
                     <div class="item-group">
                         <label>Full Name</label>
@@ -635,7 +635,7 @@
                         
                         const passportHtml = `
                             <div class="item-box passport-item" data-passport-id="${passport.PassportID || ''}">
-                                <button type="button" class="btn-remove" onclick="removeEditPassport(this)">x</button>
+                                <button type="button" class="btn-remove" onclick="removeEditPassport(this)">✕</button>
                                 <div class="item-row">
                                     <div class="item-group">
                                         <label>Passport number</label>
@@ -666,7 +666,7 @@
                         editDependentCounter++;
                         const dependentHtml = `
                             <div class="item-box dependent-item" data-dependent-id="${dependent.DependentID || ''}">
-                                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">x</button>
+                                <button type="button" class="btn-remove" onclick="removeEditDependent(this)">✕</button>
                                 <div class="item-row-3">
                                     <div class="item-group">
                                         <label>Full Name</label>

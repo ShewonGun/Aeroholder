@@ -100,11 +100,6 @@
     <Content Include="Assets\smallplane.png" />
     <Content Include="Assets\takeoffImage.png" />
     <Content Include="Assets\userLogo.png" />
-    <Content Include="Database\CheckDateTimeData.sql" />
-    <Content Include="Database\DiagnosticTest.sql" />
-    <Content Include="Database\EmergencyFix.sql" />
-    <Content Include="Database\FixDates.sql" />
-    <Content Include="Database\ItineraryTables.sql" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>

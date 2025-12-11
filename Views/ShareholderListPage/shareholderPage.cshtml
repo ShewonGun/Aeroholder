@@ -147,5 +147,80 @@
     
     @* Itinerary Modal *@
     @Html.Partial("~/Views/ItineraryModal/itineraryModal.cshtml")
+
+    <script type="text/javascript">
+        console.log('=== Loading global shareholder functions ===');
+        
+        // Global functions - defined on window object for immediate availability
+        window.viewItinerary = function(folioId, shareholderName) {
+            console.log('viewItinerary called with:', folioId, shareholderName);
+            if (typeof openItineraryModal === 'function') {
+                openItineraryModal(folioId, shareholderName);
+            } else {
+                console.error('Itinerary modal not loaded');
+                alert('Itinerary modal is not available. Please refresh the page.');
+            }
+        };
+
+        window.viewMoreInfo = function(folioId) {
+            console.log('viewMoreInfo called with:', folioId);
+            if (typeof loadShareholderData === 'function') {
+                loadShareholderData(folioId);
+            } else {
+                console.error('Edit modal not loaded');
+                alert('Edit modal is not available. Please refresh the page.');
+            }
+        };
+
+        window.viewReport = function(folioId) {
+            console.log('viewReport called with:', folioId);
+            window.location.href = '/Report?folioId=' + encodeURIComponent(folioId);
+        };
+
+        window.deleteShareholder = function(folioId) {
+            console.log('deleteShareholder called with:', folioId);
+            if (typeof showDeleteConfirmation === 'function') {
+                showDeleteConfirmation(folioId);
+            } else {
+                if (confirm('Are you sure you want to delete shareholder ' + folioId + '?')) {
+                    fetch('/ShareholderListPage/DeleteShareholder', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ folioId: folioId })
+                    })
+                    .then(function(r) { return r.json(); })
+                    .then(function(d) {
+                        alert(d.success ? 'Shareholder deleted successfully' : 'Failed: ' + d.message);
+                        if (d.success) location.reload();
+                    })
+                    .catch(function(e) { alert('Error: ' + e.message); });
+                }
+            }
+        };
+        
+        console.log('Global functions loaded:', {
+            viewItinerary: typeof window.viewItinerary,
+            viewMoreInfo: typeof window.viewMoreInfo,
+            viewReport: typeof window.viewReport,
+            deleteShareholder: typeof window.deleteShareholder
+        });
+        
+        // Check for modal functions on DOM ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('DOM loaded. Modal functions:', {
+                    openItineraryModal: typeof openItineraryModal,
+                    loadShareholderData: typeof loadShareholderData,
+                    showDeleteConfirmation: typeof showDeleteConfirmation
+                });
+            });
+        } else {
+            console.log('DOM already loaded. Modal functions:', {
+                openItineraryModal: typeof openItineraryModal,
+                loadShareholderData: typeof loadShareholderData,
+                showDeleteConfirmation: typeof showDeleteConfirmation
+            });
+        }
+    </script>
 </body>
 </html>

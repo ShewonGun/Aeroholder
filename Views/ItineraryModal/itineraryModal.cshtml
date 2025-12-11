@@ -5,7 +5,7 @@
             <!-- Header -->
             <div class="itinerary-header">
                 <h1 class="header-title">Itinerary</h1>
-                <button class="close-btn" onclick="closeItineraryModal()">X</button>
+                <button class="close-btn" onclick="closeItineraryModal()">✕</button>
             </div>
 
             <!-- Modal Body with Scroll -->
@@ -949,14 +949,19 @@
 
 <script>
     // Global variable to store current trip request ID
-    let currentTripRequestId = null;
+    var currentTripRequestId = null;
+    
+    // Pagination variables
+    var currentPage = 1;
+    var recordsPerPage = 5;
+    var allBookings = [];
 
     // Helper function to parse Microsoft JSON date format: /Date(milliseconds)/
     function parseMicrosoftDate(dateString) {
         if (!dateString) return null;
         
         // Check if it's in Microsoft JSON date format
-        const match = dateString.match(/\/Date\((\d+)\)\//);
+        var match = dateString.match(/\/Date\((\d+)\)\//);
         if (match) {
             return new Date(parseInt(match[1]));
         }
@@ -968,99 +973,70 @@
     // Function to update itinerary details live
     function updateItineraryDetails() {
         // Get values from Trip Request Form (Form 1)
-        const passengerName = document.getElementById('trip_fullName')?.value || '-';
-        const ticketType = document.getElementById('trip_ticketType')?.value || '-';
-        const relationship = document.getElementById('trip_relationship')?.value || '-';
-        const ticketIssue = document.getElementById('trip_ticketIssue')?.value || '-';
-        const entitlement = document.getElementById('trip_entitlement')?.value || '-';
+        var passengerName = document.getElementById('trip_fullName') ? document.getElementById('trip_fullName').value : '-';
+        var ticketType = document.getElementById('trip_ticketType') ? document.getElementById('trip_ticketType').value : '-';
+        var relationship = document.getElementById('trip_relationship') ? document.getElementById('trip_relationship').value : '-';
+        var ticketIssue = document.getElementById('trip_ticketIssue') ? document.getElementById('trip_ticketIssue').value : '-';
+        var entitlement = document.getElementById('trip_entitlement') ? document.getElementById('trip_entitlement').value : '-';
         
         // Get values from Manage Request Form (Form 2)
-        const ticketNo = document.getElementById('manage_ticketNo')?.value || '-';
-        const passport = document.getElementById('manage_passport')?.value || '-';
-        const departureAirport = document.getElementById('manage_departureAirport')?.value || '';
-        const arrivalAirport = document.getElementById('manage_arrivalAirport')?.value || '';
-        const departureDate = document.getElementById('manage_departureDate')?.value || '';
-        const departureTime = document.getElementById('manage_departureTime')?.value || '';
-        const returnDate = document.getElementById('manage_returnDate')?.value || '';
-        const returnTime = document.getElementById('manage_returnTime')?.value || '';
+        var ticketNo = document.getElementById('manage_ticketNo') ? document.getElementById('manage_ticketNo').value : '-';
+        var passport = document.getElementById('manage_passport') ? document.getElementById('manage_passport').value : '-';
+        var departureAirport = document.getElementById('manage_departureAirport') ? document.getElementById('manage_departureAirport').value : '';
+        var arrivalAirport = document.getElementById('manage_arrivalAirport') ? document.getElementById('manage_arrivalAirport').value : '';
+        var departureDate = document.getElementById('manage_departureDate') ? document.getElementById('manage_departureDate').value : '';
+        var departureTime = document.getElementById('manage_departureTime') ? document.getElementById('manage_departureTime').value : '';
+        var returnDate = document.getElementById('manage_returnDate') ? document.getElementById('manage_returnDate').value : '';
+        var returnTime = document.getElementById('manage_returnTime') ? document.getElementById('manage_returnTime').value : '';
         
         // Update itinerary details section
-        document.getElementById('detail_passengerName').textContent = passengerName;
-        document.getElementById('detail_ticketType').textContent = ticketType;
-        document.getElementById('detail_relationship').textContent = relationship;
-        document.getElementById('detail_ticketIssue').textContent = ticketIssue;
-        document.getElementById('detail_ticketNo').textContent = ticketNo;
-        document.getElementById('detail_passport').textContent = passport;
-        document.getElementById('detail_entitlement').textContent = entitlement;
+        if (document.getElementById('detail_passengerName')) document.getElementById('detail_passengerName').textContent = passengerName || '-';
+        if (document.getElementById('detail_ticketType')) document.getElementById('detail_ticketType').textContent = ticketType || '-';
+        if (document.getElementById('detail_relationship')) document.getElementById('detail_relationship').textContent = relationship || '-';
+        if (document.getElementById('detail_ticketIssue')) document.getElementById('detail_ticketIssue').textContent = ticketIssue || '-';
+        if (document.getElementById('detail_ticketNo')) document.getElementById('detail_ticketNo').textContent = ticketNo || '-';
+        if (document.getElementById('detail_passport')) document.getElementById('detail_passport').textContent = passport || '-';
+        if (document.getElementById('detail_entitlement')) document.getElementById('detail_entitlement').textContent = entitlement || '-';
         
         // Update route badge
-        if (departureAirport && arrivalAirport) {
-            document.getElementById('detail_route').innerHTML = 
-                `${departureAirport} <img src="/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"> ${arrivalAirport}`;
-        } else {
-            document.getElementById('detail_route').textContent = '-';
+        if (document.getElementById('detail_route')) {
+            if (departureAirport && arrivalAirport) {
+                document.getElementById('detail_route').innerHTML = departureAirport + ' <img src="/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"> ' + arrivalAirport;
+            } else {
+                document.getElementById('detail_route').textContent = '-';
+            }
         }
         
         // Format and update departure date/time
-        if (departureDate) {
-            const depDateTime = new Date(departureDate + (departureTime ? 'T' + departureTime : ''));
-            const formattedDep = depDateTime.toLocaleDateString('en-US', { 
-                day: '2-digit', 
-                month: '2-digit', 
-                year: 'numeric' 
-            }) + (departureTime ? ' ' + departureTime : '');
-            document.getElementById('detail_departure').textContent = formattedDep;
-        } else {
-            document.getElementById('detail_departure').textContent = '-';
+        if (document.getElementById('detail_departure')) {
+            if (departureDate) {
+                var depDateTime = new Date(departureDate + (departureTime ? 'T' + departureTime : ''));
+                var formattedDep = depDateTime.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (departureTime ? ' ' + departureTime : '');
+                document.getElementById('detail_departure').textContent = formattedDep;
+            } else {
+                document.getElementById('detail_departure').textContent = '-';
+            }
         }
         
         // Format and update return date/time
-        if (returnDate) {
-            const retDateTime = new Date(returnDate + (returnTime ? 'T' + returnTime : ''));
-            const formattedRet = retDateTime.toLocaleDateString('en-US', { 
-                day: '2-digit', 
-                month: '2-digit', 
-                year: 'numeric' 
-            }) + (returnTime ? ' ' + returnTime : '');
-            document.getElementById('detail_return').textContent = formattedRet;
-        } else {
-            document.getElementById('detail_return').textContent = '-';
+        if (document.getElementById('detail_return')) {
+            if (returnDate) {
+                var retDateTime = new Date(returnDate + (returnTime ? 'T' + returnTime : ''));
+                var formattedRet = retDateTime.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' }) + (returnTime ? ' ' + returnTime : '');
+                document.getElementById('detail_return').textContent = formattedRet;
+            } else {
+                document.getElementById('detail_return').textContent = '-';
+            }
         }
     }
 
     // Function to attach event listeners to form fields
     function attachFormListeners() {
-        // Trip Request Form (Form 1) fields
-        const form1Fields = [
-            'trip_fullName',
-            'trip_ticketType',
-            'trip_relationship',
-            'trip_ticketIssue',
-            'trip_entitlement'
-        ];
+        var form1Fields = ['trip_fullName', 'trip_ticketType', 'trip_relationship', 'trip_ticketIssue', 'trip_entitlement'];
+        var form2Fields = ['manage_ticketNo', 'manage_passport', 'manage_departureAirport', 'manage_arrivalAirport', 'manage_departureDate', 'manage_departureTime', 'manage_returnDate', 'manage_returnTime'];
         
-        form1Fields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
-            if (field) {
-                field.addEventListener('input', updateItineraryDetails);
-                field.addEventListener('change', updateItineraryDetails);
-            }
-        });
-        
-        // Manage Request Form (Form 2) fields
-        const form2Fields = [
-            'manage_ticketNo',
-            'manage_passport',
-            'manage_departureAirport',
-            'manage_arrivalAirport',
-            'manage_departureDate',
-            'manage_departureTime',
-            'manage_returnDate',
-            'manage_returnTime'
-        ];
-        
-        form2Fields.forEach(fieldId => {
-            const field = document.getElementById(fieldId);
+        form1Fields.concat(form2Fields).forEach(function(fieldId) {
+            var field = document.getElementById(fieldId);
             if (field) {
                 field.addEventListener('input', updateItineraryDetails);
                 field.addEventListener('change', updateItineraryDetails);
@@ -1069,25 +1045,18 @@
     }
 
     function openItineraryModal(folioId, shareholderName) {
-        // Set shareholder info
         document.getElementById('itinerary_shareholderName').value = shareholderName || '';
         document.getElementById('itinerary_folioId').value = folioId || '';
-        
-        // Set full name in trip request form to shareholder name
         document.getElementById('trip_fullName').value = shareholderName || '';
         
-        // Reset to first form
         document.getElementById('tripRequestForm1').style.display = 'block';
         document.getElementById('tripRequestForm2').style.display = 'none';
         currentTripRequestId = null;
+        currentPage = 1;
         
-        // Update itinerary details with initial values
         updateItineraryDetails();
-        
-        // Load booking history
         loadBookingHistory(folioId);
         
-        // Show modal
         document.getElementById('itineraryModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -1095,31 +1064,26 @@
     function closeItineraryModal() {
         document.getElementById('itineraryModal').style.display = 'none';
         document.body.style.overflow = 'auto';
-        
-        // Reset to first form
         document.getElementById('tripRequestForm1').style.display = 'block';
         document.getElementById('tripRequestForm2').style.display = 'none';
         currentTripRequestId = null;
     }
 
     function showManageRequestForm() {
-        // Get form 1 data
-        const folioId = document.getElementById('itinerary_folioId').value;
-        const fullName = document.getElementById('trip_fullName').value;
-        const ticketType = document.getElementById('trip_ticketType').value;
-        const relationship = document.getElementById('trip_relationship').value;
-        const remarks = document.getElementById('trip_remarks').value;
-        const ticketIssue = parseInt(document.getElementById('trip_ticketIssue').value) || 1;
-        const entitlement = document.getElementById('trip_entitlement').value;
+        var folioId = document.getElementById('itinerary_folioId').value;
+        var fullName = document.getElementById('trip_fullName').value;
+        var ticketType = document.getElementById('trip_ticketType').value;
+        var relationship = document.getElementById('trip_relationship').value;
+        var remarks = document.getElementById('trip_remarks').value;
+        var ticketIssue = parseInt(document.getElementById('trip_ticketIssue').value) || 1;
+        var entitlement = document.getElementById('trip_entitlement').value;
 
-        // Validate
         if (!fullName || !ticketType) {
             alert('Please fill in all required fields');
             return;
         }
 
-        // Prepare data
-        const formData = {
+        var formData = {
             FolioID: folioId,
             FullName: fullName,
             TicketType: ticketType,
@@ -1129,56 +1093,39 @@
             Entitlement: entitlement
         };
 
-        console.log('Submitting trip request:', formData);
-
-        // Show loading
-        const nextBtn = document.querySelector('.next-btn');
-        const originalText = nextBtn.innerHTML;
+        var nextBtn = document.querySelector('.next-btn');
+        var originalText = nextBtn.innerHTML;
         nextBtn.innerHTML = 'Saving...';
         nextBtn.disabled = true;
 
-        // Submit to backend
         fetch('/Itinerary/SubmitTripRequest', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
             nextBtn.innerHTML = originalText;
             nextBtn.disabled = false;
-
             if (data.success) {
-                // Store the trip request ID
                 currentTripRequestId = data.tripRequestId;
-                console.log('Trip request saved with ID:', currentTripRequestId);
-
-                // Hide first form and show second form
                 document.getElementById('tripRequestForm1').style.display = 'none';
                 document.getElementById('tripRequestForm2').style.display = 'block';
-                
-                // Update itinerary details when switching forms
                 updateItineraryDetails();
             } else {
                 alert('Error: ' + data.message);
             }
         })
-        .catch(error => {
+        .catch(function(error) {
             nextBtn.innerHTML = originalText;
             nextBtn.disabled = false;
-            console.error('Error:', error);
-            alert('Failed to submit trip request. Please try again.');
+            alert('Failed to submit trip request.');
         });
     }
 
     function showTripRequestForm() {
-        // Hide second form and show first form
         document.getElementById('tripRequestForm2').style.display = 'none';
         document.getElementById('tripRequestForm1').style.display = 'block';
-        
-        // Update itinerary details
         updateItineraryDetails();
     }
 
@@ -1188,37 +1135,20 @@
             return;
         }
 
-        // Get form 2 data
-        const ticketNo = document.getElementById('manage_ticketNo').value;
-        const passportNumber = document.getElementById('manage_passport').value;
-        
-        const departureAirport = document.getElementById('manage_departureAirport').value;
-        const departureCity = document.getElementById('manage_departureAirport').selectedOptions[0]?.getAttribute('data-city') || '';
-        
-        const arrivalAirport = document.getElementById('manage_arrivalAirport').value;
-        const arrivalCity = document.getElementById('manage_arrivalAirport').selectedOptions[0]?.getAttribute('data-city') || '';
-        
-        // Combine date and time for departure
-        const departureDate = document.getElementById('manage_departureDate').value;
-        const departureTime = document.getElementById('manage_departureTime').value || '00:00';
-        const departureDateTimeString = departureDate && departureTime ? `${departureDate}T${departureTime}:00` : departureDate;
-        
-        // Combine date and time for return
-        const returnDate = document.getElementById('manage_returnDate').value;
-        const returnTime = document.getElementById('manage_returnTime').value || '00:00';
-        const returnDateTimeString = returnDate && returnTime ? `${returnDate}T${returnTime}:00` : returnDate;
+        var ticketNo = document.getElementById('manage_ticketNo').value;
+        var passportNumber = document.getElementById('manage_passport').value;
+        var departureAirport = document.getElementById('manage_departureAirport').value;
+        var departureCity = document.getElementById('manage_departureAirport').selectedOptions[0] ? document.getElementById('manage_departureAirport').selectedOptions[0].getAttribute('data-city') : '';
+        var arrivalAirport = document.getElementById('manage_arrivalAirport').value;
+        var arrivalCity = document.getElementById('manage_arrivalAirport').selectedOptions[0] ? document.getElementById('manage_arrivalAirport').selectedOptions[0].getAttribute('data-city') : '';
+        var departureDate = document.getElementById('manage_departureDate').value;
+        var departureTime = document.getElementById('manage_departureTime').value || '00:00';
+        var departureDateTimeString = departureDate && departureTime ? departureDate + 'T' + departureTime + ':00' : departureDate;
+        var returnDate = document.getElementById('manage_returnDate').value;
+        var returnTime = document.getElementById('manage_returnTime').value || '00:00';
+        var returnDateTimeString = returnDate && returnTime ? returnDate + 'T' + returnTime + ':00' : returnDate;
 
-        console.log('Form values captured:', {
-            departureDate,
-            departureTime,
-            departureDateTimeString,
-            returnDate,
-            returnTime,
-            returnDateTimeString
-        });
-
-        // Prepare data
-        const formData = {
+        var formData = {
             TripRequestID: currentTripRequestId,
             TicketNo: ticketNo,
             PassportNumber: passportNumber,
@@ -1230,197 +1160,217 @@
             ReturnDate: returnDateTimeString
         };
 
-        console.log('Submitting manage request:', formData);
-
-        // Show loading
-        const saveBtn = document.querySelector('.save-btn');
-        const originalText = saveBtn.innerHTML;
+        var saveBtn = document.querySelector('.save-btn');
+        var originalText = saveBtn.innerHTML;
         saveBtn.innerHTML = 'Saving...';
         saveBtn.disabled = true;
 
-        // Submit to backend
         fetch('/Itinerary/SubmitManageRequest', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)
         })
-        .then(response => response.json())
-        .then(data => {
+        .then(function(response) { return response.json(); })
+        .then(function(data) {
             saveBtn.innerHTML = originalText;
             saveBtn.disabled = false;
-
-            console.log('Server response:', data);
-
             if (data.success) {
                 alert('Trip request saved successfully!');
-                
-                // Reload booking history
-                const folioId = document.getElementById('itinerary_folioId').value;
+                var folioId = document.getElementById('itinerary_folioId').value;
                 loadBookingHistory(folioId);
-                
-                // Close modal and reload page to show notification
                 closeItineraryModal();
                 window.location.reload();
             } else {
                 alert('Error: ' + data.message);
             }
         })
-        .catch(error => {
+        .catch(function(error) {
             saveBtn.innerHTML = originalText;
             saveBtn.disabled = false;
-            console.error('Error:', error);
-            alert('Failed to save trip request. Please try again.');
+            alert('Failed to save trip request.');
         });
     }
 
     function loadBookingHistory(folioId) {
         if (!folioId) return;
+        currentPage = 1;
 
-        fetch(`/Itinerary/GetBookingHistory?folioId=${folioId}`)
-            .then(response => response.json())
-            .then(data => {
+        fetch('/Itinerary/GetBookingHistory?folioId=' + encodeURIComponent(folioId))
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
                 if (data.success && data.data) {
-                    displayBookingHistory(data.data);
-                } else {
-                    console.error('Failed to load booking history:', data.message);
+                    allBookings = data.data;
+                    renderBookingHistoryPage();
                 }
             })
-            .catch(error => {
+            .catch(function(error) {
                 console.error('Error loading booking history:', error);
             });
     }
 
-    function displayBookingHistory(bookings) {
-        const tbody = document.querySelector('#bookingHistoryTableBody');
-        console.log('Displaying bookings:', bookings ? bookings.length : 0, 'tbody found:', !!tbody);
-        console.log('Raw bookings data:', JSON.stringify(bookings, null, 2));
-        
-        if (!tbody || !bookings || bookings.length === 0) {
-            if (tbody) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">No booking history found. Save a trip request to see it here.</td></tr>';
-            }
+    function renderBookingHistoryPage() {
+        var tbody = document.getElementById('bookingHistoryTableBody');
+        if (!tbody) return;
+
+        if (!allBookings || allBookings.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">No booking history found.</td></tr>';
+            renderPagination(0, 0);
             return;
         }
 
-        let html = '';
-        bookings.forEach((booking, index) => {
-            console.log(`Booking ${index + 1}:`, {
-                DepartureDate: booking.DepartureDate,
-                ReturnDate: booking.ReturnDate,
-                UpdatedDate: booking.UpdatedDate,
-                BookingDate: booking.BookingDate
-            });
+        var totalRecords = allBookings.length;
+        var totalPages = Math.ceil(totalRecords / recordsPerPage);
+        currentPage = Math.max(1, Math.min(currentPage, totalPages));
 
-            // Safely handle UpdatedDate
-            let formattedDate = '-';
-            let formattedTime = '-';
-            
+        var startIdx = (currentPage - 1) * recordsPerPage;
+        var endIdx = Math.min(startIdx + recordsPerPage, totalRecords);
+        var pageBookings = allBookings.slice(startIdx, endIdx);
+
+        var html = '';
+        for (var i = 0; i < pageBookings.length; i++) {
+            var booking = pageBookings[i];
+            var globalRowNum = startIdx + i + 1;
+
+            var formattedDate = '-', formattedTime = '-';
             if (booking.UpdatedDate) {
                 try {
-                    const updatedDate = parseMicrosoftDate(booking.UpdatedDate);
+                    var updatedDate = parseMicrosoftDate(booking.UpdatedDate);
                     if (updatedDate && !isNaN(updatedDate.getTime())) {
                         formattedDate = updatedDate.toISOString().split('T')[0];
                         formattedTime = updatedDate.toTimeString().split(' ')[0];
                     }
-                } catch (e) {
-                    console.error('Error parsing UpdatedDate:', booking.UpdatedDate, e);
-                }
+                } catch (e) {}
             }
-            
-            // Safely handle DepartureDate with time
-            let depDate = '-';
-            let depTime = '-';
+
+            var depDate = '-';
             if (booking.DepartureDate) {
                 try {
-                    const date = parseMicrosoftDate(booking.DepartureDate);
-                    console.log(`Departure Date object for booking ${index + 1}:`, date, 'isValid:', date && !isNaN(date.getTime()));
+                    var date = parseMicrosoftDate(booking.DepartureDate);
                     if (date && !isNaN(date.getTime())) {
                         depDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        // Remove time capture - depTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
                     }
-                } catch (e) {
-                    console.error('Error parsing DepartureDate:', booking.DepartureDate, e);
-                }
-            } else {
-                console.log(`Booking ${index + 1} has no DepartureDate`);
+                } catch (e) {}
             }
-            
-            // Safely handle ReturnDate with time
-            let retDate = '-';
-            let retTime = '-';
+
+            var retDate = '-';
             if (booking.ReturnDate) {
                 try {
-                    const date = parseMicrosoftDate(booking.ReturnDate);
-                    console.log(`Return Date object for booking ${index + 1}:`, date, 'isValid:', date && !isNaN(date.getTime()));
+                    var date = parseMicrosoftDate(booking.ReturnDate);
                     if (date && !isNaN(date.getTime())) {
                         retDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                        // Remove time capture - retTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
                     }
-                } catch (e) {
-                    console.error('Error parsing ReturnDate:', booking.ReturnDate, e);
-                }
-            } else {
-                console.log(`Booking ${index + 1} has no ReturnDate`);
+                } catch (e) {}
             }
-            
-            // Safely handle BookingDate
-            let bookingDate = '-';
+
+            var bookingDate = '-';
             if (booking.BookingDate) {
                 try {
-                    const date = parseMicrosoftDate(booking.BookingDate);
+                    var date = parseMicrosoftDate(booking.BookingDate);
                     if (date && !isNaN(date.getTime())) {
                         bookingDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     }
-                } catch (e) {
-                    console.error('Error parsing BookingDate:', booking.BookingDate, e);
-                }
+                } catch (e) {}
             }
 
-            html += `
-                <tr>
-                    <td class="row-number">${index + 1}.</td>
-                    <td>${formattedDate}<br/>${formattedTime}</td>
-                    <td><span class="route-dates">${depDate}<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ${retDate}</span></td>
-                    <td>${booking.DepartureAirport || '-'} <img src="/assets/takeoffImage.png" alt="to" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ${booking.ArrivalAirport || '-'}</td>
-                    <td>${bookingDate}</td>
-                    <td><span class="status-badge status-issued">${booking.Status || 'Issued'}</span></td>
-                    <td>${booking.UpdatedBy || '-'}</td>
-                    <td>${booking.PassengerName || '-'}</td>
-                    <td class="text-center">1</td>
-                    <td>${booking.TicketType || '-'}</td>
-                </tr>
-            `;
-        });
+            html += '<tr>' +
+                '<td class="row-number">' + globalRowNum + '.</td>' +
+                '<td>' + formattedDate + '<br/>' + formattedTime + '</td>' +
+                '<td><span class="route-dates">' + depDate + '<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ' + retDate + '</span></td>' +
+                '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoffImage.png" alt="to" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
+                '<td>' + bookingDate + '</td>' +
+                '<td><span class="status-badge status-issued">' + (booking.Status || 'Issued') + '</span></td>' +
+                '<td>' + (booking.UpdatedBy || '-') + '</td>' +
+                '<td>' + (booking.PassengerName || '-') + '</td>' +
+                '<td class="text-center">1</td>' +
+                '<td>' + (booking.TicketType || '-') + '</td>' +
+                '</tr>';
+        }
 
         tbody.innerHTML = html;
+        renderPagination(totalRecords, totalPages);
+    }
+
+    function renderPagination(totalRecords, totalPages) {
+        var container = document.querySelector('.booking-history-section .pagination');
+        if (!container) return;
+
+        if (totalRecords === 0 || totalPages <= 1) {
+            container.style.display = 'none';
+            return;
+        }
+
+        container.style.display = 'flex';
+        container.innerHTML = '';
+
+        // Prev button
+        var prevBtn = document.createElement('button');
+        prevBtn.className = 'pagination-btn' + (currentPage === 1 ? ' disabled' : '');
+        prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" /></svg> Prev';
+        if (currentPage > 1) {
+            prevBtn.onclick = function() { currentPage--; renderBookingHistoryPage(); };
+        } else {
+            prevBtn.style.opacity = '0.5';
+            prevBtn.style.cursor = 'not-allowed';
+        }
+        container.appendChild(prevBtn);
+
+        // Page buttons
+        for (var i = 1; i <= totalPages; i++) {
+            (function(pageNum) {
+                var pageBtn = document.createElement('button');
+                pageBtn.className = 'pagination-btn' + (pageNum === currentPage ? ' active' : '');
+                pageBtn.textContent = pageNum;
+                pageBtn.onclick = function() { currentPage = pageNum; renderBookingHistoryPage(); };
+                container.appendChild(pageBtn);
+            })(i);
+        }
+
+        // Next button
+        var nextBtn = document.createElement('button');
+        nextBtn.className = 'pagination-btn' + (currentPage === totalPages ? ' disabled' : '');
+        nextBtn.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" /></svg>';
+        if (currentPage < totalPages) {
+            nextBtn.onclick = function() { currentPage++; renderBookingHistoryPage(); };
+        } else {
+            nextBtn.style.opacity = '0.5';
+            nextBtn.style.cursor = 'not-allowed';
+        }
+        container.appendChild(nextBtn);
+    }
+
+    // For backward compatibility
+    function displayBookingHistory(bookings) {
+        allBookings = bookings || [];
+        currentPage = 1;
+        renderBookingHistoryPage();
     }
 
     // Search booking history
     document.addEventListener('DOMContentLoaded', function() {
-        // Attach event listeners to form fields for live updates
         attachFormListeners();
         
-        const searchInput = document.querySelector('.booking-history-section .search-input');
+        var searchInput = document.querySelector('.booking-history-section .search-input');
         if (searchInput) {
-            let searchTimeout;
+            var searchTimeout;
             searchInput.addEventListener('input', function() {
                 clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(() => {
-                    const searchTerm = this.value.trim();
-                    const folioId = document.getElementById('itinerary_folioId')?.value;
+                var self = this;
+                searchTimeout = setTimeout(function() {
+                    var searchTerm = self.value.trim();
+                    var folioId = document.getElementById('itinerary_folioId') ? document.getElementById('itinerary_folioId').value : '';
                     
                     if (folioId) {
+                        currentPage = 1;
                         if (searchTerm) {
-                            fetch(`/Itinerary/SearchBookingHistory?folioId=${folioId}&searchTerm=${encodeURIComponent(searchTerm)}`)
-                                .then(response => response.json())
-                                .then(data => {
+                            fetch('/Itinerary/SearchBookingHistory?folioId=' + encodeURIComponent(folioId) + '&searchTerm=' + encodeURIComponent(searchTerm))
+                                .then(function(response) { return response.json(); })
+                                .then(function(data) {
                                     if (data.success && data.data) {
-                                        displayBookingHistory(data.data);
+                                        allBookings = data.data;
+                                        renderBookingHistoryPage();
                                     }
                                 })
-                                .catch(error => console.error('Search error:', error));
+                                .catch(function(error) { console.error('Search error:', error); });
                         } else {
                             loadBookingHistory(folioId);
                         }
@@ -1439,7 +1389,7 @@
 
     // Close on overlay click
     document.addEventListener('click', function(event) {
-        const modal = document.getElementById('itineraryModal');
+        var modal = document.getElementById('itineraryModal');
         if (event.target === modal) {
             closeItineraryModal();
         }
