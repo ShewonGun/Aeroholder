@@ -100,6 +100,10 @@
     <Content Include="Assets\smallplane.png" />
     <Content Include="Assets\takeoffImage.png" />
     <Content Include="Assets\userLogo.png" />
+    <Content Include="Database\DiagnosticTest.sql" />
+    <Content Include="Database\EmergencyFix.sql" />
+    <Content Include="Database\FixDates.sql" />
+    <Content Include="Database\ItineraryTables.sql" />
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -109,6 +113,7 @@
     <Compile Include="Controllers\DatabaseTestController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItineraryController.cs" />
+    <Compile Include="Controllers\ItineraryDebugController.cs" />
     <Compile Include="Controllers\NotificationTestController.cs" />
     <Compile Include="Controllers\ShareholderController.cs" />
     <Compile Include="Controllers\ShareholderListPageController.cs" />
@@ -117,11 +122,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\NotificationHelper.cs" />
+    <Compile Include="Models\ItineraryModels.cs" />
     <Compile Include="Models\PassportDependentModels.cs" />
     <Compile Include="Models\ShareholderModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\DependentRepository.cs" />
     <Compile Include="Repositories\IShareholderRepository.cs" />
+    <Compile Include="Repositories\ItineraryRepository.cs" />
     <Compile Include="Repositories\IUserRepository.cs" />
     <Compile Include="Repositories\PassportRepository.cs" />
     <Compile Include="Repositories\ShareholderRepository.cs" />
@@ -130,6 +137,7 @@
     <Compile Include="Services\DependentService.cs" />
     <Compile Include="Services\IAuthenticationService.cs" />
     <Compile Include="Services\IShareholderService.cs" />
+    <Compile Include="Services\ItineraryService.cs" />
     <Compile Include="Services\PassportService.cs" />
     <Compile Include="Services\ShareholderService.cs" />
   </ItemGroup>
