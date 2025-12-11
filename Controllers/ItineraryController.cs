@@ -142,17 +142,8 @@ namespace AeroHolder_new.Controllers
                 tripRequest.DepartureCity = formData.DepartureCity;
                 tripRequest.ArrivalAirport = formData.ArrivalAirport;
                 tripRequest.ArrivalCity = formData.ArrivalCity;
-                
-                // Parse dates
-                if (!string.IsNullOrWhiteSpace(formData.DepartureDate))
-                {
-                    tripRequest.DepartureDate = DateTime.Parse(formData.DepartureDate);
-                }
-                if (!string.IsNullOrWhiteSpace(formData.ReturnDate))
-                {
-                    tripRequest.ReturnDate = DateTime.Parse(formData.ReturnDate);
-                }
-
+                tripRequest.DepartureDate = formData.DepartureDate;
+                tripRequest.ReturnDate = formData.ReturnDate;
                 tripRequest.Status = "Approved";
                 tripRequest.UpdatedBy = Session["UserName"]?.ToString();
 

@@ -37,7 +37,7 @@
                     <div class="itinerary-content">
                         <div class="route-section">
                             <div class="route-badge">
-                                <span class="route-text">DXB <img src="~/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"> PEK</span>
+                                <span class="route-text" id="detail_route">-</span>
                             </div>
                         </div>
 
@@ -45,42 +45,42 @@
                             <div class="details-row">
                                 <div class="details-cell">
                                     <div class="cell-label">Passenger Name</div>
-                                    <div class="cell-value">Chamalie Primera Weerakoon</div>
+                                    <div class="cell-value" id="detail_passengerName">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Ticket Type</div>
-                                    <div class="cell-value">Dependent</div>
+                                    <div class="cell-value" id="detail_ticketType">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Relationship</div>
-                                    <div class="cell-value">Mother</div>
+                                    <div class="cell-value" id="detail_relationship">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Ticket Issue</div>
-                                    <div class="cell-value">01</div>
+                                    <div class="cell-value" id="detail_ticketIssue">-</div>
                                 </div>
                             </div>
 
                             <div class="details-row">
                                 <div class="details-cell">
                                     <div class="cell-label">Ticket No</div>
-                                    <div class="cell-value">67532368798</div>
+                                    <div class="cell-value" id="detail_ticketNo">-</div>
                                 </div>
                                 <div class="details-cell">
-                                    <div class="cell-label">Select Passport</div>
-                                    <div class="cell-value">NLC456789</div>
+                                    <div class="cell-label">Passport</div>
+                                    <div class="cell-value" id="detail_passport">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Departure</div>
-                                    <div class="cell-value">25-10-2024</div>
+                                    <div class="cell-value" id="detail_departure">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Return</div>
-                                    <div class="cell-value">01-11-2024</div>
+                                    <div class="cell-value" id="detail_return">-</div>
                                 </div>
                                 <div class="details-cell">
                                     <div class="cell-label">Entitlement</div>
-                                    <div class="cell-value">01</div>
+                                    <div class="cell-value" id="detail_entitlement">-</div>
                                 </div>
                             </div>
                         </div>
@@ -104,21 +104,19 @@
                                 <div class="form-row">
                                     <div class="form-group">
                                         <label class="form-label">Full Name</label>
-                                        <select class="form-select" id="trip_fullName">
-                                            <option selected>Chamalie Primera Weerakoon</option>
-                                        </select>
+                                        <input type="text" class="form-input" id="trip_fullName" readonly>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Ticket Type</label>
                                         <select class="form-select" id="trip_ticketType">
                                             <option value="Shareholder">Shareholder</option>
-                                            <option value="Dependent" selected>Dependent</option>
+                                            <option value="Dependent">Dependent</option>
                                             <option value="Spouse">Spouse</option>
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">Relationship</label>
-                                        <input type="text" class="form-input" id="trip_relationship" value="Mother">
+                                        <input type="text" class="form-input" id="trip_relationship" placeholder="Enter Relationship">
                                     </div>
                                 </div>
 
@@ -208,10 +206,23 @@
                                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
-                                            Departure
+                                            Departure Date
                                         </label>
                                         <input type="date" class="form-input" id="manage_departureDate" value="2024-08-07">
                                     </div>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            Departure Time
+                                        </label>
+                                        <input type="time" class="form-input" id="manage_departureTime" value="10:00">
+                                    </div>
+                                </div>
+
+                                <div class="form-row-2col">
                                     <div class="form-group">
                                         <label class="form-label">
                                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
@@ -220,9 +231,19 @@
                                                 <line x1="8" y1="2" x2="8" y2="6"></line>
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
-                                            Return
+                                            Return Date
                                         </label>
                                         <input type="date" class="form-input" id="manage_returnDate" value="2024-08-16">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="form-label">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;">
+                                                <circle cx="12" cy="12" r="10"></circle>
+                                                <polyline points="12 6 12 12 16 14"></polyline>
+                                            </svg>
+                                            Return Time
+                                        </label>
+                                        <input type="time" class="form-input" id="manage_returnTime" value="18:00">
                                     </div>
                                 </div>
 
@@ -930,15 +951,138 @@
     // Global variable to store current trip request ID
     let currentTripRequestId = null;
 
+    // Helper function to parse Microsoft JSON date format: /Date(milliseconds)/
+    function parseMicrosoftDate(dateString) {
+        if (!dateString) return null;
+        
+        // Check if it's in Microsoft JSON date format
+        const match = dateString.match(/\/Date\((\d+)\)\//);
+        if (match) {
+            return new Date(parseInt(match[1]));
+        }
+        
+        // Otherwise try to parse as regular date string
+        return new Date(dateString);
+    }
+
+    // Function to update itinerary details live
+    function updateItineraryDetails() {
+        // Get values from Trip Request Form (Form 1)
+        const passengerName = document.getElementById('trip_fullName')?.value || '-';
+        const ticketType = document.getElementById('trip_ticketType')?.value || '-';
+        const relationship = document.getElementById('trip_relationship')?.value || '-';
+        const ticketIssue = document.getElementById('trip_ticketIssue')?.value || '-';
+        const entitlement = document.getElementById('trip_entitlement')?.value || '-';
+        
+        // Get values from Manage Request Form (Form 2)
+        const ticketNo = document.getElementById('manage_ticketNo')?.value || '-';
+        const passport = document.getElementById('manage_passport')?.value || '-';
+        const departureAirport = document.getElementById('manage_departureAirport')?.value || '';
+        const arrivalAirport = document.getElementById('manage_arrivalAirport')?.value || '';
+        const departureDate = document.getElementById('manage_departureDate')?.value || '';
+        const departureTime = document.getElementById('manage_departureTime')?.value || '';
+        const returnDate = document.getElementById('manage_returnDate')?.value || '';
+        const returnTime = document.getElementById('manage_returnTime')?.value || '';
+        
+        // Update itinerary details section
+        document.getElementById('detail_passengerName').textContent = passengerName;
+        document.getElementById('detail_ticketType').textContent = ticketType;
+        document.getElementById('detail_relationship').textContent = relationship;
+        document.getElementById('detail_ticketIssue').textContent = ticketIssue;
+        document.getElementById('detail_ticketNo').textContent = ticketNo;
+        document.getElementById('detail_passport').textContent = passport;
+        document.getElementById('detail_entitlement').textContent = entitlement;
+        
+        // Update route badge
+        if (departureAirport && arrivalAirport) {
+            document.getElementById('detail_route').innerHTML = 
+                `${departureAirport} <img src="/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"> ${arrivalAirport}`;
+        } else {
+            document.getElementById('detail_route').textContent = '-';
+        }
+        
+        // Format and update departure date/time
+        if (departureDate) {
+            const depDateTime = new Date(departureDate + (departureTime ? 'T' + departureTime : ''));
+            const formattedDep = depDateTime.toLocaleDateString('en-US', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric' 
+            }) + (departureTime ? ' ' + departureTime : '');
+            document.getElementById('detail_departure').textContent = formattedDep;
+        } else {
+            document.getElementById('detail_departure').textContent = '-';
+        }
+        
+        // Format and update return date/time
+        if (returnDate) {
+            const retDateTime = new Date(returnDate + (returnTime ? 'T' + returnTime : ''));
+            const formattedRet = retDateTime.toLocaleDateString('en-US', { 
+                day: '2-digit', 
+                month: '2-digit', 
+                year: 'numeric' 
+            }) + (returnTime ? ' ' + returnTime : '');
+            document.getElementById('detail_return').textContent = formattedRet;
+        } else {
+            document.getElementById('detail_return').textContent = '-';
+        }
+    }
+
+    // Function to attach event listeners to form fields
+    function attachFormListeners() {
+        // Trip Request Form (Form 1) fields
+        const form1Fields = [
+            'trip_fullName',
+            'trip_ticketType',
+            'trip_relationship',
+            'trip_ticketIssue',
+            'trip_entitlement'
+        ];
+        
+        form1Fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', updateItineraryDetails);
+                field.addEventListener('change', updateItineraryDetails);
+            }
+        });
+        
+        // Manage Request Form (Form 2) fields
+        const form2Fields = [
+            'manage_ticketNo',
+            'manage_passport',
+            'manage_departureAirport',
+            'manage_arrivalAirport',
+            'manage_departureDate',
+            'manage_departureTime',
+            'manage_returnDate',
+            'manage_returnTime'
+        ];
+        
+        form2Fields.forEach(fieldId => {
+            const field = document.getElementById(fieldId);
+            if (field) {
+                field.addEventListener('input', updateItineraryDetails);
+                field.addEventListener('change', updateItineraryDetails);
+            }
+        });
+    }
+
     function openItineraryModal(folioId, shareholderName) {
         // Set shareholder info
         document.getElementById('itinerary_shareholderName').value = shareholderName || '';
         document.getElementById('itinerary_folioId').value = folioId || '';
         
+        // Set full name in trip request form to shareholder name
+        document.getElementById('trip_fullName').value = shareholderName || '';
+        
         // Reset to first form
         document.getElementById('tripRequestForm1').style.display = 'block';
         document.getElementById('tripRequestForm2').style.display = 'none';
         currentTripRequestId = null;
+        
+        // Update itinerary details with initial values
+        updateItineraryDetails();
         
         // Load booking history
         loadBookingHistory(folioId);
@@ -1014,6 +1158,9 @@
                 // Hide first form and show second form
                 document.getElementById('tripRequestForm1').style.display = 'none';
                 document.getElementById('tripRequestForm2').style.display = 'block';
+                
+                // Update itinerary details when switching forms
+                updateItineraryDetails();
             } else {
                 alert('Error: ' + data.message);
             }
@@ -1030,6 +1177,9 @@
         // Hide second form and show first form
         document.getElementById('tripRequestForm2').style.display = 'none';
         document.getElementById('tripRequestForm1').style.display = 'block';
+        
+        // Update itinerary details
+        updateItineraryDetails();
     }
 
     function saveTripRequest() {
@@ -1048,8 +1198,24 @@
         const arrivalAirport = document.getElementById('manage_arrivalAirport').value;
         const arrivalCity = document.getElementById('manage_arrivalAirport').selectedOptions[0]?.getAttribute('data-city') || '';
         
+        // Combine date and time for departure
         const departureDate = document.getElementById('manage_departureDate').value;
+        const departureTime = document.getElementById('manage_departureTime').value || '00:00';
+        const departureDateTimeString = departureDate && departureTime ? `${departureDate}T${departureTime}:00` : departureDate;
+        
+        // Combine date and time for return
         const returnDate = document.getElementById('manage_returnDate').value;
+        const returnTime = document.getElementById('manage_returnTime').value || '00:00';
+        const returnDateTimeString = returnDate && returnTime ? `${returnDate}T${returnTime}:00` : returnDate;
+
+        console.log('Form values captured:', {
+            departureDate,
+            departureTime,
+            departureDateTimeString,
+            returnDate,
+            returnTime,
+            returnDateTimeString
+        });
 
         // Prepare data
         const formData = {
@@ -1060,8 +1226,8 @@
             DepartureCity: departureCity,
             ArrivalAirport: arrivalAirport,
             ArrivalCity: arrivalCity,
-            DepartureDate: departureDate,
-            ReturnDate: returnDate
+            DepartureDate: departureDateTimeString,
+            ReturnDate: returnDateTimeString
         };
 
         console.log('Submitting manage request:', formData);
@@ -1084,6 +1250,8 @@
         .then(data => {
             saveBtn.innerHTML = originalText;
             saveBtn.disabled = false;
+
+            console.log('Server response:', data);
 
             if (data.success) {
                 alert('Trip request saved successfully!');
@@ -1127,6 +1295,7 @@
     function displayBookingHistory(bookings) {
         const tbody = document.querySelector('#bookingHistoryTableBody');
         console.log('Displaying bookings:', bookings ? bookings.length : 0, 'tbody found:', !!tbody);
+        console.log('Raw bookings data:', JSON.stringify(bookings, null, 2));
         
         if (!tbody || !bookings || bookings.length === 0) {
             if (tbody) {
@@ -1137,14 +1306,21 @@
 
         let html = '';
         bookings.forEach((booking, index) => {
+            console.log(`Booking ${index + 1}:`, {
+                DepartureDate: booking.DepartureDate,
+                ReturnDate: booking.ReturnDate,
+                UpdatedDate: booking.UpdatedDate,
+                BookingDate: booking.BookingDate
+            });
+
             // Safely handle UpdatedDate
             let formattedDate = '-';
             let formattedTime = '-';
             
             if (booking.UpdatedDate) {
                 try {
-                    const updatedDate = new Date(booking.UpdatedDate);
-                    if (!isNaN(updatedDate.getTime())) {
+                    const updatedDate = parseMicrosoftDate(booking.UpdatedDate);
+                    if (updatedDate && !isNaN(updatedDate.getTime())) {
                         formattedDate = updatedDate.toISOString().split('T')[0];
                         formattedTime = updatedDate.toTimeString().split(' ')[0];
                     }
@@ -1153,38 +1329,48 @@
                 }
             }
             
-            // Safely handle DepartureDate
+            // Safely handle DepartureDate with time
             let depDate = '-';
+            let depTime = '-';
             if (booking.DepartureDate) {
                 try {
-                    const date = new Date(booking.DepartureDate);
-                    if (!isNaN(date.getTime())) {
+                    const date = parseMicrosoftDate(booking.DepartureDate);
+                    console.log(`Departure Date object for booking ${index + 1}:`, date, 'isValid:', date && !isNaN(date.getTime()));
+                    if (date && !isNaN(date.getTime())) {
                         depDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        // Remove time capture - depTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
                     }
                 } catch (e) {
                     console.error('Error parsing DepartureDate:', booking.DepartureDate, e);
                 }
+            } else {
+                console.log(`Booking ${index + 1} has no DepartureDate`);
             }
             
-            // Safely handle ReturnDate
+            // Safely handle ReturnDate with time
             let retDate = '-';
+            let retTime = '-';
             if (booking.ReturnDate) {
                 try {
-                    const date = new Date(booking.ReturnDate);
-                    if (!isNaN(date.getTime())) {
+                    const date = parseMicrosoftDate(booking.ReturnDate);
+                    console.log(`Return Date object for booking ${index + 1}:`, date, 'isValid:', date && !isNaN(date.getTime()));
+                    if (date && !isNaN(date.getTime())) {
                         retDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+                        // Remove time capture - retTime = date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: false });
                     }
                 } catch (e) {
                     console.error('Error parsing ReturnDate:', booking.ReturnDate, e);
                 }
+            } else {
+                console.log(`Booking ${index + 1} has no ReturnDate`);
             }
             
             // Safely handle BookingDate
             let bookingDate = '-';
             if (booking.BookingDate) {
                 try {
-                    const date = new Date(booking.BookingDate);
-                    if (!isNaN(date.getTime())) {
+                    const date = parseMicrosoftDate(booking.BookingDate);
+                    if (date && !isNaN(date.getTime())) {
                         bookingDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
                     }
                 } catch (e) {
@@ -1196,8 +1382,8 @@
                 <tr>
                     <td class="row-number">${index + 1}.</td>
                     <td>${formattedDate}<br/>${formattedTime}</td>
-                    <td><span class="route-dates">${depDate} <img src="~/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ${retDate}</span></td>
-                    <td>${booking.DepartureAirport || '-'} <img src="~/assets/takeoffImage.png" alt="to" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ${booking.ArrivalAirport || '-'}</td>
+                    <td><span class="route-dates">${depDate}<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ${retDate}</span></td>
+                    <td>${booking.DepartureAirport || '-'} <img src="/assets/takeoffImage.png" alt="to" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ${booking.ArrivalAirport || '-'}</td>
                     <td>${bookingDate}</td>
                     <td><span class="status-badge status-issued">${booking.Status || 'Issued'}</span></td>
                     <td>${booking.UpdatedBy || '-'}</td>
@@ -1213,6 +1399,9 @@
 
     // Search booking history
     document.addEventListener('DOMContentLoaded', function() {
+        // Attach event listeners to form fields for live updates
+        attachFormListeners();
+        
         const searchInput = document.querySelector('.booking-history-section .search-input');
         if (searchInput) {
             let searchTimeout;

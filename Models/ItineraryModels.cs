@@ -81,7 +81,7 @@ namespace AeroHolder_new.Models
         public string DepartureCity { get; set; }
         public string ArrivalAirport { get; set; }
         public string ArrivalCity { get; set; }
-        public string DepartureDate { get; set; }
-        public string ReturnDate { get; set; }
+        public DateTime? DepartureDate { get; set; }
+        public DateTime? ReturnDate { get; set; }
     }
 }
