@@ -161,9 +161,8 @@
                                     <div class="form-group">
                                         <label class="form-label">Select passport</label>
                                         <select class="form-select" id="manage_passport">
-                                            <option value="E00007730" selected>E00007730</option>
-                                            <option value="N12345678">N12345678</option>
-                                            <option value="P98765432">P98765432</option>
+                                            <option value="">-- Select Passport --</option>
+                                            <!-- Passports will be loaded dynamically -->
                                         </select>
                                     </div>
                                 </div>
@@ -1056,9 +1055,45 @@
         
         updateItineraryDetails();
         loadBookingHistory(folioId);
+        loadPassportsForDropdown(folioId);
         
         document.getElementById('itineraryModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
+    }
+
+    function loadPassportsForDropdown(folioId) {
+        var passportSelect = document.getElementById('manage_passport');
+        if (!passportSelect) return;
+        
+        passportSelect.innerHTML = '<option value="">-- Select Passport --</option>';
+        
+        if (!folioId) return;
+        
+        fetch('/Itinerary/GetPassportsByFolioId?folioId=' + encodeURIComponent(folioId))
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                if (data.success && data.data && data.data.length > 0) {
+                    data.data.forEach(function(passport) {
+                        var option = document.createElement('option');
+                        option.value = passport.PassportNumber;
+                        option.textContent = passport.PassportNumber + (passport.IssuedCountry ? ' (' + passport.IssuedCountry + ')' : '');
+                        passportSelect.appendChild(option);
+                    });
+                    if (data.data.length > 0) {
+                        passportSelect.value = data.data[0].PassportNumber;
+                        updateItineraryDetails();
+                    }
+                } else {
+                    var noPassportOption = document.createElement('option');
+                    noPassportOption.value = '';
+                    noPassportOption.textContent = 'No passports available';
+                    noPassportOption.disabled = true;
+                    passportSelect.appendChild(noPassportOption);
+                }
+            })
+            .catch(function(error) {
+                console.error('Error loading passports:', error);
+            });
     }
 
     function closeItineraryModal() {

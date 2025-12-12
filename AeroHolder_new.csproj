@@ -101,6 +101,7 @@
     <Content Include="Assets\takeoffImage.png" />
     <Content Include="Assets\userLogo.png" />
     <Content Include="Global.asax" />
+    <Content Include="PaginationUpdate.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

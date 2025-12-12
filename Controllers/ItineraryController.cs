@@ -13,6 +13,7 @@ namespace AeroHolder_new.Controllers
     {
         private readonly IShareholderService _shareholderService;
         private readonly ItineraryService _itineraryService;
+        private readonly PassportService _passportService;
 
         public ItineraryController()
         {
@@ -22,6 +23,9 @@ namespace AeroHolder_new.Controllers
             
             var itineraryRepository = new ItineraryRepository(context);
             _itineraryService = new ItineraryService(itineraryRepository);
+            
+            var passportRepository = new PassportRepository(context);
+            _passportService = new PassportService(passportRepository);
         }
 
         public ActionResult Index(string folioId)
@@ -247,6 +251,62 @@ namespace AeroHolder_new.Controllers
                 return Json(new { 
                     success = true, 
                     data = bookings 
+                }, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        #region Passport API Endpoints
+
+        /// <summary>
+        /// Get passports for a shareholder by Folio ID
+        /// </summary>
+        [HttpGet]
+        public ActionResult GetPassportsByFolioId(string folioId)
+        {
+            try
+            {
+                if (Session["UserId"] == null)
+                {
+                    return Json(new { success = false, message = "Session expired" }, JsonRequestBehavior.AllowGet);
+                }
+
+                if (string.IsNullOrWhiteSpace(folioId))
+                {
+                    return Json(new { success = false, message = "Folio ID is required" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var shareholder = _shareholderService.GetShareholderByFolioId(folioId);
+                if (shareholder == null)
+                {
+                    return Json(new { success = false, message = "Shareholder not found" }, JsonRequestBehavior.AllowGet);
+                }
+
+                var passports = _passportService.GetPassportsByShareholderID(shareholder.ShareholderID);
+
+                // Return only passport numbers for the dropdown
+                var passportList = new List<object>();
+                foreach (var passport in passports)
+                {
+                    if (!string.IsNullOrWhiteSpace(passport.PassportNumber))
+                    {
+                        passportList.Add(new
+                        {
+                            PassportID = passport.PassportID,
+                            PassportNumber = passport.PassportNumber,
+                            IssuedCountry = passport.IssuedCountry
+                        });
+                    }
+                }
+
+                return Json(new { 
+                    success = true, 
+                    data = passportList 
                 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
