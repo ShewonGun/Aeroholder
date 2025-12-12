@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using AeroHolder_new.Data;
 using AeroHolder_new.Models;
@@ -312,6 +313,56 @@ namespace AeroHolder_new.Controllers
             catch (Exception ex)
             {
                 return Json(new { success = false, message = $"Error: {ex.Message}" }, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        #endregion
+
+        #region Status Update API Endpoints
+
+        /// <summary>
+        /// Update booking status
+        /// </summary>
+        [HttpPost]
+        public ActionResult UpdateBookingStatus(int bookingId, string status)
+        {
+            try
+            {
+                if (Session["UserId"] == null)
+                {
+                    return Json(new { success = false, message = "Session expired. Please login again." });
+                }
+
+                if (bookingId <= 0)
+                {
+                    return Json(new { success = false, message = "Invalid booking ID" });
+                }
+
+                if (string.IsNullOrWhiteSpace(status))
+                {
+                    return Json(new { success = false, message = "Status is required" });
+                }
+
+                // Validate status value
+                var validStatuses = new[] { "Pending", "Issued", "Approved", "Rejected", "Refunded" };
+                if (!validStatuses.Contains(status, StringComparer.OrdinalIgnoreCase))
+                {
+                    return Json(new { success = false, message = "Invalid status value" });
+                }
+
+                var updatedBy = Session["UserName"]?.ToString();
+                bool updated = _itineraryService.UpdateBookingStatus(bookingId, status, updatedBy);
+
+                if (updated)
+                {
+                    return Json(new { success = true, message = "Status updated successfully" });
+                }
+
+                return Json(new { success = false, message = "Failed to update status" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = $"Error: {ex.Message}" });
             }
         }
 

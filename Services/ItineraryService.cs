@@ -133,7 +133,7 @@ namespace AeroHolder_new.Services
                     DepartureDate = tripRequest.DepartureDate,
                     ReturnDate = tripRequest.ReturnDate,
                     BookingDate = DateTime.Now,
-                    Status = "Issued",
+                    Status = "Pending",  // Default status is Pending until changed from View Report
                     UpdatedBy = updatedBy
                 };
 
@@ -181,6 +181,27 @@ namespace AeroHolder_new.Services
             catch (Exception ex)
             {
                 throw new Exception($"Error in ItineraryService.SearchBookingHistory: {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Update booking status
+        /// </summary>
+        public bool UpdateBookingStatus(int bookingId, string status, string updatedBy)
+        {
+            try
+            {
+                if (bookingId <= 0)
+                    throw new ArgumentException("Valid BookingID is required");
+
+                if (string.IsNullOrWhiteSpace(status))
+                    throw new ArgumentException("Status is required");
+
+                return _itineraryRepository.UpdateBookingStatus(bookingId, status, updatedBy);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error in ItineraryService.UpdateBookingStatus: {ex.Message}", ex);
             }
         }
 

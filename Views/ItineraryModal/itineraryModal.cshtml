@@ -24,7 +24,6 @@
 
                 <!-- Itinerary Details Card -->
                 <div class="itinerary-card">
-                    <div class="issued-badge">Issued</div>
 
                     <div class="card-header">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -231,7 +230,7 @@
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
                                             Return Date
-                                        /label>
+                                        </label>
                                         <input type="date" class="form-input" id="manage_returnDate" value="2024-08-16">
                                     </div>
                                     <div class="form-group">
@@ -271,7 +270,7 @@
                             <span class="brand-subtitle">Booking History</span>
                         </div>
                         <div class="search-box">
-                            <input type="text" class="search-input" placeholder="Search.........">
+                            <input type="text" class="search-input" placeholder="">
                             <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
                                 <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#6b7280" stroke-width="2" />
                                 <path d="M19 19L14.65 14.65" stroke="#6b7280" stroke-width="2" />
@@ -474,25 +473,11 @@
     /* Itinerary Card */
     .itinerary-card {
         background: white;
-        margin: 28px 24px 16px 24px;
+        margin: 16px 24px 16px 24px;
         border-radius: 8px;
         overflow: visible;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
         position: relative;
-    }
-
-    .issued-badge {
-        position: absolute;
-        top: -12px;
-        left: 24px;
-        background: #10b981;
-        color: white;
-        padding: 6px 16px;
-        border-radius: 4px;
-        font-size: 12px;
-        font-weight: 600;
-        z-index: 10;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .card-header {
@@ -886,9 +871,25 @@
         font-weight: 600;
     }
 
-    .status-issued {
+    .status-issued,
+    .status-approved {
         background: #86efac;
         color: #166534;
+    }
+
+    .status-pending {
+        background: #e5e7eb;
+        color: #4b5563;
+    }
+
+    .status-rejected {
+        background: #fecaca;
+        color: #991b1b;
+    }
+
+    .status-refunded {
+        background: #fde68a;
+        color: #92400e;
     }
 
     .text-center {
@@ -955,7 +956,7 @@
     var recordsPerPage = 5;
     var allBookings = [];
 
-    // Helper function to parse Microsoft JSON date format: /Date(milliseconds)/
+    // Helper function to parse Microsoft JSON date format: /Date(milliseconds)/"
     function parseMicrosoftDate(dateString) {
         if (!dateString) return null;
         
@@ -1307,13 +1308,22 @@
                 } catch (e) {}
             }
 
+            // Determine status class based on status value
+            var status = (booking.Status || 'Pending').toLowerCase();
+            var statusClass = 'status-pending';
+            if (status === 'issued') statusClass = 'status-issued';
+            else if (status === 'approved') statusClass = 'status-approved';
+            else if (status === 'rejected') statusClass = 'status-rejected';
+            else if (status === 'refunded') statusClass = 'status-refunded';
+            else if (status === 'pending') statusClass = 'status-pending';
+
             html += '<tr>' +
                 '<td class="row-number">' + globalRowNum + '.</td>' +
                 '<td>' + formattedDate + '<br/>' + formattedTime + '</td>' +
                 '<td><span class="route-dates">' + depDate + '<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ' + retDate + '</span></td>' +
                 '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoff.png" alt="takeoff" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
                 '<td>' + bookingDate + '</td>' +
-                '<td><span class="status-badge status-issued">' + (booking.Status || 'Issued') + '</span></td>' +
+                '<td><span class="status-badge ' + statusClass + '">' + (booking.Status || 'Pending') + '</span></td>' +
                 '<td>' + (booking.UpdatedBy || '-') + '</td>' +
                 '<td>' + (booking.PassengerName || '-') + '</td>' +
                 '<td class="text-center">1</td>' +

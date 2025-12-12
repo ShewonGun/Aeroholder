@@ -2,15 +2,11 @@
 <div class="modal-overlay" id="viewReportModal" style="display: none;">
     <div class="report-modal-dialog">
         <div class="report-modal-content">
-            <!-- Header -->
             <div class="report-header">
-                <h1 class="header-title">View Report</h1>
+                <h1 class="header-title">Summary Report</h1>
                 <button class="close-btn" onclick="closeReportModal()">✕</button>
             </div>
-
-            <!-- Modal Body with Scroll -->
             <div class="report-modal-body">
-                <!-- Shareholder Info -->
                 <div class="shareholder-info">
                     <div class="info-group">
                         <label class="info-label">Shareholder Name</label>
@@ -21,11 +17,8 @@
                         <input type="text" class="info-input folio-id" id="report_folioId" readonly>
                     </div>
                 </div>
-
-                <!-- Itinerary Details Card -->
                 <div class="itinerary-card">
-                    <div class="issued-badge">Issued</div>
-
+                    <div class="issued-badge" id="report_statusBadge">Pending</div>
                     <div class="card-header">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M20 7H4C2.89543 7 2 7.89543 2 9V19C2 20.1046 2.89543 21 4 21H20C21.1046 21 22 20.1046 22 19V9C22 7.89543 21.1046 7 20 7Z" stroke="white" stroke-width="2" />
@@ -33,209 +26,64 @@
                         </svg>
                         <h2 class="card-title">Report Details</h2>
                     </div>
-
                     <div class="itinerary-content">
                         <div class="route-section">
-                            <div class="route-badge">
-                                <span class="route-text" id="report_route">-</span>
-                            </div>
+                            <div class="route-badge"><span class="route-text" id="report_route">-</span></div>
                         </div>
-
                         <div class="details-table">
                             <div class="details-row">
-                                <div class="details-cell">
-                                    <div class="cell-label">Passenger Name</div>
-                                    <div class="cell-value" id="report_passengerName">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Ticket Type</div>
-                                    <div class="cell-value" id="report_ticketType">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Relationship</div>
-                                    <div class="cell-value" id="report_relationship">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Ticket Issue</div>
-                                    <div class="cell-value" id="report_ticketIssue">-</div>
-                                </div>
+                                <div class="details-cell"><div class="cell-label">Passenger Name</div><div class="cell-value" id="report_passengerName">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Ticket Type</div><div class="cell-value" id="report_ticketType">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Relationship</div><div class="cell-value" id="report_relationship">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Ticket Issue</div><div class="cell-value" id="report_ticketIssue">-</div></div>
                             </div>
-
                             <div class="details-row">
-                                <div class="details-cell">
-                                    <div class="cell-label">Ticket No</div>
-                                    <div class="cell-value" id="report_ticketNo">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Passport</div>
-                                    <div class="cell-value" id="report_passport">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Departure</div>
-                                    <div class="cell-value" id="report_departure">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Return</div>
-                                    <div class="cell-value" id="report_return">-</div>
-                                </div>
-                                <div class="details-cell">
-                                    <div class="cell-label">Entitlement</div>
-                                    <div class="cell-value" id="report_entitlement">-</div>
-                                </div>
+                                <div class="details-cell"><div class="cell-label">Ticket No</div><div class="cell-value" id="report_ticketNo">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Passport</div><div class="cell-value" id="report_passport">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Departure</div><div class="cell-value" id="report_departure">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Return</div><div class="cell-value" id="report_return">-</div></div>
+                                <div class="details-cell"><div class="cell-label">Entitlement</div><div class="cell-value" id="report_entitlement">-</div></div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Report Filter Section (Replaces Trip Request Form) -->
                 <div class="report-filter-section">
-                    <div class="airline-image-container">
-                        <img src="~/assets/ItineraryImage.png" alt="SriLankan Airlines" class="airline-image">
-                    </div>
-
+                    <div class="airline-image-container"><img src="~/assets/ItineraryImage.png" alt="SriLankan Airlines" class="airline-image"></div>
                     <div class="report-filter-form">
-                        <!-- Filter Form -->
                         <div class="filter-form-content">
-                            <!-- Row 1: Folio ID, Name, From, To -->
                             <div class="filter-row filter-row-4">
-                                <div class="filter-group">
-                                    <label class="filter-label">Folion ID</label>
-                                    <input type="text" class="filter-input" id="filter_folioId" readonly>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">Name</label>
-                                    <input type="text" class="filter-input" id="filter_name" readonly>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">From</label>
-                                    <input type="date" class="filter-input" id="filter_fromDate" readonly>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">To</label>
-                                    <input type="date" class="filter-input" id="filter_toDate" readonly>
-                                </div>
+                                <div class="filter-group"><label class="filter-label">Folion ID</label><input type="text" class="filter-input" id="filter_folioId" readonly></div>
+                                <div class="filter-group"><label class="filter-label">Name</label><input type="text" class="filter-input" id="filter_name" readonly></div>
+                                <div class="filter-group"><label class="filter-label">From</label><input type="date" class="filter-input" id="filter_fromDate" readonly></div>
+                                <div class="filter-group"><label class="filter-label">To</label><input type="date" class="filter-input" id="filter_toDate" readonly></div>
                             </div>
-
-                            <!-- Row 2: Origin, Destination, Entity Type, Request Status -->
                             <div class="filter-row filter-row-4">
-                                <div class="filter-group">
-                                    <label class="filter-label">
-                                        Origin
-                                        <img src="~/assets/takeoff.png" alt="takeoff" class="label-icon">
-                                    </label>
-                                    <input type="text" class="filter-input" id="filter_origin" readonly>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">
-                                        Destination
-                                        <img src="~/assets/landing.png" alt="landing" class="label-icon">
-                                    </label>
-                                    <input type="text" class="filter-input" id="filter_destination" readonly>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">Entity Type</label>
-                                    <select class="filter-select" id="filter_entityType">
-                                        <option value="">All</option>
-                                        <option value="self">Self</option>
-                                        <option value="Shareholder">Shareholder</option>
-                                        <option value="spouse">Spouse</option>
-                                        <option value="Dependent">Dependent</option>
-                                    </select>
-                                </div>
-                                <div class="filter-group">
-                                    <label class="filter-label">Request Status</label>
-                                    <select class="filter-select" id="filter_status">
-                                        <option value="">All</option>
-                                        <option value="Issued">Issued</option>
-                                        <option value="Approved">Approved</option>
-                                        <option value="Pending">Pending</option>
-                                        <option value="Rejected">Rejected</option>
-                                        <option value="Refunded">Refunded</option>
-                                    </select>
-                                </div>
+                                <div class="filter-group"><label class="filter-label">Origin <img src="~/assets/takeoff.png" alt="takeoff" class="label-icon"></label><input type="text" class="filter-input" id="filter_origin" readonly></div>
+                                <div class="filter-group"><label class="filter-label">Destination <img src="~/assets/landing.png" alt="landing" class="label-icon"></label><input type="text" class="filter-input" id="filter_destination" readonly></div>
+                                <div class="filter-group"><label class="filter-label">Entity Type</label><select class="filter-select" id="filter_entityType"><option value="">All</option><option value="Shareholder">Shareholder</option><option value="Dependent">Dependent</option><option value="Spouse">Spouse</option></select></div>
+                                <div class="filter-group"><label class="filter-label">Request Status</label><select class="filter-select" id="filter_status"><option value="">All</option><option value="Pending">Pending</option><option value="Issued">Issued</option><option value="Approved">Approved</option><option value="Rejected">Rejected</option><option value="Refunded">Refunded</option></select></div>
                             </div>
-
-                            <!-- Statistics Row -->
                             <div class="stats-row">
-                                <div class="stat-box">
-                                    <span class="stat-label">Total Issued:</span>
-                                    <span class="stat-value" id="stat_totalIssued">0</span>
-                                </div>
-                                <div class="stat-box">
-                                    <span class="stat-label">Total Refunded:</span>
-                                    <span class="stat-value" id="stat_totalRefunded">0</span>
-                                </div>
-                                <div class="stat-box">
-                                    <span class="stat-label">Total Rejected:</span>
-                                    <span class="stat-value" id="stat_totalRejected">0</span>
-                                </div>
-                                <div class="stat-box stat-box-highlight">
-                                    <span class="stat-label">Total Flights:</span>
-                                    <span class="stat-value" id="stat_totalFlights">0</span>
-                                </div>
+                                <div class="stat-box"><span class="stat-label">Total Issued:</span><span class="stat-value" id="stat_totalIssued">0</span></div>
+                                <div class="stat-box"><span class="stat-label">Total Refunded:</span><span class="stat-value" id="stat_totalRefunded">0</span></div>
+                                <div class="stat-box"><span class="stat-label">Total Rejected:</span><span class="stat-value" id="stat_totalRejected">0</span></div>
+                                <div class="stat-box stat-box-highlight"><span class="stat-label">Total Flights:</span><span class="stat-value" id="stat_totalFlights">0</span></div>
                             </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Booking History Section -->
                 <div class="booking-history-section">
                     <div class="history-header">
-                        <div class="aeroholder-brand">
-                            <img src="~/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;">
-                            <span class="brand-name">AeroHolder</span>
-                            <span class="brand-subtitle">Booking History</span>
-                        </div>
-                        <div class="search-box">
-                            <input type="text" class="search-input" id="report_searchInput" placeholder="Search.........">
-                            <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#6b7280" stroke-width="2" />
-                                <path d="M19 19L14.65 14.65" stroke="#6b7280" stroke-width="2" />
-                            </svg>
-                        </div>
+                        <div class="aeroholder-brand"><img src="~/assets/smallplane.png" alt="plane" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"><span class="brand-name">AeroHolder</span><span class="brand-subtitle">Booking History</span></div>
+                        <div class="search-box"><input type="text" class="search-input" id="report_searchInput" placeholder=""><svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#6b7280" stroke-width="2" /><path d="M19 19L14.65 14.65" stroke="#6b7280" stroke-width="2" /></svg></div>
                     </div>
-
                     <div class="table-container">
                         <table class="booking-table">
-                            <thead>
-                                <tr>
-                                    <th style="width: 40px;"></th>
-                                    <th>Updated-on</th>
-                                    <th>From - To</th>
-                                    <th>Travel Route</th>
-                                    <th>Date</th>
-                                    <th>Status</th>
-                                    <th>Updated-by</th>
-                                    <th>Passenger</th>
-                                    <th style="text-align: center;">Tickets</th>
-                                    <th>Type</th>
-                                </tr>
-                            </thead>
-                            <tbody id="reportBookingHistoryTableBody">
-                                <tr>
-                                    <td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">
-                                        No booking history found.
-                                    </td>
-                                </tr>
-                            </tbody>
+                            <thead><tr><th style="width: 40px;"></th><th>Updated-on</th><th>From - To</th><th>Travel Route</th><th>Date</th><th>Status</th><th>Updated-by</th><th>Passenger</th><th style="text-align: center;">Tickets</th><th>Type</th></tr></thead>
+                            <tbody id="reportBookingHistoryTableBody"><tr><td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">No booking history found.</td></tr></tbody>
                         </table>
                     </div>
-
-                    <div class="pagination" id="reportPagination">
-                        <button class="pagination-btn">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                            Prev
-                        </button>
-                        <button class="pagination-btn active">1</button>
-                        <button class="pagination-btn">
-                            Next
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                <path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" />
-                            </svg>
-                        </button>
-                    </div>
+                    <div class="pagination" id="reportPagination"></div>
                 </div>
             </div>
         </div>
@@ -243,258 +91,44 @@
 </div>
 
 <style>
-    /* Modal Overlay */
-    .modal-overlay#viewReportModal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.4);
-        z-index: 10000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 20px;
-        animation: reportFadeIn 0.2s ease;
-    }
-
-    @@keyframes reportFadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .report-modal-dialog {
-        max-width: 900px;
-        width: 100%;
-        max-height: 95vh;
-        display: flex;
-        flex-direction: column;
-        animation: reportSlideUp 0.3s ease;
-    }
-
-    @@keyframes reportSlideUp {
-        from {
-            transform: translateY(30px);
-            opacity: 0;
-        }
-        to {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    }
-
-    .report-modal-content {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        max-height: 95vh;
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-    }
-
-    .report-modal-body {
-        overflow-y: auto;
-        background: #e8eaf0;
-        flex: 1;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-    }
-
-    .report-modal-body::-webkit-scrollbar {
-        display: none;
-    }
-
-    /* Header */
-    .report-header {
-        background: #0F2E6B;
-        padding: 12px 20px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    .report-header .header-title {
-        color: white;
-        font-size: 16px;
-        font-weight: 600;
-        margin: 0;
-    }
-
-    .report-header .close-btn {
-        background: transparent;
-        border: none;
-        color: white;
-        font-size: 22px;
-        cursor: pointer;
-        padding: 0;
-        width: 28px;
-        height: 28px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        transition: background 0.2s;
-    }
-
-    .report-header .close-btn:hover {
-        background: rgba(255, 255, 255, 0.1);
-    }
-
-    /* Report Filter Section */
-    .report-filter-section {
-        margin: 0 24px 16px 24px;
-        position: relative;
-        height: 420px;
-    }
-
-    .report-filter-section .airline-image-container {
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-        border-radius: 8px;
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-    }
-
-    .report-filter-section .airline-image {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
-
-    .report-filter-form {
-        background: white;
-        border-radius: 8px;
-        padding: 0;
-        position: absolute;
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 10;
-        width: calc(100% - 60px);
-        max-width: 780px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    }
-
-    .filter-form-content {
-        padding: 20px 24px;
-    }
-
-    .filter-row {
-        display: grid;
-        gap: 16px;
-        margin-bottom: 16px;
-    }
-
-    .filter-row-4 {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .filter-group {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-    }
-
-    .filter-label {
-        font-size: 12px;
-        color: #374151;
-        font-weight: 500;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
-    .label-icon {
-        width: 14px;
-        height: 14px;
-    }
-
-    .filter-input,
-    .filter-select {
-        padding: 10px 12px;
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        font-size: 13px;
-        color: #1f2937;
-        background: white;
-    }
-
-    .filter-input:focus,
-    .filter-select:focus {
-        outline: none;
-        border-color: #1e3a8a;
-    }
-
-    .filter-input[readonly] {
-        background: #f9fafb;
-        color: #6b7280;
-    }
-
-    /* Statistics Row */
-    .stats-row {
-        display: flex;
-        gap: 12px;
-        margin-top: 8px;
-        justify-content: center;
-    }
-
-    .stat-box {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        padding: 10px 20px;
-        background: #f3f4f6;
-        border: 1px solid #e5e7eb;
-        border-radius: 6px;
-    }
-
-    .stat-box-highlight {
-        background: #e0e7ff;
-        border-color: #c7d2fe;
-    }
-
-    .stat-label {
-        font-size: 13px;
-        color: #374151;
-        font-weight: 500;
-    }
-
-    .stat-value {
-        font-size: 14px;
-        color: #1e3a8a;
-        font-weight: 700;
-    }
-
-    /* Responsive for filter section */
-    @@media (max-width: 768px) {
-        .filter-row-4 {
-            grid-template-columns: repeat(2, 1fr);
-        }
-
-        .stats-row {
-            flex-wrap: wrap;
-        }
-
-        .stat-box {
-            flex: 1;
-            min-width: 140px;
-            justify-content: center;
-        }
-
-        .report-filter-section {
-            height: 520px;
-        }
-    }
+    .modal-overlay#viewReportModal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.4); z-index: 10000; display: flex; align-items: center; justify-content: center; padding: 20px; }
+    .report-modal-dialog { max-width: 900px; width: 100%; max-height: 95vh; display: flex; flex-direction: column; }
+    .report-modal-content { background: white; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; max-height: 95vh; box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2); }
+    .report-modal-body { overflow-y: auto; background: #e8eaf0; flex: 1; scrollbar-width: none; -ms-overflow-style: none; }
+    .report-modal-body::-webkit-scrollbar { display: none; }
+    .report-header { background: #0F2E6B; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .report-header .header-title { color: white; font-size: 16px; font-weight: 600; margin: 0; }
+    .report-header .close-btn { background: transparent; border: none; color: white; font-size: 22px; cursor: pointer; }
+    .itinerary-card .issued-badge { position: absolute; top: -12px; left: 24px; background: #9ca3af; color: white; padding: 6px 16px; border-radius: 4px; font-size: 12px; font-weight: 600; z-index: 10; }
+    .itinerary-card .issued-badge.status-pending { background: #9ca3af; }
+    .itinerary-card .issued-badge.status-issued, .itinerary-card .issued-badge.status-approved { background: #10b981; }
+    .itinerary-card .issued-badge.status-rejected { background: #ef4444; }
+    .itinerary-card .issued-badge.status-refunded { background: #f59e0b; }
+    .report-filter-section { margin: 0 24px 16px 24px; position: relative; height: 420px; }
+    .report-filter-section .airline-image-container { width: 100%; height: 100%; overflow: hidden; border-radius: 8px; position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+    .report-filter-section .airline-image { width: 100%; height: 100%; object-fit: cover; }
+    .report-filter-form { background: white; border-radius: 8px; position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 10; width: calc(100% - 60px); max-width: 780px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); }
+    .filter-form-content { padding: 20px 24px; }
+    .filter-row { display: grid; gap: 16px; margin-bottom: 16px; }
+    .filter-row-4 { grid-template-columns: repeat(4, 1fr); }
+    .filter-group { display: flex; flex-direction: column; gap: 6px; }
+    .filter-label { font-size: 12px; color: #374151; font-weight: 500; display: flex; align-items: center; gap: 6px; }
+    .label-icon { width: 14px; height: 14px; }
+    .filter-input, .filter-select { padding: 10px 12px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 13px; }
+    .filter-input[readonly] { background: #f9fafb; color: #6b7280; }
+    .stats-row { display: flex; gap: 12px; margin-top: 8px; justify-content: center; }
+    .stat-box { display: flex; align-items: center; gap: 6px; padding: 10px 20px; background: #f3f4f6; border: 1px solid #e5e7eb; border-radius: 6px; }
+    .stat-box-highlight { background: #e0e7ff; border-color: #c7d2fe; }
+    .stat-label { font-size: 13px; color: #374151; font-weight: 500; }
+    .stat-value { font-size: 14px; color: #1e3a8a; font-weight: 700; }
+    .status-dropdown { padding: 4px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; border: none; cursor: pointer; }
+    .status-dropdown.status-pending { background: #e5e7eb; color: #4b5563; }
+    .status-dropdown.status-issued { background: #86efac; color: #166534; }
+    .status-dropdown.status-rejected { background: #fecaca; color: #991b1b; }
+    .status-dropdown.status-refunded { background: #fde68a; color: #92400e; }
 </style>
 
 <script>
-    // Report Modal Variables
     var reportCurrentPage = 1;
     var reportRecordsPerPage = 5;
     var reportAllBookings = [];
@@ -504,12 +138,8 @@
         document.getElementById('report_folioId').value = folioId || '';
         document.getElementById('filter_folioId').value = folioId || '';
         document.getElementById('filter_name').value = shareholderName || '';
-        
         reportCurrentPage = 1;
-        
-        // Load booking history for report
         loadReportBookingHistory(folioId);
-        
         document.getElementById('viewReportModal').style.display = 'flex';
         document.body.style.overflow = 'hidden';
     }
@@ -521,467 +151,333 @@
 
     function loadReportBookingHistory(folioId) {
         if (!folioId) return;
-        reportCurrentPage = 1;
-
         fetch('/Itinerary/GetBookingHistory?folioId=' + encodeURIComponent(folioId))
-            .then(function(response) { return response.json(); })
+            .then(function(r) { return r.json(); })
             .then(function(data) {
                 if (data.success && data.data) {
                     reportAllBookings = data.data;
                     calculateReportStatistics();
                     renderReportBookingHistoryPage();
                     updateReportDetailsFromLatest();
+                    updateReportStatusBadge();
                 }
             })
-            .catch(function(error) {
-                console.error('Error loading report booking history:', error);
-            });
+            .catch(function(e) { console.error('Error:', e); });
+    }
+
+    function updateReportStatusBadge() {
+        var badge = document.getElementById('report_statusBadge');
+        if (!badge) return;
+        badge.className = 'issued-badge';
+        if (!reportAllBookings || reportAllBookings.length === 0) { badge.textContent = 'Pending'; badge.classList.add('status-pending'); return; }
+        var status = (reportAllBookings[0].Status || 'Pending').toLowerCase();
+        if (status === 'issued') { badge.textContent = 'Issued'; badge.classList.add('status-issued'); }
+        else if (status === 'approved') { badge.textContent = 'Approved'; badge.classList.add('status-approved'); }
+        else if (status === 'rejected') { badge.textContent = 'Rejected'; badge.classList.add('status-rejected'); }
+        else if (status === 'refunded') { badge.textContent = 'Refunded'; badge.classList.add('status-refunded'); }
+        else { badge.textContent = 'Pending'; badge.classList.add('status-pending'); }
     }
 
     function calculateReportStatistics() {
-        var totalIssued = 0;
-        var totalRefunded = 0;
-        var totalRejected = 0;
-        var totalFlights = reportAllBookings.length;
-
-        reportAllBookings.forEach(function(booking) {
-            var status = (booking.Status || '').toLowerCase();
-            if (status === 'issued' || status === 'approved') {
-                totalIssued++;
-            } else if (status === 'refunded') {
-                totalRefunded++;
-            } else if (status === 'rejected') {
-                totalRejected++;
-            }
-        });
-
+        var totalIssued = 0, totalRefunded = 0, totalRejected = 0;
+        for (var i = 0; i < reportAllBookings.length; i++) {
+            var s = (reportAllBookings[i].Status || '').toLowerCase();
+            if (s === 'issued' || s === 'approved') totalIssued++;
+            else if (s === 'refunded') totalRefunded++;
+            else if (s === 'rejected') totalRejected++;
+        }
         document.getElementById('stat_totalIssued').textContent = totalIssued;
         document.getElementById('stat_totalRefunded').textContent = totalRefunded;
         document.getElementById('stat_totalRejected').textContent = totalRejected;
-        document.getElementById('stat_totalFlights').textContent = totalFlights;
+        document.getElementById('stat_totalFlights').textContent = reportAllBookings.length;
     }
 
     function updateReportDetailsFromLatest() {
+        var fields = ['report_passengerName', 'report_ticketType', 'report_relationship', 'report_ticketIssue', 'report_ticketNo', 'report_passport', 'report_entitlement', 'report_route', 'report_departure', 'report_return'];
         if (reportAllBookings.length === 0) {
-            // Clear all fields if no bookings
-            document.getElementById('report_passengerName').textContent = '-';
-            document.getElementById('report_ticketType').textContent = '-';
-            document.getElementById('report_relationship').textContent = '-';
-            document.getElementById('report_ticketIssue').textContent = '-';
-            document.getElementById('report_ticketNo').textContent = '-';
-            document.getElementById('report_passport').textContent = '-';
-            document.getElementById('report_entitlement').textContent = '-';
-            document.getElementById('report_route').textContent = '-';
-            document.getElementById('report_departure').textContent = '-';
-            document.getElementById('report_return').textContent = '-';
-            
-            // Clear filter fields
+            for (var i = 0; i < fields.length; i++) { var el = document.getElementById(fields[i]); if (el) el.textContent = '-'; }
             document.getElementById('filter_fromDate').value = '';
             document.getElementById('filter_toDate').value = '';
             document.getElementById('filter_origin').value = '';
             document.getElementById('filter_destination').value = '';
             return;
         }
-        
-        var latest = reportAllBookings[0];
-        
-        // Update Report Details Card
-        document.getElementById('report_passengerName').textContent = latest.PassengerName || '-';
-        document.getElementById('report_ticketType').textContent = latest.TicketType || '-';
-        document.getElementById('report_relationship').textContent = latest.Relationship || '-';
-        document.getElementById('report_ticketIssue').textContent = latest.TicketIssue || '-';
-        document.getElementById('report_ticketNo').textContent = latest.TicketNo || '-';
-        document.getElementById('report_passport').textContent = latest.PassportNumber || '-';
-        document.getElementById('report_entitlement').textContent = latest.Entitlement || '-';
-        
-        // Update route
-        if (latest.DepartureAirport && latest.ArrivalAirport) {
-            document.getElementById('report_route').innerHTML = latest.DepartureAirport + 
-                ' <img src="/assets/smallplane.png" alt="to" style="width: 16px; height: 16px; vertical-align: middle; margin: 0 4px;"> ' + 
-                latest.ArrivalAirport;
-        } else {
-            document.getElementById('report_route').textContent = '-';
-        }
-        
-        // Update departure date
-        var depDateFormatted = '-';
-        if (latest.DepartureDate) {
-            var depDate = parseReportDate(latest.DepartureDate);
-            if (depDate && !isNaN(depDate.getTime())) {
-                depDateFormatted = depDate.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                document.getElementById('report_departure').textContent = depDateFormatted;
-                // Set From date in filter (YYYY-MM-DD format for input type="date")
-                document.getElementById('filter_fromDate').value = depDate.toISOString().split('T')[0];
-            }
-        } else {
-            document.getElementById('report_departure').textContent = '-';
-            document.getElementById('filter_fromDate').value = '';
-        }
-        
-        // Update return date
-        var retDateFormatted = '-';
-        if (latest.ReturnDate) {
-            var retDate = parseReportDate(latest.ReturnDate);
-            if (retDate && !isNaN(retDate.getTime())) {
-                retDateFormatted = retDate.toLocaleDateString('en-US', { day: '2-digit', month: '2-digit', year: 'numeric' });
-                document.getElementById('report_return').textContent = retDateFormatted;
-                // Set To date in filter (YYYY-MM-DD format for input type="date")
-                document.getElementById('filter_toDate').value = retDate.toISOString().split('T')[0];
-            }
-        } else {
-            document.getElementById('report_return').textContent = '-';
-            document.getElementById('filter_toDate').value = '';
-        }
-        
-        // Update filter fields from latest booking
-        document.getElementById('filter_origin').value = latest.DepartureAirport || '';
-        document.getElementById('filter_destination').value = latest.ArrivalAirport || '';
-        
-        // Set entity type dropdown if matches
-        var entityTypeSelect = document.getElementById('filter_entityType');
-        if (latest.TicketType) {
-            for (var i = 0; i < entityTypeSelect.options.length; i++) {
-                if (entityTypeSelect.options[i].value.toLowerCase() === latest.TicketType.toLowerCase()) {
-                    entityTypeSelect.selectedIndex = i;
-                    break;
-                }
-            }
-        }
-        
-        // Set status dropdown if matches
-        var statusSelect = document.getElementById('filter_status');
-        if (latest.Status) {
-            for (var i = 0; i < statusSelect.options.length; i++) {
-                if (statusSelect.options[i].value.toLowerCase() === latest.Status.toLowerCase()) {
-                    statusSelect.selectedIndex = i;
-                    break;
-                }
-            }
-        }
+        var b = reportAllBookings[0];
+        document.getElementById('report_passengerName').textContent = b.PassengerName || '-';
+        document.getElementById('report_ticketType').textContent = b.TicketType || '-';
+        document.getElementById('report_relationship').textContent = b.Relationship || '-';
+        document.getElementById('report_ticketIssue').textContent = b.TicketIssue || '-';
+        document.getElementById('report_ticketNo').textContent = b.TicketNo || '-';
+        document.getElementById('report_passport').textContent = b.PassportNumber || '-';
+        document.getElementById('report_entitlement').textContent = b.Entitlement || '-';
+        document.getElementById('report_route').innerHTML = (b.DepartureAirport && b.ArrivalAirport) ? b.DepartureAirport + ' <img src="/assets/smallplane.png" style="width:16px;height:16px;vertical-align:middle;margin:0 4px"> ' + b.ArrivalAirport : '-';
+        if (b.DepartureDate) { var d = parseReportDate(b.DepartureDate); if (d) { document.getElementById('report_departure').textContent = d.toLocaleDateString(); document.getElementById('filter_fromDate').value = d.toISOString().split('T')[0]; } }
+        else { document.getElementById('report_departure').textContent = '-'; document.getElementById('filter_fromDate').value = ''; }
+        if (b.ReturnDate) { var d = parseReportDate(b.ReturnDate); if (d) { document.getElementById('report_return').textContent = d.toLocaleDateString(); document.getElementById('filter_toDate').value = d.toISOString().split('T')[0]; } }
+        else { document.getElementById('report_return').textContent = '-'; document.getElementById('filter_toDate').value = ''; }
+        document.getElementById('filter_origin').value = b.DepartureAirport || '';
+        document.getElementById('filter_destination').value = b.ArrivalAirport || '';
     }
 
-    function parseReportDate(dateString) {
-        if (!dateString) return null;
-        var match = dateString.match(/\/Date\((\d+)\)\//);
-        if (match) {
-            return new Date(parseInt(match[1]));
-        }
-        return new Date(dateString);
-    }
+    function parseReportDate(ds) { if (!ds) return null; var m = ds.match(/\/Date\((\d+)\)\//); return m ? new Date(parseInt(m[1])) : new Date(ds); }
 
     function renderReportBookingHistoryPage() {
         var tbody = document.getElementById('reportBookingHistoryTableBody');
         if (!tbody) return;
-
-        if (!reportAllBookings || reportAllBookings.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">No booking history found.</td></tr>';
-            return;
-        }
-
-        var totalRecords = reportAllBookings.length;
-        var totalPages = Math.ceil(totalRecords / reportRecordsPerPage);
-        reportCurrentPage = Math.max(1, Math.min(reportCurrentPage, totalPages));
-
-        var startIdx = (reportCurrentPage - 1) * reportRecordsPerPage;
-        var endIdx = Math.min(startIdx + reportRecordsPerPage, totalRecords);
-        var pageBookings = reportAllBookings.slice(startIdx, endIdx);
-
+        if (!reportAllBookings || reportAllBookings.length === 0) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:#6b7280;">No booking history found.</td></tr>'; return; }
+        var total = reportAllBookings.length, pages = Math.ceil(total / reportRecordsPerPage);
+        reportCurrentPage = Math.max(1, Math.min(reportCurrentPage, pages));
+        var start = (reportCurrentPage - 1) * reportRecordsPerPage, end = Math.min(start + reportRecordsPerPage, total);
         var html = '';
-        for (var i = 0; i < pageBookings.length; i++) {
-            var booking = pageBookings[i];
-            var globalRowNum = startIdx + i + 1;
-
-            var formattedDate = '-', formattedTime = '-';
-            if (booking.UpdatedDate) {
-                var updatedDate = parseReportDate(booking.UpdatedDate);
-                if (updatedDate && !isNaN(updatedDate.getTime())) {
-                    formattedDate = updatedDate.toISOString().split('T')[0];
-                    formattedTime = updatedDate.toTimeString().split(' ')[0];
-                }
-            }
-
-            var depDate = '-';
-            if (booking.DepartureDate) {
-                var date = parseReportDate(booking.DepartureDate);
-                if (date && !isNaN(date.getTime())) {
-                    depDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var retDate = '-';
-            if (booking.ReturnDate) {
-                var date = parseReportDate(booking.ReturnDate);
-                if (date && !isNaN(date.getTime())) {
-                    retDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var bookingDate = '-';
-            if (booking.BookingDate) {
-                var date = parseReportDate(booking.BookingDate);
-                if (date && !isNaN(date.getTime())) {
-                    bookingDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var statusClass = 'status-issued';
-            var status = (booking.Status || 'Issued').toLowerCase();
-            if (status === 'rejected') statusClass = 'status-rejected';
-            else if (status === 'refunded') statusClass = 'status-refunded';
-            else if (status === 'pending') statusClass = 'status-pending';
-
-            html += '<tr>' +
-                '<td class="row-number">' + globalRowNum + '.</td>' +
-                '<td>' + formattedDate + '<br/>' + formattedTime + '</td>' +
-                '<td><span class="route-dates">' + depDate + '<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ' + retDate + '</span></td>' +
-                '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoff.png" alt="takeoff" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> <img src="/assets/landing.png" alt="landing" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
-                '<td>' + bookingDate + '</td>' +
-                '<td><span class="status-badge ' + statusClass + '">' + (booking.Status || 'Issued') + '</span></td>' +
-                '<td>' + (booking.UpdatedBy || '-') + '</td>' +
-                '<td>' + (booking.PassengerName || '-') + '</td>' +
-                '<td class="text-center">1</td>' +
-                '<td>' + (booking.TicketType || '-') + '</td>' +
-                '</tr>';
+        for (var i = start; i < end; i++) {
+            var b = reportAllBookings[i], row = i + 1;
+            var fd = '-', ft = '-'; if (b.UpdatedDate) { var d = parseReportDate(b.UpdatedDate); if (d) { fd = d.toISOString().split('T')[0]; ft = d.toTimeString().split(' ')[0]; } }
+            var dep = '-', ret = '-', bd = '-';
+            if (b.DepartureDate) { var d = parseReportDate(b.DepartureDate); if (d) dep = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.ReturnDate) { var d = parseReportDate(b.ReturnDate); if (d) ret = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.BookingDate) { var d = parseReportDate(b.BookingDate); if (d) bd = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            var st = (b.Status || 'Pending').toLowerCase(), sc = 'status-pending';
+            if (st === 'issued' || st === 'approved') sc = 'status-issued';
+            else if (st === 'rejected') sc = 'status-rejected';
+            else if (st === 'refunded') sc = 'status-refunded';
+            var dd = '<select class="status-dropdown '+sc+'" onchange="updateBookingStatus('+b.BookingID+',this.value)">' +
+                '<option value="Pending"'+(st==='pending'?' selected':'')+'>Pending</option>' +
+                '<option value="Issued"'+(st==='issued'?' selected':'')+'>Issued</option>' +
+                '<option value="Approved"'+(st==='approved'?' selected':'')+'>Approved</option>' +
+                '<option value="Rejected"'+(st==='rejected'?' selected':'')+'>Rejected</option>' +
+                '<option value="Refunded"'+(st==='refunded'?' selected':'')+'>Refunded</option></select>';
+            html += '<tr><td class="row-number">'+row+'.</td><td>'+fd+'<br/>'+ft+'</td><td><span class="route-dates">'+dep+'<br/><img src="/assets/arrowIcon.png" style="width:12px;height:12px;vertical-align:middle;margin:0 4px">'+ret+'</span></td><td>'+(b.DepartureAirport||'-')+' <img src="/assets/takeoff.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> '+(b.ArrivalAirport||'-')+'</td><td>'+bd+'</td><td>'+dd+'</td><td>'+(b.UpdatedBy||'-')+'</td><td>'+(b.PassengerName||'-')+'</td><td class="text-center">1</td><td>'+(b.TicketType||'-')+'</td></tr>';
         }
-
         tbody.innerHTML = html;
-        renderReportPagination(totalRecords, totalPages);
+        renderReportPagination(total, pages);
     }
 
-    function renderReportPagination(totalRecords, totalPages) {
-        var container = document.getElementById('reportPagination');
-        if (!container) return;
-
-        if (totalRecords === 0 || totalPages <= 1) {
-            container.style.display = 'none';
-            return;
-        }
-
-        container.style.display = 'flex';
-        container.innerHTML = '';
-
-        var prevBtn = document.createElement('button');
-        prevBtn.className = 'pagination-btn' + (reportCurrentPage === 1 ? ' disabled' : '');
-        prevBtn.innerHTML = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 12L6 8L10 4" stroke="currentColor" stroke-width="2" /></svg> Prev';
-        if (reportCurrentPage > 1) {
-            prevBtn.onclick = function() { reportCurrentPage--; renderReportBookingHistoryPage(); };
-        } else {
-            prevBtn.style.opacity = '0.5';
-            prevBtn.style.cursor = 'not-allowed';
-        }
-        container.appendChild(prevBtn);
-
-        for (var i = 1; i <= totalPages; i++) {
-            (function(pageNum) {
-                var pageBtn = document.createElement('button');
-                pageBtn.className = 'pagination-btn' + (pageNum === reportCurrentPage ? ' active' : '');
-                pageBtn.textContent = pageNum;
-                pageBtn.onclick = function() { reportCurrentPage = pageNum; renderReportBookingHistoryPage(); };
-                container.appendChild(pageBtn);
-            })(i);
-        }
-
-        var nextBtn = document.createElement('button');
-        nextBtn.className = 'pagination-btn' + (reportCurrentPage === totalPages ? ' disabled' : '');
-        nextBtn.innerHTML = 'Next <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M6 4L10 8L6 12" stroke="currentColor" stroke-width="2" /></svg>';
-        if (reportCurrentPage < totalPages) {
-            nextBtn.onclick = function() { reportCurrentPage++; renderReportBookingHistoryPage(); };
-        } else {
-            nextBtn.style.opacity = '0.5';
-            nextBtn.style.cursor = 'not-allowed';
-        }
-        container.appendChild(nextBtn);
+    function renderReportPagination(total, pages) {
+        var c = document.getElementById('reportPagination');
+        if (!c) return;
+        if (total === 0 || pages <= 1) { c.style.display = 'none'; return; }
+        c.style.display = 'flex'; c.innerHTML = '';
+        var prev = document.createElement('button'); prev.className = 'pagination-btn'; prev.textContent = 'Prev';
+        if (reportCurrentPage > 1) { prev.onclick = function() { reportCurrentPage--; renderReportBookingHistoryPage(); }; } else { prev.style.opacity = '0.5'; prev.style.cursor = 'not-allowed'; }
+        c.appendChild(prev);
+        for (var i = 1; i <= pages; i++) { (function(p) { var btn = document.createElement('button'); btn.className = 'pagination-btn'+(p===reportCurrentPage?' active':''); btn.textContent = p; btn.onclick = function() { reportCurrentPage = p; renderReportBookingHistoryPage(); }; c.appendChild(btn); })(i); }
+        var next = document.createElement('button'); next.className = 'pagination-btn'; next.textContent = 'Next';
+        if (reportCurrentPage < pages) { next.onclick = function() { reportCurrentPage++; renderReportBookingHistoryPage(); }; } else { next.style.opacity = '0.5'; next.style.cursor = 'not-allowed'; }
+        c.appendChild(next);
     }
 
-    // Filter functionality - only Entity Type and Request Status are used for filtering
-    document.addEventListener('DOMContentLoaded', function() {
-        // Only attach event listeners to editable filter fields
-        var editableFilters = ['filter_entityType', 'filter_status'];
-        editableFilters.forEach(function(inputId) {
-            var input = document.getElementById(inputId);
-            if (input) {
-                input.addEventListener('change', applyReportFilters);
-            }
-        });
-
-        var reportSearchInput = document.getElementById('report_searchInput');
-        if (reportSearchInput) {
-            var searchTimeout;
-            reportSearchInput.addEventListener('input', function() {
-                clearTimeout(searchTimeout);
-                searchTimeout = setTimeout(applyReportFilters, 300);
-            });
-        }
-    });
+    function updateBookingStatus(bookingId, newStatus) {
+        if (!bookingId || !newStatus) return;
+        fetch('/Itinerary/UpdateBookingStatus', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'bookingId=' + encodeURIComponent(bookingId) + '&status=' + encodeURIComponent(newStatus) })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                for (var i = 0; i < reportAllBookings.length; i++) { if (reportAllBookings[i].BookingID === bookingId) { reportAllBookings[i].Status = newStatus; break; } }
+                calculateReportStatistics(); renderReportBookingHistoryPage(); updateReportDetailsFromLatest(); updateReportStatusBadge();
+            } else { alert('Failed: ' + data.message); }
+        })
+        .catch(function(e) { alert('Error updating status.'); });
+    }
 
     function applyReportFilters() {
-        // Only filter by Entity Type and Request Status (the editable fields)
-        var entityType = document.getElementById('filter_entityType').value;
-        var status = document.getElementById('filter_status').value;
-        var searchTerm = document.getElementById('report_searchInput').value.toLowerCase();
-
-        // Filter bookings
-        var filtered = reportAllBookings.filter(function(booking) {
-            var match = true;
-            
-            // Filter by entity type
-            if (entityType && booking.TicketType) {
-                if (booking.TicketType.toLowerCase() !== entityType.toLowerCase()) {
-                    match = false;
-                }
-            } else if (entityType && !booking.TicketType) {
-                match = false;
-            }
-            
-            // Filter by status
-            if (status && booking.Status) {
-                if (booking.Status.toLowerCase() !== status.toLowerCase()) {
-                    match = false;
-                }
-            } else if (status && !booking.Status) {
-                match = false;
-            }
-            
-            // Search filter
-            if (searchTerm) {
-                var searchMatch = 
-                    (booking.PassengerName || '').toLowerCase().includes(searchTerm) ||
-                    (booking.TicketNo || '').toLowerCase().includes(searchTerm) ||
-                    (booking.DepartureAirport || '').toLowerCase().includes(searchTerm) ||
-                    (booking.ArrivalAirport || '').toLowerCase().includes(searchTerm) ||
-                    (booking.PassportNumber || '').toLowerCase().includes(searchTerm);
-                if (!searchMatch) match = false;
-            }
-            
-            return match;
-        });
-
-        // Update statistics based on filtered results
-        var totalIssued = 0;
-        var totalRefunded = 0;
-        var totalRejected = 0;
-
-        filtered.forEach(function(booking) {
-            var bookingStatus = (booking.Status || '').toLowerCase();
-            if (bookingStatus === 'issued' || bookingStatus === 'approved') {
-                totalIssued++;
-            } else if (bookingStatus === 'refunded') {
-                totalRefunded++;
-            } else if (bookingStatus === 'rejected') {
-                totalRejected++;
-            }
-        });
-
-        document.getElementById('stat_totalIssued').textContent = totalIssued;
-        document.getElementById('stat_totalRefunded').textContent = totalRefunded;
-        document.getElementById('stat_totalRejected').textContent = totalRejected;
+        var et = document.getElementById('filter_entityType').value;
+        var st = document.getElementById('filter_status').value;
+        var sr = document.getElementById('report_searchInput').value.toLowerCase();
+        var filtered = [];
+        for (var i = 0; i < reportAllBookings.length; i++) {
+            var b = reportAllBookings[i], match = true;
+            if (et && b.TicketType && b.TicketType.toLowerCase() !== et.toLowerCase()) match = false;
+            if (st && b.Status && b.Status.toLowerCase() !== st.toLowerCase()) match = false;
+            if (sr && !((b.PassengerName||'').toLowerCase().indexOf(sr)>=0 || (b.TicketNo||'').toLowerCase().indexOf(sr)>=0 || (b.DepartureAirport||'').toLowerCase().indexOf(sr)>=0 || (b.ArrivalAirport||'').toLowerCase().indexOf(sr)>=0)) match = false;
+            if (match) filtered.push(b);
+        }
+        var ti = 0, tr = 0, tj = 0;
+        for (var i = 0; i < filtered.length; i++) { var s = (filtered[i].Status||'').toLowerCase(); if (s==='issued'||s==='approved') ti++; else if (s==='refunded') tr++; else if (s==='rejected') tj++; }
+        document.getElementById('stat_totalIssued').textContent = ti;
+        document.getElementById('stat_totalRefunded').textContent = tr;
+        document.getElementById('stat_totalRejected').textContent = tj;
         document.getElementById('stat_totalFlights').textContent = filtered.length;
-
-        // Render filtered results
         reportCurrentPage = 1;
         renderFilteredBookings(filtered);
     }
 
-    function renderFilteredBookings(filteredBookings) {
+    function renderFilteredBookings(fb) {
         var tbody = document.getElementById('reportBookingHistoryTableBody');
-        if (!tbody) return;
-
-        if (!filteredBookings || filteredBookings.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="10" style="text-align: center; padding: 20px; color: #6b7280;">No booking history found matching the filters.</td></tr>';
-            document.getElementById('reportPagination').style.display = 'none';
-            return;
-        }
-
-        var totalRecords = filteredBookings.length;
-        var totalPages = Math.ceil(totalRecords / reportRecordsPerPage);
-        reportCurrentPage = Math.max(1, Math.min(reportCurrentPage, totalPages));
-
-        var startIdx = (reportCurrentPage - 1) * reportRecordsPerPage;
-        var endIdx = Math.min(startIdx + reportRecordsPerPage, totalRecords);
-        var pageBookings = filteredBookings.slice(startIdx, endIdx);
-
+        if (!fb || fb.length === 0) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:#6b7280;">No results found.</td></tr>'; document.getElementById('reportPagination').style.display = 'none'; return; }
+        var total = fb.length, pages = Math.ceil(total / reportRecordsPerPage);
+        var start = (reportCurrentPage - 1) * reportRecordsPerPage, end = Math.min(start + reportRecordsPerPage, total);
         var html = '';
-        for (var i = 0; i < pageBookings.length; i++) {
-            var booking = pageBookings[i];
-            var globalRowNum = startIdx + i + 1;
-
-            var formattedDate = '-', formattedTime = '-';
-            if (booking.UpdatedDate) {
-                var updatedDate = parseReportDate(booking.UpdatedDate);
-                if (updatedDate && !isNaN(updatedDate.getTime())) {
-                    formattedDate = updatedDate.toISOString().split('T')[0];
-                    formattedTime = updatedDate.toTimeString().split(' ')[0];
-                }
-            }
-
-            var depDate = '-';
-            if (booking.DepartureDate) {
-                var date = parseReportDate(booking.DepartureDate);
-                if (date && !isNaN(date.getTime())) {
-                    depDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var retDate = '-';
-            if (booking.ReturnDate) {
-                var date = parseReportDate(booking.ReturnDate);
-                if (date && !isNaN(date.getTime())) {
-                    retDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var bookingDate = '-';
-            if (booking.BookingDate) {
-                var date = parseReportDate(booking.BookingDate);
-                if (date && !isNaN(date.getTime())) {
-                    bookingDate = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
-                }
-            }
-
-            var statusClass = 'status-issued';
-            var bookingStatus = (booking.Status || 'Issued').toLowerCase();
-            if (bookingStatus === 'rejected') statusClass = 'status-rejected';
-            else if (bookingStatus === 'refunded') statusClass = 'status-refunded';
-            else if (bookingStatus === 'pending') statusClass = 'status-pending';
-
-            html += '<tr>' +
-                '<td class="row-number">' + globalRowNum + '.</td>' +
-                '<td>' + formattedDate + '<br/>' + formattedTime + '</td>' +
-                '<td><span class="route-dates">' + depDate + '<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ' + retDate + '</span></td>' +
-                '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoff.png" alt="takeoff" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> <img src="/assets/landing.png" alt="landing" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
-                '<td>' + bookingDate + '</td>' +
-                '<td><span class="status-badge ' + statusClass + '">' + (booking.Status || 'Issued') + '</span></td>' +
-                '<td>' + (booking.UpdatedBy || '-') + '</td>' +
-                '<td>' + (booking.PassengerName || '-') + '</td>' +
-                '<td class="text-center">1</td>' +
-                '<td>' + (booking.TicketType || '-') + '</td>' +
-                '</tr>';
+        for (var i = start; i < end; i++) {
+            var b = fb[i], row = i + 1;
+            var fd = '-', ft = '-'; if (b.UpdatedDate) { var d = parseReportDate(b.UpdatedDate); if (d) { fd = d.toISOString().split('T')[0]; ft = d.toTimeString().split(' ')[0]; } }
+            var dep = '-', ret = '-', bd = '-';
+            if (b.DepartureDate) { var d = parseReportDate(b.DepartureDate); if (d) dep = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.ReturnDate) { var d = parseReportDate(b.ReturnDate); if (d) ret = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.BookingDate) { var d = parseReportDate(b.BookingDate); if (d) bd = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            var st = (b.Status || 'Pending').toLowerCase(), sc = 'status-pending';
+            if (st === 'issued' || st === 'approved') sc = 'status-issued';
+            else if (st === 'rejected') sc = 'status-rejected';
+            else if (st === 'refunded') sc = 'status-refunded';
+            var dd = '<select class="status-dropdown '+sc+'" onchange="updateBookingStatus('+b.BookingID+',this.value)"><option value="Pending"'+(st==='pending'?' selected':'')+'>Pending</option><option value="Issued"'+(st==='issued'?' selected':'')+'>Issued</option><option value="Approved"'+(st==='approved'?' selected':'')+'>Approved</option><option value="Rejected"'+(st==='rejected'?' selected':'')+'>Rejected</option><option value="Refunded"'+(st==='refunded'?' selected':'')+'>Refunded</option></select>';
+            html += '<tr><td class="row-number">'+row+'.</td><td>'+fd+'<br/>'+ft+'</td><td><span class="route-dates">'+dep+'<br/><img src="/assets/arrowIcon.png" style="width:12px;height:12px;vertical-align:middle;margin:0 4px">'+ret+'</span></td><td>'+(b.DepartureAirport||'-')+' <img src="/assets/takeoff.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> <img src="/assets/landing.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> '+(b.ArrivalAirport||'-')+'</td><td>'+bd+'</td><td>'+dd+'</td><td>'+(b.UpdatedBy||'-')+'</td><td>'+(b.PassengerName||'-')+'</td><td class="text-center">1</td><td>'+(b.TicketType||'-')+'</td></tr>';
         }
-
         tbody.innerHTML = html;
-        
-        // Update pagination for filtered results
-        var container = document.getElementById('reportPagination');
-        if (totalPages <= 1) {
-            container.style.display = 'none';
-        } else {
-            container.style.display = 'flex';
-            renderReportPagination(totalRecords, totalPages);
-        }
+        renderReportPagination(total, pages);
     }
 
-    // Close on Escape key
-    document.addEventListener('keydown', function(event) {
-        if (event.key === 'Escape' && document.getElementById('viewReportModal').style.display === 'flex') {
-            closeReportModal();
+    function renderReportPagination(total, pages) {
+        var c = document.getElementById('reportPagination');
+        if (!c) return;
+        if (total === 0 || pages <= 1) { c.style.display = 'none'; return; }
+        c.style.display = 'flex'; c.innerHTML = '';
+        var prev = document.createElement('button'); prev.className = 'pagination-btn'; prev.textContent = 'Prev';
+        if (reportCurrentPage > 1) { prev.onclick = function() { reportCurrentPage--; renderReportBookingHistoryPage(); }; } else { prev.style.opacity = '0.5'; prev.style.cursor = 'not-allowed'; }
+        c.appendChild(prev);
+        for (var i = 1; i <= pages; i++) { (function(p) { var btn = document.createElement('button'); btn.className = 'pagination-btn'+(p===reportCurrentPage?' active':''); btn.textContent = p; btn.onclick = function() { reportCurrentPage = p; renderReportBookingHistoryPage(); }; c.appendChild(btn); })(i); }
+        var next = document.createElement('button'); next.className = 'pagination-btn'; next.textContent = 'Next';
+        if (reportCurrentPage < pages) { next.onclick = function() { reportCurrentPage++; renderReportBookingHistoryPage(); }; } else { next.style.opacity = '0.5'; next.style.cursor = 'not-allowed'; }
+        c.appendChild(next);
+    }
+
+    function updateBookingStatus(bookingId, newStatus) {
+        if (!bookingId || !newStatus) return;
+        fetch('/Itinerary/UpdateBookingStatus', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'bookingId=' + encodeURIComponent(bookingId) + '&status=' + encodeURIComponent(newStatus) })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                for (var i = 0; i < reportAllBookings.length; i++) { if (reportAllBookings[i].BookingID === bookingId) { reportAllBookings[i].Status = newStatus; break; } }
+                calculateReportStatistics(); renderReportBookingHistoryPage(); updateReportDetailsFromLatest(); updateReportStatusBadge();
+            } else { alert('Failed: ' + data.message); }
+        })
+        .catch(function(e) { alert('Error updating status.'); });
+    }
+
+    function applyReportFilters() {
+        var et = document.getElementById('filter_entityType').value;
+        var st = document.getElementById('filter_status').value;
+        var sr = document.getElementById('report_searchInput').value.toLowerCase();
+        var filtered = [];
+        for (var i = 0; i < reportAllBookings.length; i++) {
+            var b = reportAllBookings[i], match = true;
+            if (et && b.TicketType && b.TicketType.toLowerCase() !== et.toLowerCase()) match = false;
+            if (st && b.Status && b.Status.toLowerCase() !== st.toLowerCase()) match = false;
+            if (sr && !((b.PassengerName||'').toLowerCase().indexOf(sr)>=0 || (b.TicketNo||'').toLowerCase().indexOf(sr)>=0 || (b.DepartureAirport||'').toLowerCase().indexOf(sr)>=0 || (b.ArrivalAirport||'').toLowerCase().indexOf(sr)>=0)) match = false;
+            if (match) filtered.push(b);
         }
+        var ti = 0, tr = 0, tj = 0;
+        for (var i = 0; i < filtered.length; i++) { var s = (filtered[i].Status||'').toLowerCase(); if (s==='issued'||s==='approved') ti++; else if (s==='refunded') tr++; else if (s==='rejected') tj++; }
+        document.getElementById('stat_totalIssued').textContent = ti;
+        document.getElementById('stat_totalRefunded').textContent = tr;
+        document.getElementById('stat_totalRejected').textContent = tj;
+        document.getElementById('stat_totalFlights').textContent = filtered.length;
+        reportCurrentPage = 1;
+        renderFilteredBookings(filtered);
+    }
+
+    function renderFilteredBookings(fb) {
+        var tbody = document.getElementById('reportBookingHistoryTableBody');
+        if (!fb || fb.length === 0) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:#6b7280;">No results found.</td></tr>'; document.getElementById('reportPagination').style.display = 'none'; return; }
+        var total = fb.length, pages = Math.ceil(total / reportRecordsPerPage);
+        var start = (reportCurrentPage - 1) * reportRecordsPerPage, end = Math.min(start + reportRecordsPerPage, total);
+        var html = '';
+        for (var i = start; i < end; i++) {
+            var b = fb[i], row = i + 1;
+            var fd = '-', ft = '-'; if (b.UpdatedDate) { var d = parseReportDate(b.UpdatedDate); if (d) { fd = d.toISOString().split('T')[0]; ft = d.toTimeString().split(' ')[0]; } }
+            var dep = '-', ret = '-', bd = '-';
+            if (b.DepartureDate) { var d = parseReportDate(b.DepartureDate); if (d) dep = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.ReturnDate) { var d = parseReportDate(b.ReturnDate); if (d) ret = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.BookingDate) { var d = parseReportDate(b.BookingDate); if (d) bd = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            var st = (b.Status || 'Pending').toLowerCase(), sc = 'status-pending';
+            if (st === 'issued' || st === 'approved') sc = 'status-issued';
+            else if (st === 'rejected') sc = 'status-rejected';
+            else if (st === 'refunded') sc = 'status-refunded';
+            var dd = '<select class="status-dropdown '+sc+'" onchange="updateBookingStatus('+b.BookingID+',this.value)"><option value="Pending"'+(st==='pending'?' selected':'')+'>Pending</option><option value="Issued"'+(st==='issued'?' selected':'')+'>Issued</option><option value="Approved"'+(st==='approved'?' selected':'')+'>Approved</option><option value="Rejected"'+(st==='rejected'?' selected':'')+'>Rejected</option><option value="Refunded"'+(st==='refunded'?' selected':'')+'>Refunded</option></select>';
+            html += '<tr><td class="row-number">'+row+'.</td><td>'+fd+'<br/>'+ft+'</td><td><span class="route-dates">'+dep+'<br/><img src="/assets/arrowIcon.png" style="width:12px;height:12px;vertical-align:middle;margin:0 4px">'+ret+'</span></td><td>'+(b.DepartureAirport||'-')+' <img src="/assets/takeoff.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> <img src="/assets/landing.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> '+(b.ArrivalAirport||'-')+'</td><td>'+bd+'</td><td>'+dd+'</td><td>'+(b.UpdatedBy||'-')+'</td><td>'+(b.PassengerName||'-')+'</td><td class="text-center">1</td><td>'+(b.TicketType||'-')+'</td></tr>';
+        }
+        tbody.innerHTML = html;
+        renderReportPagination(total, pages);
+    }
+
+    function renderReportPagination(total, pages) {
+        var c = document.getElementById('reportPagination');
+        if (!c) return;
+        if (total === 0 || pages <= 1) { c.style.display = 'none'; return; }
+        c.style.display = 'flex'; c.innerHTML = '';
+        var prev = document.createElement('button'); prev.className = 'pagination-btn'; prev.textContent = 'Prev';
+        if (reportCurrentPage > 1) { prev.onclick = function() { reportCurrentPage--; renderReportBookingHistoryPage(); }; } else { prev.style.opacity = '0.5'; prev.style.cursor = 'not-allowed'; }
+        c.appendChild(prev);
+        for (var i = 1; i <= pages; i++) { (function(p) { var btn = document.createElement('button'); btn.className = 'pagination-btn'+(p===reportCurrentPage?' active':''); btn.textContent = p; btn.onclick = function() { reportCurrentPage = p; renderReportBookingHistoryPage(); }; c.appendChild(btn); })(i); }
+        var next = document.createElement('button'); next.className = 'pagination-btn'; next.textContent = 'Next';
+        if (reportCurrentPage < pages) { next.onclick = function() { reportCurrentPage++; renderReportBookingHistoryPage(); }; } else { next.style.opacity = '0.5'; next.style.cursor = 'not-allowed'; }
+        c.appendChild(next);
+    }
+
+    function updateBookingStatus(bookingId, newStatus) {
+        if (!bookingId || !newStatus) return;
+        fetch('/Itinerary/UpdateBookingStatus', { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: 'bookingId=' + encodeURIComponent(bookingId) + '&status=' + encodeURIComponent(newStatus) })
+        .then(function(r) { return r.json(); })
+        .then(function(data) {
+            if (data.success) {
+                for (var i = 0; i < reportAllBookings.length; i++) { if (reportAllBookings[i].BookingID === bookingId) { reportAllBookings[i].Status = newStatus; break; } }
+                calculateReportStatistics(); renderReportBookingHistoryPage(); updateReportDetailsFromLatest(); updateReportStatusBadge();
+            } else { alert('Failed: ' + data.message); }
+        })
+        .catch(function(e) { alert('Error updating status.'); });
+    }
+
+    function applyReportFilters() {
+        var et = document.getElementById('filter_entityType').value;
+        var st = document.getElementById('filter_status').value;
+        var sr = document.getElementById('report_searchInput').value.toLowerCase();
+        var filtered = [];
+        for (var i = 0; i < reportAllBookings.length; i++) {
+            var b = reportAllBookings[i], match = true;
+            if (et && b.TicketType && b.TicketType.toLowerCase() !== et.toLowerCase()) match = false;
+            if (st && b.Status && b.Status.toLowerCase() !== st.toLowerCase()) match = false;
+            if (sr && !((b.PassengerName||'').toLowerCase().indexOf(sr)>=0 || (b.TicketNo||'').toLowerCase().indexOf(sr)>=0 || (b.DepartureAirport||'').toLowerCase().indexOf(sr)>=0 || (b.ArrivalAirport||'').toLowerCase().indexOf(sr)>=0)) match = false;
+            if (match) filtered.push(b);
+        }
+        var ti = 0, tr = 0, tj = 0;
+        for (var i = 0; i < filtered.length; i++) { var s = (filtered[i].Status||'').toLowerCase(); if (s==='issued'||s==='approved') ti++; else if (s==='refunded') tr++; else if (s==='rejected') tj++; }
+        document.getElementById('stat_totalIssued').textContent = ti;
+        document.getElementById('stat_totalRefunded').textContent = tr;
+        document.getElementById('stat_totalRejected').textContent = tj;
+        document.getElementById('stat_totalFlights').textContent = filtered.length;
+        reportCurrentPage = 1;
+        renderFilteredBookings(filtered);
+    }
+
+    function renderFilteredBookings(fb) {
+        var tbody = document.getElementById('reportBookingHistoryTableBody');
+        if (!fb || fb.length === 0) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:20px;color:#6b7280;">No results found.</td></tr>'; document.getElementById('reportPagination').style.display = 'none'; return; }
+        var total = fb.length, pages = Math.ceil(total / reportRecordsPerPage);
+        var start = (reportCurrentPage - 1) * reportRecordsPerPage, end = Math.min(start + reportRecordsPerPage, total);
+        var html = '';
+        for (var i = start; i < end; i++) {
+            var b = fb[i], row = i + 1;
+            var fd = '-', ft = '-'; if (b.UpdatedDate) { var d = parseReportDate(b.UpdatedDate); if (d) { fd = d.toISOString().split('T')[0]; ft = d.toTimeString().split(' ')[0]; } }
+            var dep = '-', ret = '-', bd = '-';
+            if (b.DepartureDate) { var d = parseReportDate(b.DepartureDate); if (d) dep = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.ReturnDate) { var d = parseReportDate(b.ReturnDate); if (d) ret = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            if (b.BookingDate) { var d = parseReportDate(b.BookingDate); if (d) bd = d.toLocaleDateString('en-US', {month:'short',day:'numeric',year:'numeric'}); }
+            var st = (b.Status || 'Pending').toLowerCase(), sc = 'status-pending';
+            if (st === 'issued' || st === 'approved') sc = 'status-issued';
+            else if (st === 'rejected') sc = 'status-rejected';
+            else if (st === 'refunded') sc = 'status-refunded';
+            var dd = '<select class="status-dropdown '+sc+'" onchange="updateBookingStatus('+b.BookingID+',this.value)"><option value="Pending"'+(st==='pending'?' selected':'')+'>Pending</option><option value="Issued"'+(st==='issued'?' selected':'')+'>Issued</option><option value="Approved"'+(st==='approved'?' selected':'')+'>Approved</option><option value="Rejected"'+(st==='rejected'?' selected':'')+'>Rejected</option><option value="Refunded"'+(st==='refunded'?' selected':'')+'>Refunded</option></select>';
+            html += '<tr><td class="row-number">'+row+'.</td><td>'+fd+'<br/>'+ft+'</td><td><span class="route-dates">'+dep+'<br/><img src="/assets/arrowIcon.png" style="width:12px;height:12px;vertical-align:middle;margin:0 4px">'+ret+'</span></td><td>'+(b.DepartureAirport||'-')+' <img src="/assets/takeoff.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> <img src="/assets/landing.png" style="width:14px;height:14px;vertical-align:middle;margin:0 2px"> '+(b.ArrivalAirport||'-')+'</td><td>'+bd+'</td><td>'+dd+'</td><td>'+(b.UpdatedBy||'-')+'</td><td>'+(b.PassengerName||'-')+'</td><td class="text-center">1</td><td>'+(b.TicketType||'-')+'</td></tr>';
+        }
+        tbody.innerHTML = html;
+        renderReportPagination(total, pages);
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var f1 = document.getElementById('filter_entityType'); if (f1) f1.addEventListener('change', applyReportFilters);
+        var f2 = document.getElementById('filter_status'); if (f2) f2.addEventListener('change', applyReportFilters);
+        var si = document.getElementById('report_searchInput');
+        if (si) { var t; si.addEventListener('input', function() { clearTimeout(t); t = setTimeout(applyReportFilters, 300); }); }
     });
 
-    // Close on overlay click
-    document.addEventListener('click', function(event) {
-        var modal = document.getElementById('viewReportModal');
-        if (event.target === modal) {
-            closeReportModal();
-        }
-    });
+    document.addEventListener('keydown', function(e) { if (e.key === 'Escape' && document.getElementById('viewReportModal').style.display === 'flex') closeReportModal(); });
+    document.addEventListener('click', function(e) { if (e.target === document.getElementById('viewReportModal')) closeReportModal(); });
 </script>

@@ -165,13 +165,15 @@ namespace AeroHolder_new.Repositories
         {
             try
             {
+                // Note: Relationship, TicketIssue, Entitlement, PassportNumber are stored in TripRequests table
+                // and retrieved via JOIN in GetBookingHistoryByShareholderId
                 string query = @"
                     INSERT INTO BookingHistory 
-                    (ShareholderID, TripRequestID, TicketNo, PassengerName, TicketType, Relationship, TicketIssue, Entitlement, PassportNumber,
-                     DepartureAirport, ArrivalAirport, DepartureDate, ReturnDate, BookingDate, Status, UpdatedBy, CreatedDate, UpdatedDate)
+                    (ShareholderID, TripRequestID, TicketNo, PassengerName, TicketType, DepartureAirport, ArrivalAirport, 
+                     DepartureDate, ReturnDate, BookingDate, Status, UpdatedBy, CreatedDate, UpdatedDate)
                     VALUES 
-                    (@ShareholderID, @TripRequestID, @TicketNo, @PassengerName, @TicketType, @Relationship, @TicketIssue, @Entitlement, @PassportNumber,
-                     @DepartureAirport, @ArrivalAirport, @DepartureDate, @ReturnDate, @BookingDate, @Status, @UpdatedBy, GETDATE(), GETDATE());
+                    (@ShareholderID, @TripRequestID, @TicketNo, @PassengerName, @TicketType, @DepartureAirport, @ArrivalAirport,
+                     @DepartureDate, @ReturnDate, @BookingDate, @Status, @UpdatedBy, GETDATE(), GETDATE());
                     SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                 SqlParameter[] parameters = {
@@ -180,16 +182,12 @@ namespace AeroHolder_new.Repositories
                     new SqlParameter("@TicketNo", model.TicketNo ?? (object)DBNull.Value),
                     new SqlParameter("@PassengerName", model.PassengerName ?? (object)DBNull.Value),
                     new SqlParameter("@TicketType", model.TicketType ?? (object)DBNull.Value),
-                    new SqlParameter("@Relationship", model.Relationship ?? (object)DBNull.Value),
-                    new SqlParameter("@TicketIssue", model.TicketIssue ?? (object)DBNull.Value),
-                    new SqlParameter("@Entitlement", model.Entitlement ?? (object)DBNull.Value),
-                    new SqlParameter("@PassportNumber", model.PassportNumber ?? (object)DBNull.Value),
                     new SqlParameter("@DepartureAirport", model.DepartureAirport ?? (object)DBNull.Value),
                     new SqlParameter("@ArrivalAirport", model.ArrivalAirport ?? (object)DBNull.Value),
                     new SqlParameter("@DepartureDate", model.DepartureDate ?? (object)DBNull.Value),
                     new SqlParameter("@ReturnDate", model.ReturnDate ?? (object)DBNull.Value),
                     new SqlParameter("@BookingDate", model.BookingDate ?? DateTime.Now),
-                    new SqlParameter("@Status", model.Status ?? "Issued"),
+                    new SqlParameter("@Status", model.Status ?? "Pending"),
                     new SqlParameter("@UpdatedBy", model.UpdatedBy ?? (object)DBNull.Value)
                 };
 
@@ -305,6 +303,34 @@ namespace AeroHolder_new.Repositories
             catch (Exception ex)
             {
                 throw new Exception($"Error searching booking history: {ex.Message}", ex);
+            }
+        }
+
+        /// <summary>
+        /// Update booking status
+        /// </summary>
+        public bool UpdateBookingStatus(int bookingId, string status, string updatedBy)
+        {
+            try
+            {
+                string query = @"
+                    UPDATE BookingHistory 
+                    SET Status = @Status,
+                        UpdatedBy = @UpdatedBy,
+                        UpdatedDate = GETDATE()
+                    WHERE BookingID = @BookingID";
+
+                SqlParameter[] parameters = {
+                    new SqlParameter("@BookingID", bookingId),
+                    new SqlParameter("@Status", status),
+                    new SqlParameter("@UpdatedBy", updatedBy ?? (object)DBNull.Value)
+                };
+
+                return _context.ExecuteNonQuery(query, parameters) > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating booking status: {ex.Message}", ex);
             }
         }
 
