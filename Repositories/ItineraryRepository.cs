@@ -167,11 +167,11 @@ namespace AeroHolder_new.Repositories
             {
                 string query = @"
                     INSERT INTO BookingHistory 
-                    (ShareholderID, TripRequestID, TicketNo, PassengerName, TicketType, DepartureAirport, ArrivalAirport, 
-                     DepartureDate, ReturnDate, BookingDate, Status, UpdatedBy, CreatedDate, UpdatedDate)
+                    (ShareholderID, TripRequestID, TicketNo, PassengerName, TicketType, Relationship, TicketIssue, Entitlement, PassportNumber,
+                     DepartureAirport, ArrivalAirport, DepartureDate, ReturnDate, BookingDate, Status, UpdatedBy, CreatedDate, UpdatedDate)
                     VALUES 
-                    (@ShareholderID, @TripRequestID, @TicketNo, @PassengerName, @TicketType, @DepartureAirport, @ArrivalAirport,
-                     @DepartureDate, @ReturnDate, @BookingDate, @Status, @UpdatedBy, GETDATE(), GETDATE());
+                    (@ShareholderID, @TripRequestID, @TicketNo, @PassengerName, @TicketType, @Relationship, @TicketIssue, @Entitlement, @PassportNumber,
+                     @DepartureAirport, @ArrivalAirport, @DepartureDate, @ReturnDate, @BookingDate, @Status, @UpdatedBy, GETDATE(), GETDATE());
                     SELECT CAST(SCOPE_IDENTITY() AS INT);";
 
                 SqlParameter[] parameters = {
@@ -180,6 +180,10 @@ namespace AeroHolder_new.Repositories
                     new SqlParameter("@TicketNo", model.TicketNo ?? (object)DBNull.Value),
                     new SqlParameter("@PassengerName", model.PassengerName ?? (object)DBNull.Value),
                     new SqlParameter("@TicketType", model.TicketType ?? (object)DBNull.Value),
+                    new SqlParameter("@Relationship", model.Relationship ?? (object)DBNull.Value),
+                    new SqlParameter("@TicketIssue", model.TicketIssue ?? (object)DBNull.Value),
+                    new SqlParameter("@Entitlement", model.Entitlement ?? (object)DBNull.Value),
+                    new SqlParameter("@PassportNumber", model.PassportNumber ?? (object)DBNull.Value),
                     new SqlParameter("@DepartureAirport", model.DepartureAirport ?? (object)DBNull.Value),
                     new SqlParameter("@ArrivalAirport", model.ArrivalAirport ?? (object)DBNull.Value),
                     new SqlParameter("@DepartureDate", model.DepartureDate ?? (object)DBNull.Value),
@@ -205,10 +209,32 @@ namespace AeroHolder_new.Repositories
         {
             try
             {
+                // Get data from BookingHistory and join with TripRequests to get all fields
                 string query = @"
-                    SELECT * FROM BookingHistory 
-                    WHERE ShareholderID = @ShareholderID
-                    ORDER BY CreatedDate DESC";
+                    SELECT 
+                        b.BookingID,
+                        b.ShareholderID,
+                        b.TripRequestID,
+                        b.TicketNo,
+                        b.PassengerName,
+                        b.TicketType,
+                        t.Relationship,
+                        t.TicketIssue,
+                        t.Entitlement,
+                        t.PassportNumber,
+                        b.DepartureAirport,
+                        b.ArrivalAirport,
+                        b.DepartureDate,
+                        b.ReturnDate,
+                        b.BookingDate,
+                        b.Status,
+                        b.UpdatedBy,
+                        b.CreatedDate,
+                        b.UpdatedDate
+                    FROM BookingHistory b
+                    LEFT JOIN TripRequests t ON b.TripRequestID = t.TripRequestID
+                    WHERE b.ShareholderID = @ShareholderID
+                    ORDER BY b.CreatedDate DESC";
 
                 SqlParameter[] parameters = { new SqlParameter("@ShareholderID", shareholderId) };
                 DataTable dt = _context.ExecuteQuery(query, parameters);
@@ -234,12 +260,33 @@ namespace AeroHolder_new.Repositories
             try
             {
                 string query = @"
-                    SELECT * FROM BookingHistory 
-                    WHERE ShareholderID = @ShareholderID
-                    AND (PassengerName LIKE @SearchTerm 
-                         OR TicketNo LIKE @SearchTerm
-                         OR UpdatedBy LIKE @SearchTerm)
-                    ORDER BY CreatedDate DESC";
+                    SELECT 
+                        b.BookingID,
+                        b.ShareholderID,
+                        b.TripRequestID,
+                        b.TicketNo,
+                        b.PassengerName,
+                        b.TicketType,
+                        t.Relationship,
+                        t.TicketIssue,
+                        t.Entitlement,
+                        t.PassportNumber,
+                        b.DepartureAirport,
+                        b.ArrivalAirport,
+                        b.DepartureDate,
+                        b.ReturnDate,
+                        b.BookingDate,
+                        b.Status,
+                        b.UpdatedBy,
+                        b.CreatedDate,
+                        b.UpdatedDate
+                    FROM BookingHistory b
+                    LEFT JOIN TripRequests t ON b.TripRequestID = t.TripRequestID
+                    WHERE b.ShareholderID = @ShareholderID
+                    AND (b.PassengerName LIKE @SearchTerm 
+                         OR b.TicketNo LIKE @SearchTerm
+                         OR b.UpdatedBy LIKE @SearchTerm)
+                    ORDER BY b.CreatedDate DESC";
 
                 SqlParameter[] parameters = {
                     new SqlParameter("@ShareholderID", shareholderId),
@@ -300,16 +347,20 @@ namespace AeroHolder_new.Repositories
                 BookingID = Convert.ToInt32(row["BookingID"]),
                 ShareholderID = Convert.ToInt32(row["ShareholderID"]),
                 TripRequestID = row["TripRequestID"] != DBNull.Value ? Convert.ToInt32(row["TripRequestID"]) : (int?)null,
-                TicketNo = row["TicketNo"]?.ToString(),
-                PassengerName = row["PassengerName"]?.ToString(),
-                TicketType = row["TicketType"]?.ToString(),
-                DepartureAirport = row["DepartureAirport"]?.ToString(),
-                ArrivalAirport = row["ArrivalAirport"]?.ToString(),
+                TicketNo = row["TicketNo"] != DBNull.Value ? row["TicketNo"].ToString() : null,
+                PassengerName = row["PassengerName"] != DBNull.Value ? row["PassengerName"].ToString() : null,
+                TicketType = row["TicketType"] != DBNull.Value ? row["TicketType"].ToString() : null,
+                Relationship = row["Relationship"] != DBNull.Value ? row["Relationship"].ToString() : null,
+                TicketIssue = row["TicketIssue"] != DBNull.Value ? Convert.ToInt32(row["TicketIssue"]) : (int?)null,
+                Entitlement = row["Entitlement"] != DBNull.Value ? row["Entitlement"].ToString() : null,
+                PassportNumber = row["PassportNumber"] != DBNull.Value ? row["PassportNumber"].ToString() : null,
+                DepartureAirport = row["DepartureAirport"] != DBNull.Value ? row["DepartureAirport"].ToString() : null,
+                ArrivalAirport = row["ArrivalAirport"] != DBNull.Value ? row["ArrivalAirport"].ToString() : null,
                 DepartureDate = row["DepartureDate"] != DBNull.Value ? Convert.ToDateTime(row["DepartureDate"]) : (DateTime?)null,
                 ReturnDate = row["ReturnDate"] != DBNull.Value ? Convert.ToDateTime(row["ReturnDate"]) : (DateTime?)null,
                 BookingDate = row["BookingDate"] != DBNull.Value ? Convert.ToDateTime(row["BookingDate"]) : (DateTime?)null,
-                Status = row["Status"]?.ToString(),
-                UpdatedBy = row["UpdatedBy"]?.ToString(),
+                Status = row["Status"] != DBNull.Value ? row["Status"].ToString() : null,
+                UpdatedBy = row["UpdatedBy"] != DBNull.Value ? row["UpdatedBy"].ToString() : null,
                 CreatedDate = Convert.ToDateTime(row["CreatedDate"]),
                 UpdatedDate = Convert.ToDateTime(row["UpdatedDate"])
             };

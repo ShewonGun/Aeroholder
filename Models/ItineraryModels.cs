@@ -44,6 +44,10 @@ namespace AeroHolder_new.Models
         public string TicketNo { get; set; }
         public string PassengerName { get; set; }
         public string TicketType { get; set; }
+        public string Relationship { get; set; }
+        public int? TicketIssue { get; set; }
+        public string Entitlement { get; set; }
+        public string PassportNumber { get; set; }
         public string DepartureAirport { get; set; }
         public string ArrivalAirport { get; set; }
         public DateTime? DepartureDate { get; set; }

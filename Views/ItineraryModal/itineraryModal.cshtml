@@ -170,8 +170,8 @@
                                 <div class="form-row-2col">
                                     <div class="form-group">
                                         <label class="form-label">
-                                            <img src="~/assets/takeoffImage.png" alt="departure" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                                            Dubai - United Arab Emirates
+                                            <img src="~/assets/takeoff.png" alt="departure" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                                            Departure Airport
                                         </label>
                                         <select class="form-select airport-select" id="manage_departureAirport">
                                             <option value="DXB" data-city="Dubai - United Arab Emirates" selected>DXB</option>
@@ -183,8 +183,8 @@
                                     </div>
                                     <div class="form-group">
                                         <label class="form-label">
-                                            <img src="~/assets/takeoffImage.png" alt="arrival" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
-                                            Begin - china
+                                            <img src="~/assets/landing.png" alt="arrival" style="width: 16px; height: 16px; vertical-align: middle; margin-right: 4px;">
+                                            Arrival Airport
                                         </label>
                                         <select class="form-select airport-select" id="manage_arrivalAirport">
                                             <option value="PEK" data-city="Beijing - China" selected>PEK</option>
@@ -231,7 +231,7 @@
                                                 <line x1="3" y1="10" x2="21" y2="10"></line>
                                             </svg>
                                             Return Date
-                                        </label>
+                                        /label>
                                         <input type="date" class="form-input" id="manage_returnDate" value="2024-08-16">
                                     </div>
                                     <div class="form-group">
@@ -1311,7 +1311,7 @@
                 '<td class="row-number">' + globalRowNum + '.</td>' +
                 '<td>' + formattedDate + '<br/>' + formattedTime + '</td>' +
                 '<td><span class="route-dates">' + depDate + '<br/><img src="/assets/arrowIcon.png" alt="to" style="width: 12px; height: 12px; vertical-align: middle; margin: 0 4px;"> ' + retDate + '</span></td>' +
-                '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoffImage.png" alt="to" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
+                '<td>' + (booking.DepartureAirport || '-') + ' <img src="/assets/takeoff.png" alt="takeoff" style="width: 14px; height: 14px; vertical-align: middle; margin: 0 2px;"> ' + (booking.ArrivalAirport || '-') + '</td>' +
                 '<td>' + bookingDate + '</td>' +
                 '<td><span class="status-badge status-issued">' + (booking.Status || 'Issued') + '</span></td>' +
                 '<td>' + (booking.UpdatedBy || '-') + '</td>' +

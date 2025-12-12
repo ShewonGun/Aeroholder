@@ -243,7 +243,22 @@
     }
 
     function viewReport(folioId) {
-        window.location.href = `/Report?folioId=${folioId}`;
+        // Open report modal with shareholder data
+        if (typeof openReportModal === 'function') {
+            // Get shareholder name from the row
+            var row = event.target.closest('.shareholder-row');
+            var shareholderName = '';
+            if (row) {
+                var nameElement = row.querySelector('.info-section:nth-child(2) .info-value');
+                if (nameElement) {
+                    shareholderName = nameElement.textContent.trim();
+                }
+            }
+            openReportModal(folioId, shareholderName);
+        } else {
+            console.error('Report modal not loaded');
+            alert('Report modal is not available. Please refresh the page.');
+        }
     }
 
     function deleteShareholder(folioId) {

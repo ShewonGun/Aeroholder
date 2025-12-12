@@ -93,15 +93,16 @@
     <Content Include="Assets\footer airlines logo.png" />
     <Content Include="Assets\footer img.png" />
     <Content Include="Assets\ItineraryImage.png" />
+    <Content Include="Assets\landing.png" />
     <Content Include="Assets\leftBg.png" />
     <Content Include="Assets\passwordLogo.png" />
     <Content Include="Assets\side logo.png" />
     <Content Include="Assets\SLA LOGO.png" />
     <Content Include="Assets\smallplane.png" />
+    <Content Include="Assets\takeoff.png" />
     <Content Include="Assets\takeoffImage.png" />
     <Content Include="Assets\userLogo.png" />
     <Content Include="Global.asax" />
-    <Content Include="PaginationUpdate.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -162,6 +163,7 @@
     <Content Include="Views\NotificationTest\Index.cshtml" />
     <Content Include="Views\DeleteConfirmModal\deleteConfirmModal.cshtml" />
     <Content Include="Views\ItineraryModal\itineraryModal.cshtml" />
+    <Content Include="Views\ViewReportModal\viewReportModal.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
